@@ -1,0 +1,32 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'fukajun/nerdtree'
+#repo = 'scrooloose/nerdtree'
+
+[[prugins]]
+repo = 'tpope/vim-rails'
+
+[[plugins]]
+repo = 'chriskempson/vim-tomorrow-theme'
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+
+[[plugins]]
+repo = 'Yggdroot/indentLine'
+
+[[plugins]]
+repo = 'bronson/vim-trailing-whitespace'
+
+[[plugins]]
+repo = 'rhysd/accelerated-jk'
+
+[[plugins]]
+repo = 'nathanaelkane/vim-indent-guides'
+
+[[plugins]]
+repo = 'Shougo/vimproc.vim'
+
+
