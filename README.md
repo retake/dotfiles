@@ -1,6 +1,6 @@
 # dotfiles
 
-## git clone git@github.com:retake/dotfiles.git
-## cd dotfiles
-## sh install.sh
+git clone git@github.com:retake/dotfiles.git<br>
+cd dotfiles<br>
+sh install.sh<br>
 
