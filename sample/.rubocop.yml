@@ -1,0 +1,30 @@
+# 項目が多すぎてとても明示的には抜き出し切れないので、 --auto-gen-configを使う事。
+# --auto-gen-config 結果の内、--auto-correctをしても問題無いと思われるものを、
+# 手元やCIでの自動補正のために、順次enabledで追加して行く。
+
+AllCops:
+  TargetRubyVersion: 2.3
+  #TargetRailsVersion: 3.1
+  #Exclude:
+  #- 'dummy_dir/***'
+  #EnabledByDefault: true
+  #DisabledByDefault: true
+
+Rails:
+  Enabled: true
+
+Style/StringLiterals:
+  Enabled: true
+Style/BracesAroundHashParameters:
+  Enabled: true
+
+Layout/EmptyLines:
+  Enabled: true
+Layout/SpaceAfterColon:
+  Enabled: true
+Layout/SpaceAfterComma:
+  Enabled: true
+Layout/SpaceInsideHashLiteralBraces:
+  Enabled: true
+
+
