@@ -44,15 +44,23 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+inoremap <silent> <C-h> <esc><C-w>h
+inoremap <silent> <C-j> <esc><C-w>j
+inoremap <silent> <C-k> <esc><C-w>k
+inoremap <silent> <C-l> <esc><C-w>l
+
+nnoremap <silent> <Space><Space> "zyiw:let @/ = '\<' . @z . '\>'<CR>:hlsearch<CR>
+
+nnoremap <Space>. :new ~/.vimrc<Cr>
+nnoremap <Space>; :so ~/.vimrc<Cr>
+
+inoremap <silent> <space>@ <ESC>:w<Cr>i
 
 inoremap <silent> jj <ESC>
 inoremap <silent> ｊｊ <ESC>
-inoremap <silent> hkakko (
-inoremap <silent> mkakko )
-inoremap <silent> hhako [
-inoremap <silent> mhako ]
-inoremap <silent> hckakko {
-inoremap <silent> mckakko }
+
+
+
 
 " 全角スペースのハイライト
 function! ZenkakuSpace()
