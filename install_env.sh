@@ -6,6 +6,7 @@ for file in .??*
 do
   [ "${file}" = ".git" ] && continue
   [ "${file}" = ".vim" ] && continue
+  [ "${file}" = ".rbenv" ] && continue
 
   ln -snfv $(pwd)/${file} ~/${file}
 done
