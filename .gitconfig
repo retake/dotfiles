@@ -5,3 +5,5 @@
 [user]
 	email = retake272@gmail.com
 	name = retake
+[push]
+	default = simple
