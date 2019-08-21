@@ -3,5 +3,7 @@
 [core]
 	editor = vi
 [user]
-	email = retake272@gmail.com
-	name = retake
+	email = k_matsuura@kogasoftware.com
+	name = k-matsuura
+[push]
+	default = simple

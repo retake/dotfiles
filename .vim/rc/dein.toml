@@ -12,12 +12,6 @@ repo = 'tpope/vim-rails'
 repo = 'chriskempson/vim-tomorrow-theme'
 
 [[plugins]]
-repo = 'itchyny/lightline.vim'
-
-[[plugins]]
-repo = 'Yggdroot/indentLine'
-
-[[plugins]]
 repo = 'bronson/vim-trailing-whitespace'
 
 [[plugins]]
