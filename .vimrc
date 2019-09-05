@@ -54,11 +54,15 @@ nnoremap <silent> <Space><Space> "zyiw:let @/ = '\<' . @z . '\>'<CR>:hlsearch<CR
 nnoremap <Space>. :new ~/.vimrc<Cr>
 nnoremap <Space>; :so ~/.vimrc<Cr>
 
-inoremap <silent> <space>@ <ESC>:w<Cr>i
+" inoremap <silent> <space>@ <ESC>:w<Cr>i
 
 inoremap <silent> jj <ESC>
 inoremap <silent> ｊｊ <ESC>
 
+nnoremap <Space>n :NERDTreeToggle<CR>
+
+nnoremap <Space>q :q<CR>
+nnoremap <Space>w :w<CR>
 
 
 
