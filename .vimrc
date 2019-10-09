@@ -49,6 +49,11 @@ inoremap <silent> <C-j> <esc><C-w>j
 inoremap <silent> <C-k> <esc><C-w>k
 inoremap <silent> <C-l> <esc><C-w>l
 
+inoremap <C-h> <Left>
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-l> <Right>
+
 nnoremap <silent> <Space><Space> "zyiw:let @/ = '\<' . @z . '\>'<CR>:hlsearch<CR>
 
 nnoremap <Space>. :new ~/.vimrc<Cr>
