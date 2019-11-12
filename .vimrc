@@ -29,8 +29,11 @@ if dein#check_install()
 endif
 
 
+let mapleader = " "
+
 syntax enable
 hi comment ctermfg=lightblue
+
 set encoding=utf-8
 set fileencoding=utf8
 set fileencodings=utf8
@@ -40,38 +43,50 @@ set number
 set showmatch
 set virtualedit=onemore
 
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-inoremap <silent> <C-h> <esc><C-w>h
-inoremap <silent> <C-j> <esc><C-w>j
-inoremap <silent> <C-k> <esc><C-w>k
-inoremap <silent> <C-l> <esc><C-w>l
+" キーバインド
 
-inoremap <C-h> <Left>
-inoremap <C-j> <Down>
-inoremap <C-k> <Up>
-inoremap <C-l> <Right>
+" 上下左右移動
+noremap <C-h> <Left>
+noremap <C-j> <Down>
+noremap <C-k> <Up>
+noremap <C-l> <Right>
 
-nnoremap <silent> <Space><Space> "zyiw:let @/ = '\<' . @z . '\>'<CR>:hlsearch<CR>
+" ウィンドウの移動
+nnoremap <silent> <C-h> <C-w>h
+nnoremap <silent> <C-> <C-w>j
+nnoremap <silent> <C-k> <C-w>k
+nnoremap <silent> <C-l> <C-w>l
 
-nnoremap <Space>. :new ~/.vimrc<Cr>
-nnoremap <Space>; :so ~/.vimrc<Cr>
-
-" inoremap <silent> <space>@ <ESC>:w<Cr>i
-
+" ノーマルモードに変更
 inoremap <silent> jj <ESC>
-inoremap <silent> ｊｊ <ESC>
 
-nnoremap <Space>n :NERDTreeToggle<CR>
+" .vimrcの再読み込み
+nnoremap <Leader>; :so ~/.vimrc<Cr>
 
-nnoremap <Space>q :q<CR>
-nnoremap <Space>w :w<CR>
+" カーソル上の単語を選択
+nnoremap <silent> <Leader>t "zyiw:let @/ = '\<' . @z . '\>'<CR>:hlsearch<CR>
+
+" ツリーのトグル
+nnoremap <silent> <Leader>n :NERDTreeToggle<CR>
+
+" ファイル保存、閉じる
+nnoremap <silent> <Leader>w :w<CR>
+nnoremap <silent> <Leader>q :q<CR>
 
 
+" easy-motion
+let g:Easymotion_do_mapping = 0
+let g:EasyMotion_smartcase = 1
 
-" 全角スペースのハイライト
+" 2文字検索ジャンプ
+nmap <Leader>f <Plug>(easymotion-overwin-f2)
+" 画面上の行ジャンプ
+nmap <Leader>j <Plug>(easymotion-bd-jk)
+" 画面上の単語ジャンプ
+nmap <Leader>l <Plug>(easymotion-bd-w)
+
+
+" 全角ペースのハイライト
 function! ZenkakuSpace()
   highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
 endfunction

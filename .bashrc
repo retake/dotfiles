@@ -29,3 +29,5 @@ alias ls="ls -lah --color"
 alias dkia="docker ps --all | awk '{print $1}' | xargs docker kill > /dev/null 2>&1"
 alias drma="docker ps --all | awk '{print $1}' | xargs docker rm > /dev/null 2>&1"
 alias less="less -RMN"
+alias glogone='git log --pretty=oneline'
+alias grebase='git rebase'
