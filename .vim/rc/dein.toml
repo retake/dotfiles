@@ -27,9 +27,6 @@ repo = 'Shougo/vimproc.vim'
 repo = 'joker1007/vim-ruby-heredoc-syntax'
 
 [[plugins]]
-repo = "airblade/vim-gitgutter"
-
-[[plugins]]
 repo = "tpope/vim-fugitive"
 
 [[plugins]]

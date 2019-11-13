@@ -52,10 +52,10 @@ noremap <C-k> <Up>
 noremap <C-l> <Right>
 
 " ウィンドウの移動
-nnoremap <silent> <C-h> <C-w>h
-nnoremap <silent> <C-> <C-w>j
-nnoremap <silent> <C-k> <C-w>k
-nnoremap <silent> <C-l> <C-w>l
+nmap <silent> <Leader>h <C-w>h
+nmap <silent> <Leader>j <C-w>j
+nmap <silent> <Leader>k <C-w>k
+nmap <silent> <Leader>l <C-w>l
 
 " ノーマルモードに変更
 inoremap <silent> jj <ESC>
@@ -75,15 +75,15 @@ nnoremap <silent> <Leader>q :q<CR>
 
 
 " easy-motion
-let g:Easymotion_do_mapping = 0
+let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_smartcase = 1
 
 " 2文字検索ジャンプ
 nmap <Leader>f <Plug>(easymotion-overwin-f2)
 " 画面上の行ジャンプ
-nmap <Leader>j <Plug>(easymotion-bd-jk)
+nmap <Leader>, <Plug>(easymotion-bd-jk)
 " 画面上の単語ジャンプ
-nmap <Leader>l <Plug>(easymotion-bd-w)
+nmap <Leader>. <Plug>(easymotion-bd-w)
 
 
 " 全角ペースのハイライト
