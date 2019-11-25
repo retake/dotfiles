@@ -73,6 +73,8 @@ nnoremap <silent> <Leader>n :NERDTreeToggle<CR>
 nnoremap <silent> <Leader>w :w<CR>
 nnoremap <silent> <Leader>q :q<CR>
 
+nnoremap <silent> <Leader>v <C-v>
+
 
 " easy-motion
 let g:EasyMotion_do_mapping = 0
