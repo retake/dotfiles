@@ -2,8 +2,10 @@
 	ui = true
 [core]
 	editor = vim
-[user]
-	email = k_matsuura@kogasoftware.com
-	name = k-matsuura
 [push]
 	default = simple
+[credential]
+	helper = cache
+[user]
+	name = retake
+	email = retake272@gmail.com
