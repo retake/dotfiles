@@ -12,3 +12,8 @@ deinの最新版が vimの8以上にしか対応しておらず、 yumやaptで7
 git clone https://github.com/vim/vim.git
 cd .cache/dein/repos/github.com/Shougo/dein.vim/
 git checkout -b 1.5 refs/tags/1.5
+
+
+vim の fuzzy finder（ctrlp）は、agと連携させているので、使いたければインストールが必要
+
+sudo apt install silversearcher-ag
