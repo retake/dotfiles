@@ -1,9 +1,8 @@
 #!/bin/bash -eu
 
 ### 環境変数GITHUB_AUTH_KEYにgithubの認証keyを入れて置くこと ###
-# org_nameを自分の組織名に書き換えてコメントを外すこと #
+### 環境変数GITHUB_ORG_NAMeにgithubの組織名を入れて置くこと ###
 
-# org_name='組織名'
 github_user='k-matsuura'
 chrome_path='/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe'
 
@@ -11,7 +10,7 @@ repo_list() {
   curl \
     -H "Authorization: token ${GITHUB_AUTH_KEY}" \
     -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/orgs/${org_name}/repos"
+    "https://api.github.com/orgs/${GITHUB_ORG_NAME}/repos"
 }
 
 org_repo_names() {
@@ -22,7 +21,7 @@ pr_list() {
   curl \
     -H "Authorization: token ${GITHUB_AUTH_KEY}" \
     -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/${org_name}/${repo}/pulls"
+    "https://api.github.com/repos/${GITHUB_ORG_NAME}/${repo}/pulls"
 }
 
 assigned_pr_numbers() {
@@ -41,5 +40,6 @@ for val in "${repos[@]}"
 do
   repo=$val
   pr_list | assigned_pr_numbers | open_browser
+  sleep 0.1
 done
 

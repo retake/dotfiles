@@ -7,3 +7,6 @@ export PS1="\[\e[1;36m\][\W]\[\e[1;37m\]:\[\e[4;32m\](\$(parse_git_branch.sh))\[
 
 export PATH="$HOME/.local/bin:$HOME/.rbenv/bin:$HOME/bin:$PATH"
 eval "$(rbenv init -)"
+
+export GITHUB_AUTH_KEY="API_KEYを入れる"
+export GITHUB_ORG_NAME="組織名を入れる"
