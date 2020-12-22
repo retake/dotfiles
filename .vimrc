@@ -46,6 +46,8 @@ set virtualedit=onemore
 set foldmethod=indent
 
 " キーバインド
+nmap <silent> <Leader><Leader>c <C-c>
+
 
 " 上下左右移動
 noremap <C-h> <Left>
@@ -67,6 +69,15 @@ nmap <silent> <Leader>m zm
 nmap <silent> <Leader><Leader>m zM
 nmap <silent> <Leader>r zr
 nmap <silent> <Leader><Leader>r zR
+
+" fuzzy finder関連
+"let g:ctrlp_map = '<Nop>'
+nmap <silent> <Leader>p <C-p>
+
+if executable('ag')
+  let g:ctrlp_use_caching=0
+  let g:ctrlp_user_command='ag %s --depth -1 -g ""'
+endif
 
 " ノーマルモードに変更
 inoremap <silent> jj <ESC>
