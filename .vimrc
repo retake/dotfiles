@@ -43,6 +43,8 @@ set number
 set showmatch
 set virtualedit=onemore
 
+set foldmethod=indent
+
 " キーバインド
 
 " 上下左右移動
@@ -56,6 +58,15 @@ nmap <silent> <Leader>h <C-w>h
 nmap <silent> <Leader>j <C-w>j
 nmap <silent> <Leader>k <C-w>k
 nmap <silent> <Leader>l <C-w>l
+
+" 折りたたみ関連
+nmap <silent> <Leader>c zc
+nmap <silent> <Leader>o zo
+nmap <silent> <Leader><Leader>o zO
+nmap <silent> <Leader>m zm
+nmap <silent> <Leader><Leader>m zM
+nmap <silent> <Leader>r zr
+nmap <silent> <Leader><Leader>r zR
 
 " ノーマルモードに変更
 inoremap <silent> jj <ESC>
