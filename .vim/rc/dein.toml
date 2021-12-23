@@ -3,9 +3,8 @@ repo = 'Shougo/dein.vim'
 
 [[plugins]]
 repo = 'fukajun/nerdtree'
-#repo = 'scrooloose/nerdtree'
 
-[[prugins]]
+[[plugins]]
 repo = 'tpope/vim-rails'
 
 [[plugins]]
@@ -21,17 +20,50 @@ repo = 'rhysd/accelerated-jk'
 repo = 'nathanaelkane/vim-indent-guides'
 
 [[plugins]]
-repo = 'Shougo/vimproc.vim'
-
-[[plugins]]
 repo = 'joker1007/vim-ruby-heredoc-syntax'
 
 [[plugins]]
 repo = "tpope/vim-fugitive"
 
 [[plugins]]
-repo = "easymotion/vim-easymotion"
+repo = "simeji/winresizer"
 
 [[plugins]]
-repo = "simeji/winresizer"
+repo = 'ctrlpvim/ctrlp.vim'
+
+[[plugins]]
+repo = 'scrooloose/syntastic'
+
+[[plugins]]
+repo = 'pechorin/any-jump.vim'
+
+[[plugins]]
+repo = 'prabirshrestha/vim-lsp'
+
+[[plugins]]
+repo = 'prabirshrestha/async.vim'
+
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete.vim'
+
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete-lsp.vim'
+
+[[plugins]]
+repo = 'mattn/vim-lsp-settings'
+
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip'
+
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip-integ'
+
+[[plugins]]
+repo = 'tpope/vim-bundler'
+
+[[plugins]]
+repo = 'tpope/vim-dispatch'
+
+[[plugins]]
+repo = 'ngmy/vim-rubocop'
 
