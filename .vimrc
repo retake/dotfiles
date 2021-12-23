@@ -1,175 +1,93 @@
-" deinの設定
-let s:dein_dir = expand('~/.cache/dein')
-let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-if &runtimepath !~# '/dein.vim'
-  if !isdirectory(s:dein_repo_dir)
-    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
-  endif
-  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
-endif
-
-
-if dein#load_state(s:dein_dir)
-  call dein#begin(s:dein_dir)
-
-  let g:rc_dir    = expand('~/.vim/rc')
-  let s:toml      = g:rc_dir . '/dein.toml'
-  let s:lazy_toml = g:rc_dir . '/dein_lazy.toml'
-  call dein#load_toml(s:toml,      {'lazy': 0})
-  call dein#load_toml(s:lazy_toml, {'lazy': 1})
-
-  call dein#end()
-  call dein#save_state()
-endif
-
-filetype plugin indent on
-
-if dein#check_install()
-  call dein#install()
-endif
-
-
-let mapleader = " "
-
-syntax enable
-hi comment ctermfg=lightblue
-
+" Gァイル設定
 set encoding=utf-8
 set fileencoding=utf8
 set fileencodings=utf8
 set fileformat=unix
 
-set number
-set showmatch
-set virtualedit=onemore
+" beep音を消す
+set belloff=all
 
-set foldmethod=indent
-
-" キーバインド
-nmap <silent> <Leader><Leader>c <C-c>
-
-
-" 上下左右移動
-noremap <C-h> <Left>
-noremap <C-j> <Down>
-noremap <C-k> <Up>
-noremap <C-l> <Right>
-
-" ウィンドウの移動
-nmap <silent> <Leader>h <C-w>h
-nmap <silent> <Leader>j <C-w>j
-nmap <silent> <Leader>k <C-w>k
-nmap <silent> <Leader>l <C-w>l
-
-" 折りたたみ関連
-nmap <silent> <Leader>c zc
-nmap <silent> <Leader>o zo
-nmap <silent> <Leader><Leader>o zO
-nmap <silent> <Leader>m zm
-nmap <silent> <Leader><Leader>m zM
-nmap <silent> <Leader>r zr
-nmap <silent> <Leader><Leader>r zR
-
-" fuzzy finder関連
-"let g:ctrlp_map = '<Nop>'
-nmap <silent> <Leader>p <C-p>
-
-if executable('ag')
-  let g:ctrlp_use_caching=0
-  let g:ctrlp_user_command='ag %s --depth -1 -g ""'
-endif
-
-" ノーマルモードに変更
-inoremap <silent> jj <ESC>
-
-" .vimrcの再読み込み
-nnoremap <Leader>; :so ~/.vimrc<Cr>
-
-" カーソル上の単語を選択
-nnoremap <silent> <Leader>t "zyiw:let @/ = '\<' . @z . '\>'<CR>:hlsearch<CR>
-
-" ツリーのトグル
-nnoremap <silent> <Leader>n :NERDTreeToggle<CR>
-
-" ファイル保存、閉じる
-nnoremap <silent> <Leader>w :w<CR>
-nnoremap <silent> <Leader>q :q<CR>
-
-nnoremap <silent> <Leader>v <C-v>
-
-
-" easy-motion
-let g:EasyMotion_do_mapping = 0
-let g:EasyMotion_smartcase = 1
-
-" 2文字検索ジャンプ
-nmap <Leader>f <Plug>(easymotion-overwin-f2)
-" 画面上の行ジャンプ
-nmap <Leader>, <Plug>(easymotion-bd-jk)
-" 画面上の単語ジャンプ
-nmap <Leader>. <Plug>(easymotion-bd-w)
-
-
-" 全角ペースのハイライト
-function! ZenkakuSpace()
-  highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
-endfunction
-
-if has('syntax')
-  augroup ZenkakuSpace
-    autocmd!
-    autocmd ColorScheme * call ZenkakuSpace()
-    autocmd VimEnter,WinEnter,BufRead * let w:m1=matchadd('ZenkakuSpace', '　')
-  augroup END
-  call ZenkakuSpace()
-endif
-
-nmap j <Plug>(accelerated_jk_gj)
-nmap k <Plug>(accelerated_jk_gk)
-
-autocmd VimEnter * NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-
-
-
-
-colorscheme desert
-
-" set mouse=a
-
-" set paste
-
-set noswapfile
-set list
-
-set shiftround
-
-set infercase
-
+" 保存されていないファイルがあっても別ファイルを開ける
 set hidden
 
+" 外部でファイルが変更された時に読み直す
+set autoread
+
+" swapファイルを使わない
+set noswapfile
+
+syntax enable
+
+" 色設定
+colorscheme desert
+hi comment ctermfg=lightblue
+set cursorline
+
+" 行番号を設定
+set number
+
+" ステータス行を常に表示
+set laststatus=2
+
+" スペルチェック機能
+"set spell
+"set spelllang=en,cjk
+
+" 対応するカッコに移動
+set showmatch
+set matchtime=1
+
+" 最低表示サイズ
+set scrolloff=8
+set sidescrolloff=16
+
+" 長すぎる行を表示
+set display=lastline
+
+" 補完ポップアップの高さを設定
+set pumheight=10
+
+" カーソルの行末移動
+set virtualedit=onemore
+
+" 矩形選択範囲を拡大
+set virtualedit+=block
+
+" 折り畳み
+set foldmethod=indent
+
+" 不可視文字を表示する（indentの表示をしているので基本不要）
+"set list
+"set listchars=tab:>-,trail:.
+
+" シフトコマンド設定
+set shiftwidth=2
+set shiftround
+
+" 補完時に大文字小文字を判別
+set infercase
+
+" カーソルの下線を表示
+set cursorline
+
+" インクリメンタルサーチ
 set incsearch
+
+" 検索文字列をハイライト
 set hlsearch
 
+" 検索時に大文字と小文字を区別しない
+set ignorecase
+
+" 最後まで検索した後に先頭に戻らない
+set nowrapscan
+
+" タブ入力をスペース入力に置き換え
 set expandtab
+
+" タブが占める幅
 set tabstop=2
-set shiftwidth=2
 
-vnoremap v $h
-
-" for lightline.vim
-set laststatus=2
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [
-      \     ['mode', 'paste'],
-      \     ['readonly', 'filename', 'modified', 'anzu']
-      \   ]
-      \ },
-      \ 'component_function': {
-      \   'anzu': 'anzu#search_status'
-      \ }
-      \ }
+runtime! config/init/**
+runtime! config/plugins/**
 
