@@ -32,4 +32,10 @@ alias less="less -RMN"
 alias glogone='git log --pretty=oneline'
 alias grebase='git rebase'
 
+export RBENV_ROOT="${HOME}/.rbenv"
+if [ -d "${RBENV_ROOT}" ]; then
+  export PATH="${RBENV_ROOT}/bin:${PATH}"
+  eval "$(rbenv init -)"
+fi
+
 cd ~
