@@ -28,8 +28,14 @@ vkFF & a::Send, {Blind}{Tab}
 
 
 ;デスクトップ切替
+vkEB & Left::Send, ^#{Left}
+vkFF & Left::Send, ^#{Left}
+vkEB & Right::Send, ^#{Right}
+vkFF & Right::Send, ^#{Right}
+vkEB & Up::Send, #{Tab}
+vkFF & Up::Send, #{Tab}
+
 
 ;日本語入力切替
 vkEB & vkFF::Send, {vk19}
 vkFF & vkEB::Send, {vk19}
-alt::vk19
