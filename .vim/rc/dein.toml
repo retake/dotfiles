@@ -2,7 +2,7 @@
 repo = 'Shougo/dein.vim'
 
 [[plugins]]
-repo = 'fukajun/nerdtree'
+repo = 'scrooloose/nerdtree'
 
 [[plugins]]
 repo = 'tpope/vim-rails'
@@ -35,9 +35,6 @@ repo = 'ctrlpvim/ctrlp.vim'
 repo = 'scrooloose/syntastic'
 
 [[plugins]]
-repo = 'pechorin/any-jump.vim'
-
-[[plugins]]
 repo = 'prabirshrestha/vim-lsp'
 
 [[plugins]]
@@ -51,12 +48,6 @@ repo = 'prabirshrestha/asyncomplete-lsp.vim'
 
 [[plugins]]
 repo = 'mattn/vim-lsp-settings'
-
-[[plugins]]
-repo = 'hrsh7th/vim-vsnip'
-
-[[plugins]]
-repo = 'hrsh7th/vim-vsnip-integ'
 
 [[plugins]]
 repo = 'tpope/vim-bundler'
