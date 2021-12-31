@@ -38,13 +38,6 @@ vkFF & a::Send, {Blind}{Tab}
 ;windowsデスクトップ切替
 change_desktop(arrow_button) {
   Send {Blind}^#{%arrow_button%}
-  Sleep 50
-  WinGetTitle, title, A
-  ;アクティブなアプリが無い場合に何かをアクティブに
-  If(title == "Program Manager") {
-    Send !{Tab}
-  }
-  return
 }
 
 vkEB & Left::change_desktop("Left")
@@ -66,6 +59,8 @@ vkFF & Tab::Send, !{Esc}
 ;タブ切替
 vkEB & t::Send, {Blind}^{Tab}
 vkFF & t::Send, {Blind}^{Tab}
+Alt & WheelUp::Send, ^+{Tab}
+Alt & WheelDown::Send, ^{Tab}
 
 
 ;日本語入力切替
