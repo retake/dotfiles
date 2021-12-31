@@ -3,11 +3,10 @@
 [core]
 	editor = vim
 	autocrlf = input
-	autocrfl = input
 [push]
 	default = simple
 [credential]
-	helper = cache
+	helper = store
 [user]
 	name = retake
 	email = retake272@gmail.com
