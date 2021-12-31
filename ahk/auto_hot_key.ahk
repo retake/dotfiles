@@ -56,6 +56,18 @@ vkFF & Up::Send, #{Tab}
 ;vkEB & Down::Send, ^#{F4}
 ;vkFF & Down::Send, ^#{F4}
 
+Ctrl & WheelUp::change_desktop("Left")
+Ctrl & WheelDown::change_desktop("Right")
+
+;アプリ切り替え
+vkEB & Tab::Send, !{Esc}
+vkFF & Tab::Send, !{Esc}
+
+;タブ切替
+vkEB & t::Send, {Blind}^{Tab}
+vkFF & t::Send, {Blind}^{Tab}
+
+
 ;日本語入力切替
 vkEB & vkFF::Send, {vk19}
 vkFF & vkEB::Send, {vk19}
