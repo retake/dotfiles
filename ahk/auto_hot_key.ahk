@@ -49,18 +49,20 @@ vkFF & Up::Send, #{Tab}
 ;vkEB & Down::Send, ^#{F4}
 ;vkFF & Down::Send, ^#{F4}
 
-Ctrl & WheelUp::change_desktop("Left")
-Ctrl & WheelDown::change_desktop("Right")
+LCtrl & WheelUp::change_desktop("Left")
+LCtrl & WheelDown::change_desktop("Right")
 
 ;アプリ切り替え
 vkEB & Tab::Send, !{Esc}
 vkFF & Tab::Send, !{Esc}
+LShift & WheelUp::Send, {Blind}!{Esc}
+LShift & WheelDown::Send, {Blind}!{Esc}
 
 ;タブ切替
 vkEB & t::Send, {Blind}^{Tab}
 vkFF & t::Send, {Blind}^{Tab}
-Alt & WheelUp::Send, ^+{Tab}
-Alt & WheelDown::Send, ^{Tab}
+RCtrl & WheelUp::Send, {Blind}^+{Tab}
+RCtrl & WheelDown::Send, {Blind}^{Tab}
 
 
 ;日本語入力切替
