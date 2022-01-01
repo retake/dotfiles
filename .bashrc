@@ -38,4 +38,8 @@ if [ -d "${RBENV_ROOT}" ]; then
   eval "$(rbenv init -)"
 fi
 
+if gh > /dev/null 2>&1; then
+  eval "$(gh completion -s bash)"
+fi
+
 cd ~
