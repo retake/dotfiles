@@ -1,0 +1,4 @@
+localhostForwarding=true
+
+[wsl2]
+memory=2GB
