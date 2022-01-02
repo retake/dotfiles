@@ -4,10 +4,8 @@ cd $(dirname $0)
 
 for file in .??*
 do
-  if [ "${file}" = ".vim" ];then
-    ln -nsvf git/dotfiles/.vim ~
-    continue
-  fi
+  [ "${file}" = ".git" ] && continue
+  [ "${file}" = ".rbenv" ] && continue
 
   ln -snfv $(pwd)/${file} ~/${file}
 done
