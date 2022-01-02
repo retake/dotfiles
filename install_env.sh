@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/bash -x
 
 cd $(dirname $0)
 
@@ -19,3 +19,6 @@ for script in ?*.sh
 do
   ln -snfv $(pwd)/${script} ~/bin/${script}
 done
+
+source ~/.bash_profile
+
