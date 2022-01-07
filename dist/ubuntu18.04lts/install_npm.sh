@@ -1,4 +1,4 @@
 #! /bin/bash -x
 
 sudo apt update
-sudo apt install npm -y
+sudo apt install npm yarn -y
