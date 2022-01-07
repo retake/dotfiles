@@ -49,28 +49,19 @@ vkFF & Up::Send, #{Tab}
 ;vkEB & Down::Send, ^#{F4}
 ;vkFF & Down::Send, ^#{F4}
 
-LWin & WheelUp::change_desktop("Left")
-LWin & WheelDown::change_desktop("Right")
+MButton & WheelUp::change_desktop("Left")
+MButton & WheelDown::change_desktop("Right")
 
 ;アプリ切り替え
 vkEB & Tab::Send, !{Esc}
 vkFF & Tab::Send, !{Esc}
-RWin & WheelUp::Send, {Blind}!{Esc}
-RWin & WheelDown::Send, {Blind}!{Esc}
+LWin & WheelUp::Send, {Blind}!{Esc}
+LWin & WheelDown::Send, {Blind}!+{Esc}
 
-;タブ切替
-change_tab() {
-  Send, {Blind}{LButton}
-  Send, {Blind}^{Tab}
-  return
-}
 vkEB & t::Send, {Blind}^{Tab}
 vkFF & t::Send, {Blind}^{Tab}
-RCtrl & WheelUp::Send, {Blind}^{Tab}
-RCtrl & WheelDown::Send, {Blind}^{Tab}
-MButton & WheelUp::change_tab()
-MButton & WheelDown::change_tab()
-
+Ctrl & WheelUp::Send, {Blind}^{Tab}
+Ctrl & WheelDown::Send, {Blind}^+{Tab}
 
 ;日本語入力切替
 vkEB & vkFF::Send, {vk19}
