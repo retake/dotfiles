@@ -58,3 +58,6 @@ repo = 'tpope/vim-dispatch'
 [[plugins]]
 repo = 'ngmy/vim-rubocop'
 
+[[plugins]]
+repo = 'skanehira/preview-markdown.vim'
+
