@@ -53,13 +53,18 @@ MButton & WheelUp::change_desktop("Left")
 MButton & WheelDown::change_desktop("Right")
 
 ;アプリ切り替え
-vkEB & Tab::Send, !{Esc}
-vkFF & Tab::Send, !{Esc}
+vkEB & m::send, !+{Esc}
+vkFF & m::send, !+{Esc}
+vkEB & <::send, !{Esc}
+vkFF & <::Send, !{Esc}
 LWin & WheelUp::Send, {Blind}!{Esc}
 LWin & WheelDown::Send, {Blind}!+{Esc}
 
-vkEB & t::Send, {Blind}^{Tab}
-vkFF & t::Send, {Blind}^{Tab}
+;タブ切り替え
+vkEB & >::send, ^+{Tab}
+vkFF & >::send, ^+{Tab}
+vkEB & /::send, ^{Tab}
+vkFF & /::Send, ^{Tab}
 Ctrl & WheelUp::Send, {Blind}^{Tab}
 Ctrl & WheelDown::Send, {Blind}^+{Tab}
 
