@@ -13,6 +13,11 @@ WriteLog(log) {
 }
 
 
+;exit
+vkEB & c::Send, {Blind}^c
+vkFF & c::Send, {Blind}^c
+
+
 ;–îˆó
 vkEB & h::Send, {Blind}{Left}
 vkEB & j::Send, {Blind}{Down}
