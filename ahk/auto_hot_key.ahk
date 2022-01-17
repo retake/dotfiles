@@ -32,14 +32,18 @@ vkFF & k::Send, {Blind}{Up}
 vkFF & l::Send, {Blind}{Right}
 
 ;Backspace,Tab,Enter,Delete
-vkEB & a::Send, {Blind}{BS}
-vkEB & d::Send, {Blind}{Tab}
-vkEB & f::Send, {Blind}{ENTER}
-vkEB & g::Send, {Blind}{DELETE}
-vkFF & a::Send, {Blind}{BS}
-vkFF & d::Send, {Blind}{Tab}
-vkFF & f::Send, {Blind}{ENTER}
-vkFF & g::Send, {Blind}{DELETE}
+vkEB & [::Send, {Blind}{BS}
+vkEB & `;::Send, {Blind}{Tab}
+vkEB  & '::Send, {Blind}{ENTER}
+vkEB & ]::Send, {Blind}{DELETE}
+vkFF & [::Send, {Blind}{BS}
+vkFF & `;::Send, {Blind}{Tab}
+vkFF & '::Send, {Blind}{ENTER}
+vkFF & ]::Send, {Blind}{DELETE}
+
+;Ctrl+c
+vkEB & s::Send, {Blind}^s
+vkFF & s::Send, {Blind}^s
 
 ;windowsデスクトップ切替
 change_desktop(arrow_button) {
