@@ -5,6 +5,11 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 #InstallKeybdHook
 
+; Shift +
+; Ctrl ^
+; Alt !
+; Win #
+
 WriteLog(log) {
   logText = [%A_Now%]%log%
   EnvGet, homepath, HOMEPATH
@@ -12,11 +17,9 @@ WriteLog(log) {
   FileAppend,  %logText%, %LOG_FILE%
 }
 
-
 ;exit
 vkEB & c::Send, {Blind}^c
 vkFF & c::Send, {Blind}^c
-
 
 ;–îˆó
 vkEB & h::Send, {Blind}{Left}
