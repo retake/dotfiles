@@ -31,15 +31,15 @@ vkFF & j::Send, {Blind}{Down}
 vkFF & k::Send, {Blind}{Up}
 vkFF & l::Send, {Blind}{Right}
 
-;Backspace,Tab,Enter,Delete
+;Backspace,Enter,Delete
 vkEB & [::Send, {Blind}{BS}
-vkEB & `;::Send, {Blind}{Tab}
+vkEB & `;::Send, {Blind}{ENTER}
 vkEB  & '::Send, {Blind}{ENTER}
-vkEB & ]::Send, {Blind}{DELETE}
+vkEB & ]::Send, {Blind}{BS}
 vkFF & [::Send, {Blind}{BS}
-vkFF & `;::Send, {Blind}{Tab}
+vkFF & `;::Send, {Blind}{ENTER}
 vkFF & '::Send, {Blind}{ENTER}
-vkFF & ]::Send, {Blind}{DELETE}
+vkFF & ]::Send, {Blind}{BS}
 
 ;Ctrl+c
 vkEB & s::Send, {Blind}^s
