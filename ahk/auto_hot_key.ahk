@@ -13,27 +13,25 @@ WriteLog(log) {
 }
 
 
-;矢印/バックスペース，エンター/home,end
+;矢印
 vkEB & h::Send, {Blind}{Left}
 vkEB & j::Send, {Blind}{Down}
 vkEB & k::Send, {Blind}{Up}
 vkEB & l::Send, {Blind}{Right}
-vkEB & d::Send, {Blind}{BS}
-vkEB & f::Send, {Blind}{DELETE}
-vkEB & g::Send, {Blind}{ENTER}
-vkEB & s::Send, {Blind}{Space}
-vkEB & a::Send, {Blind}{Tab}
-
 vkFF & h::Send, {Blind}{Left}
 vkFF & j::Send, {Blind}{Down}
 vkFF & k::Send, {Blind}{Up}
 vkFF & l::Send, {Blind}{Right}
-vkFF & d::Send, {Blind}{BS}
-vkFF & f::Send, {Blind}{DELETE}
-vkFF & g::Send, {Blind}{Enter}
-vkFF & s::Send, {Blind}{Space}
-vkFF & a::Send, {Blind}{Tab}
 
+;Backspace,Tab,Enter,Delete
+vkEB & a::Send, {Blind}{BS}
+vkEB & d::Send, {Blind}{Tab}
+vkEB & f::Send, {Blind}{ENTER}
+vkEB & g::Send, {Blind}{DELETE}
+vkFF & a::Send, {Blind}{BS}
+vkFF & d::Send, {Blind}{Tab}
+vkFF & f::Send, {Blind}{ENTER}
+vkFF & g::Send, {Blind}{DELETE}
 
 ;windowsデスクトップ切替
 change_desktop(arrow_button) {
