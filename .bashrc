@@ -23,11 +23,9 @@ if docker --version > /dev/null 2>&1; then
   alias drmi="docker rmi"
   alias dkia="docker ps --all | awk '{print $1}' | xargs docker kill > /dev/null 2>&1"
   alias drma="docker ps --all | awk '{print $1}' | xargs docker rm > /dev/null 2>&1"
+  alias dcom="docker compose"
 fi
 
-if docker-compose --help > /dev/null 2>&1; then
-  alias dcom="docker-compose"
-fi
 
 if git --version > /dev/null 2>&1; then
   alias gadd="git add"
