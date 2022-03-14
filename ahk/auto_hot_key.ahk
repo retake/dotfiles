@@ -31,15 +31,17 @@ vkFF & j::Send, {Blind}{Down}
 vkFF & k::Send, {Blind}{Up}
 vkFF & l::Send, {Blind}{Right}
 
-;Backspace,Enter,Delete
+;Backspace,Enter
+vkEB & p::Send, {Blind}{BS}
 vkEB & [::Send, {Blind}{BS}
+vkEB & ]::Send, {Blind}{BS}
 vkEB & `;::Send, {Blind}{ENTER}
 vkEB  & '::Send, {Blind}{ENTER}
-vkEB & ]::Send, {Blind}{BS}
+vkFF & p::Send, {Blind}{BS}
 vkFF & [::Send, {Blind}{BS}
+vkFF & ]::Send, {Blind}{BS}
 vkFF & `;::Send, {Blind}{ENTER}
 vkFF & '::Send, {Blind}{ENTER}
-vkFF & ]::Send, {Blind}{BS}
 
 ;Ctrl+c
 vkEB & s::Send, {Blind}^s
@@ -75,8 +77,7 @@ vkEB & >::send, ^+{Tab}
 vkFF & >::send, ^+{Tab}
 vkEB & /::send, ^{Tab}
 vkFF & /::Send, ^{Tab}
-Ctrl & WheelUp::Send, {Blind}^{Tab}
-Ctrl & WheelDown::Send, {Blind}^+{Tab}
+
 
 ;“ú–{Œê“ü—ÍØ‘Ö
 vkEB & vkFF::Send, {vk19}
