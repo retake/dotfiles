@@ -1,71 +1,104 @@
+# プラグイン管理
 [[plugins]]
 repo = 'Shougo/dein.vim'
 
+# ファイルツリー表示
 [[plugins]]
 repo = 'scrooloose/nerdtree'
 
+# Rails内のシームレスな移動、Railsコマンド実行
 [[plugins]]
 repo = 'tpope/vim-rails'
 
+# 文字色変更
 [[plugins]]
 repo = 'chriskempson/vim-tomorrow-theme'
 
+# 末尾の無駄なスペースをハイライト、削除
 [[plugins]]
 repo = 'bronson/vim-trailing-whitespace'
 
+# j,kの移動速度アップ
 [[plugins]]
 repo = 'rhysd/accelerated-jk'
 
+# インデントの可視化
 [[plugins]]
 repo = 'nathanaelkane/vim-indent-guides'
 
+# rubyのシンタックスハイライト
 [[plugins]]
 repo = 'joker1007/vim-ruby-heredoc-syntax'
 
+# git操作
 [[plugins]]
 repo = "tpope/vim-fugitive"
 
+# タブのサイズ変更
 [[plugins]]
 repo = "simeji/winresizer"
 
+# ファジーファインダ
 [[plugins]]
 repo = 'ctrlpvim/ctrlp.vim'
 
+# シンタックスチェッカー
 [[plugins]]
 repo = 'scrooloose/syntastic'
 
+
+# LSPプラグイン
 [[plugins]]
 repo = 'prabirshrestha/vim-lsp'
 
-[[plugins]]
-repo = 'prabirshrestha/async.vim'
-
-[[plugins]]
-repo = 'prabirshrestha/asyncomplete.vim'
-
-[[plugins]]
-repo = 'prabirshrestha/asyncomplete-lsp.vim'
-
+# LSP自動インストールプラグイン
 [[plugins]]
 repo = 'mattn/vim-lsp-settings'
 
+# vim-lsp-settingsで必要だった？今は必要ないっぽい？
+[[plugins]]
+repo = 'prabirshrestha/async.vim'
+
+# コード補完？
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete.vim'
+
+# コード補完？
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete-lsp.vim'
+
+# 良くわからない
 [[plugins]]
 repo = 'tpope/vim-bundler'
 
+# 非同期実行？
 [[plugins]]
 repo = 'tpope/vim-dispatch'
 
+# rubocop実行
 [[plugins]]
 repo = 'ngmy/vim-rubocop'
 
+# マークダウンのプレビュー
 [[plugins]]
 repo = 'skanehira/preview-markdown.vim'
 
+# 差分表示
 [[plugins]]
 repo = 'airblade/vim-gitgutter'
 
+# nerdtree上での差分表示
 [[plugins]]
 repo = 'Xuyuanp/nerdtree-git-plugin'
 
+# タブの同期
 [[plugins]]
 repo = 'jistr/vim-nerdtree-tabs'
+
+# カッコの一括変換
+[[plugins]]
+repo = 'tpope/vim-surround'
+
+# .で繰り返しが出来ない場合でも繰り返し可能にする
+[[plugins]]
+repo = 'tpope/vim-repeat'
