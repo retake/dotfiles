@@ -89,4 +89,3 @@ set expandtab
 set tabstop=2
 
 runtime! config/init/**
-runtime! config/plugins/**
