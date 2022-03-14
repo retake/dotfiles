@@ -20,6 +20,8 @@ syntax enable
 
 " 色設定
 colorscheme desert
+hi LineNr ctermbg=darkgray ctermfg=darkblue
+hi CursorLineNr ctermbg=black ctermfg=darkgray
 hi comment ctermfg=lightblue
 set cursorline
 
