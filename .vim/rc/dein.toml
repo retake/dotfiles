@@ -61,3 +61,11 @@ repo = 'ngmy/vim-rubocop'
 [[plugins]]
 repo = 'skanehira/preview-markdown.vim'
 
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+
+[[plugins]]
+repo = 'Xuyuanp/nerdtree-git-plugin'
+
+[[plugins]]
+repo = 'jistr/vim-nerdtree-tabs'
