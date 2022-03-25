@@ -222,7 +222,7 @@ repo = 'prabirshrestha/asyncomplete-lsp.vim'
 [[plugins]]
 repo = 'tpope/vim-bundler'
 
-# 非同期実行？
+# 非同期実行
 [[plugins]]
 repo = 'tpope/vim-dispatch'
 
@@ -279,3 +279,27 @@ repo = 'vim-airline/vim-airline-themes'
 [[plugins]]
 repo = 'cespare/vim-toml'
 
+# vim上でrspecを実行
+[[plugins]]
+repo = 'thoughtbot/vim-rspec'
+hook_add = '''
+  let g:rspec_command = "Dispatch docker-compose run operator_web bundle exec rspec {spec}"
+  map <Leader>t :call RunCurrentSpecFile()<CR>
+  map <Leader>r :call RunNearestSpec()<CR>
+  function! SpecResultInit() abort
+    hi Failures ctermfg=red
+    syn match Failures 'Failures:'
+    hi Expected ctermfg=green
+    syn match Expected 'expected'
+    hi Got ctermfg=red
+    syn match Got 'got'
+    hi Failed ctermfg=red
+    syn match Failed 'FAILED'
+    hi FailedList ctermfg=red
+    syn match FailedList 'rspec.*'
+  endfunction
+  augroup vim-rspec
+    autocmd!
+    autocmd FileType qf call SpecResultInit()
+  augroup END
+'''
