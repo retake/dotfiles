@@ -4,6 +4,9 @@ set fileencoding=utf8
 set fileencodings=utf8
 set fileformat=unix
 
+" ファイルタイプ識別
+set filetype=on
+
 " beep音を消す
 set belloff=all
 
@@ -20,7 +23,7 @@ syntax enable
 
 " 色設定
 colorscheme desert
-hi LineNr ctermbg=darkgray ctermfg=darkblue
+hi LineNr ctermbg=234 ctermfg=238
 hi CursorLineNr ctermbg=black ctermfg=darkgray
 hi comment ctermfg=lightblue
 set cursorline
