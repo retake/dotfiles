@@ -2,13 +2,99 @@
 [[plugins]]
 repo = 'Shougo/dein.vim'
 
-# ファイルツリー表示
+## ファイルツリー表示。Fernが使えそうなので凍結
+#[[plugins]]
+#repo = 'preservim/nerdtree'
+#hook_add = '''
+#  let NERDTreeShowHidden=1
+#  nnoremap <silent> <Leader>n :NERDTreeToggle<CR>
+#'''
+#
+## nerdtreeにアイコンを表示
+#[[plugins]]
+#repo = 'ryanoasis/vim-devicons'
+
+# fernの設定
 [[plugins]]
-repo = 'scrooloose/nerdtree'
+repo = 'lambdalisue/fern.vim'
+hook_add = '''
+  let g:fern#default_hidden=1
+  let g:fern#disable_default_mappings=1
+  nnoremap <silent> <Leader>n :Fern . -reveal=% -drawer -toggle -width=30<CR>
+  function! FernInit() abort
+    set norelativenumber
+    set nonumber
+    set signcolumn=no
+    nmap <buffer> o <Plug>(fern-action-open-or-expand)
+    nmap <buffer> go <Plug>(fern-action-open:edit)<C-w>p
+    nmap <buffer> t <Plug>(fern-action-open:tabedit)
+    nmap <buffer> T <Plug>(fern-action-open:tabedit)gT
+    nmap <buffer> i <Plug>(fern-action-open:split)
+    nmap <buffer> gi <Plug>(fern-action-open:split)<C-w>p
+    nmap <buffer> s <Plug>(fern-action-open:vsplit)
+    nmap <buffer> gs <Plug>(fern-action-open:vsplit)<C-w>p
+    nmap <buffer> ma <Plug>(fern-action-new-path)
+
+    nmap <buffer> <backspace> <Plug>(fern-action-leave)
+    nmap <buffer> <cr> <Plug>(fern-action-enter)
+  endfunction
+  augroup fern
+    autocmd!
+    autocmd FileType fern call FernInit()
+  augroup END
+'''
+
+# fernにgitの差分を表示
+[[plugins]]
+repo = 'lambdalisue/fern-git-status.vim'
+
+# fernにpreviewを表示
+[[plugins]]
+repo = 'yuki-yano/fern-preview.vim'
+hook_add = '''
+  function! s:fern_settings() abort
+    nmap <silent> <buffer> p     <Plug>(fern-action-preview:auto:toggle)
+    nmap <silent> <buffer> <C-p> <Plug>(fern-action-preview:toggle)
+    nmap <silent> <buffer> <C-d> <Plug>(fern-action-preview:scroll:down:half)
+    nmap <silent> <buffer> <C-u> <Plug>(fern-action-preview:scroll:up:half)
+    nmap <silent> <buffer> <expr> <Plug>(fern-quit-or-close-preview) fern_preview#smart_preview("\<Plug>(fern-action-preview:close)", ":q\<CR>")
+    nmap <silent> <buffer> q <Plug>(fern-quit-or-close-preview)
+
+  endfunction
+
+  augroup fern-settings
+    autocmd!
+    autocmd FileType fern call s:fern_settings()
+  augroup END
+'''
+
+[[plugins]]
+repo = 'lambdalisue/fern-renderer-nerdfont.vim'
+hook_add = 'let g:fern#renderer = "nerdfont"'
+
+# fernアイコン表示
+[[plugins]]
+repo = 'lambdalisue/nerdfont.vim'
+
+# アイコンの配色を変更
+[[plugins]]
+repo = 'lambdalisue/glyph-palette.vim'
+hook_add = '''
+  augroup my-glyph-palette
+    autocmd! *
+    autocmd FileType nerdtree,startify call glyph_palette#apply()
+    autocmd FileType fern call glyph_palette#apply()
+  augroup END
+'''
+
+# スタート画面の追加
+[[plugins]]
+repo = 'mhinz/vim-startify'
 
 # Rails内のシームレスな移動、Railsコマンド実行
 [[plugins]]
 repo = 'tpope/vim-rails'
+hook_add = 'nmap <buffer> <Leader>gf :bo sfind <Plug><cfile><CR>'
 
 # 文字色変更
 [[plugins]]
@@ -21,10 +107,27 @@ repo = 'bronson/vim-trailing-whitespace'
 # j,kの移動速度アップ
 [[plugins]]
 repo = 'rhysd/accelerated-jk'
+hook_add = '''
+  nmap j <Plug>(accelerated_jk_gj)
+  nmap k <Plug>(accelerated_jk_gk)
+'''
 
 # インデントの可視化
 [[plugins]]
 repo = 'nathanaelkane/vim-indent-guides'
+hook_add ='''
+  nnoremap <Leader>in :IndentGuidesToggle<CR>
+
+  let g:indent_guides_enable_on_vim_startup = 1
+
+  let g:indent_guides_start_level = 2
+  let g:indent_guides_guide_size = 1
+
+  let g:indent_guides_auto_colors = 0
+
+  hi IndentGuidesOdd ctermbg=234
+  hi IndentGuidesEven ctermbg=233
+'''
 
 # rubyのシンタックスハイライト
 [[plugins]]
@@ -37,19 +140,67 @@ repo = "tpope/vim-fugitive"
 # タブのサイズ変更
 [[plugins]]
 repo = "simeji/winresizer"
+hook_add = 'nmap <silent> <Leader>e <C-e>'
 
 # ファジーファインダ
 [[plugins]]
 repo = 'ctrlpvim/ctrlp.vim'
+hook_add = '''
+  let g:ctrlp_map = '<Nop>'
+  nmap <silent> <Leader><Leader>f :CtrlP<CR>
+  nnoremap <silent> <Leader>tag :CtrlPTag<CR>
+  if executable('ag')
+    let g:ctrlp_use_caching=0
+    let g:ctrlp_max_depth=100
+    let g:ctrlp_max_files=100000
+    let g:ctrlp_user_command='ag %s --depth -1 -g ""'
+  endif
+'''
+
+# ファジーファインダ（any-jumpの設定だけ）
+#[[plugins]]
+#repo = ?
+#hook_add = '''
+#
+#  let g:any_jump_disable_default_keybindings = 1
+#  nnoremap <silent> <Leader>f :AnyJump<CR>
+#  xnoremap <silent> <Leader>f :AnyJumpVisual<CR>
+#  nnoremap <silent> <leader>lf :AnyJumpLastResults<CR>
+#
+#  let g:any_jump_grouping_enabled = 1
+#
+#  let g:any_jump_search_prefered_engine = 'ag'
+#'''
 
 # シンタックスチェッカー
 [[plugins]]
 repo = 'scrooloose/syntastic'
+hook_add ='''
+  let g:syntastic_check_on_open = 0
+  let g:syntastic_check_on_wq = 0
+  let g:syntastic_mode_map = { 'mode': 'passive', 'passive_filetypes': ['ruby'] }
+  let g:syntastic_ruby_checkers = ['rubocop']
 
+  nnoremap <Leader>ru :w<CR>:SyntasticCheck<CR>
+'''
 
 # LSPプラグイン
 [[plugins]]
 repo = 'prabirshrestha/vim-lsp'
+hook_add = '''
+  nmap <silent> <Leader>t :LspDefinition<CR>
+  nmap <silent> <Leader>r :LspReferences<CR>
+  nmap <silent> <Leader>i :LspImplementation<CR>
+
+  let g:lsp_diagnostics_enabled = 0
+  "let g:lsp_diagnostics_echo_cursor = 1
+  "let g:asyncomplete_auto_popup = 1
+  "let g:asyncomplete_auto_completeopt = 0
+  "let g:asyncomplete_popup_delay = 300
+  "let g:lsp_text_edit_enabled = 1
+
+  let g:lsp_log_verbose = 0
+'''
 
 # LSP自動インストールプラグイン
 [[plugins]]
@@ -80,12 +231,25 @@ repo = 'tpope/vim-dispatch'
 repo = 'ngmy/vim-rubocop'
 
 # マークダウンのプレビュー
+# コマンド例:PreviewMarkdown right
 [[plugins]]
 repo = 'skanehira/preview-markdown.vim'
+hook_add = '''
+  let g:preview_markdown_parser="mdcat"
+  let g:preview_markdown_auto_update=1
+'''
 
 # 差分表示
 [[plugins]]
 repo = 'airblade/vim-gitgutter'
+hook_add = '''
+  nnoremap gh :GitGutterLineHighlightsToggle<CR>
+  nnoremap gp :GitGutterPreviewHunk<CR>
+  set updatetime=250
+  highlight GitGutterAdd ctermfg=green
+  highlight GitGutterChange ctermfg=blue
+  highlight GitGutterDelete ctermfg=red
+'''
 
 # nerdtree上での差分表示
 [[plugins]]
@@ -102,3 +266,16 @@ repo = 'tpope/vim-surround'
 # .で繰り返しが出来ない場合でも繰り返し可能にする
 [[plugins]]
 repo = 'tpope/vim-repeat'
+
+# ステータスバー拡張
+[[plugins]]
+repo = 'vim-airline/vim-airline'
+hook_add = 'let g:airline#extensions#tabline#enabled = 1'
+
+[[plugins]]
+repo = 'vim-airline/vim-airline-themes'
+
+# tomlのsyntax
+[[plugins]]
+repo = 'cespare/vim-toml'
+
