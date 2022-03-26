@@ -2,18 +2,6 @@
 [[plugins]]
 repo = 'Shougo/dein.vim'
 
-## ファイルツリー表示。Fernが使えそうなので凍結
-#[[plugins]]
-#repo = 'preservim/nerdtree'
-#hook_add = '''
-#  let NERDTreeShowHidden=1
-#  nnoremap <silent> <Leader>n :NERDTreeToggle<CR>
-#'''
-#
-## nerdtreeにアイコンを表示
-#[[plugins]]
-#repo = 'ryanoasis/vim-devicons'
-
 # fernの設定
 [[plugins]]
 repo = 'lambdalisue/fern.vim'
@@ -158,19 +146,18 @@ hook_add = '''
 '''
 
 # ファジーファインダ（any-jumpの設定だけ）
-#[[plugins]]
-#repo = ?
-#hook_add = '''
-#
-#  let g:any_jump_disable_default_keybindings = 1
-#  nnoremap <silent> <Leader>f :AnyJump<CR>
-#  xnoremap <silent> <Leader>f :AnyJumpVisual<CR>
-#  nnoremap <silent> <leader>lf :AnyJumpLastResults<CR>
-#
-#  let g:any_jump_grouping_enabled = 1
-#
-#  let g:any_jump_search_prefered_engine = 'ag'
-#'''
+[[plugins]]
+repo = 'pechorin/any-jump.vim'
+hook_add = '''
+  let g:any_jump_disable_default_keybindings = 1
+  nnoremap <silent> <Leader>f :AnyJump<CR>
+  xnoremap <silent> <Leader>f :AnyJumpVisual<CR>
+  nnoremap <silent> <leader>lf :AnyJumpLastResults<CR>
+
+  let g:any_jump_grouping_enabled = 1
+
+  let g:any_jump_search_prefered_engine = 'ag'
+'''
 
 # シンタックスチェッカー
 [[plugins]]

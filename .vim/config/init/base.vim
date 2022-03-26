@@ -1,6 +1,3 @@
-let g:any_jump_disable_default_keybindings = 1
-nnoremap <Leader>f :AnyJump<CR>
-
 " pathの設定（デフォルトで入って居るべきパスが何故か入って居ないため、手動で現在のパスを追加）
 set path=$PWD/**
 "set path+=$PWD/**
@@ -21,9 +18,6 @@ nnoremap <silent> <Leader>w :w<CR>
 nnoremap <silent> <Leader>q :q<CR>
 
 nnoremap <silent> <Leader>v <C-v>
-
-" ツリーのトグル
-nnoremap <silent> <Leader>n :NERDTreeToggle<CR>
 
 " キーバインド
 "nmap <silent> <Leader><Leader>c <C-c>
@@ -49,9 +43,6 @@ nmap <silent> <Leader><Leader>m zM
 nmap <silent> <Leader>r zr
 nmap <silent> <Leader><Leader>r zR
 
-" 高速移動
-nmap j <Plug>(accelerated_jk_gj)
-nmap k <Plug>(accelerated_jk_gk)
 
 " インクリメント/デクリメント
 nnoremap = <C-a>
