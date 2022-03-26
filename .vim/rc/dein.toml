@@ -13,18 +13,25 @@ hook_add = '''
     set norelativenumber
     set nonumber
     set signcolumn=no
-    nmap <buffer> o <Plug>(fern-action-open-or-expand)
-    nmap <buffer> go <Plug>(fern-action-open:edit)<C-w>p
-    nmap <buffer> t <Plug>(fern-action-open:tabedit)
-    nmap <buffer> T <Plug>(fern-action-open:tabedit)gT
+   	nmap <buffer><expr>
+	    \ <Plug>(fern-my-open-or-expand-or-collapse)
+	    \ fern#smart#leaf(
+	    \   "<Plug>(fern-action-open)",
+	    \   "<Plug>(fern-action-expand)",
+	    \   "<Plug>(fern-action-collapse)",
+	    \ )
+    nmap <buffer> o <Plug>(fern-my-open-or-expand-or-collapse)
+    nmap <buffer> <cr> <Plug>(fern-my-open-or-expand-or-collapse)
+    "nmap <buffer> go <Plug>(fern-action-open:edit)<C-w>p
+    "nmap <buffer> t <Plug>(fern-action-open:tabedit)
+    "nmap <buffer> T <Plug>(fern-action-open:tabedit)gT
     nmap <buffer> i <Plug>(fern-action-open:split)
-    nmap <buffer> gi <Plug>(fern-action-open:split)<C-w>p
+    "nmap <buffer> gi <Plug>(fern-action-open:split)<C-w>p
     nmap <buffer> s <Plug>(fern-action-open:vsplit)
-    nmap <buffer> gs <Plug>(fern-action-open:vsplit)<C-w>p
-    nmap <buffer> ma <Plug>(fern-action-new-path)
+    "nmap <buffer> gs <Plug>(fern-action-open:vsplit)<C-w>p
+    "nmap <buffer> ma <Plug>(fern-action-new-path)
 
     nmap <buffer> <backspace> <Plug>(fern-action-leave)
-    nmap <buffer> <cr> <Plug>(fern-action-enter)
   endfunction
   augroup fern
     autocmd!
@@ -43,8 +50,8 @@ hook_add = '''
   function! s:fern_settings() abort
     nmap <silent> <buffer> p     <Plug>(fern-action-preview:auto:toggle)
     nmap <silent> <buffer> <C-p> <Plug>(fern-action-preview:toggle)
-    nmap <silent> <buffer> <C-d> <Plug>(fern-action-preview:scroll:down:half)
-    nmap <silent> <buffer> <C-u> <Plug>(fern-action-preview:scroll:up:half)
+    nmap <silent> <buffer> <Leader>j <Plug>(fern-action-preview:scroll:down:half)
+    nmap <silent> <buffer> <Leader>k <Plug>(fern-action-preview:scroll:up:half)
     nmap <silent> <buffer> <expr> <Plug>(fern-quit-or-close-preview) fern_preview#smart_preview("\<Plug>(fern-action-preview:close)", ":q\<CR>")
     nmap <silent> <buffer> q <Plug>(fern-quit-or-close-preview)
 
