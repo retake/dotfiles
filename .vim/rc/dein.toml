@@ -239,10 +239,12 @@ repo = 'airblade/vim-gitgutter'
 hook_add = '''
   nnoremap gh :GitGutterLineHighlightsToggle<CR>
   nnoremap gp :GitGutterPreviewHunk<CR>
-  set updatetime=250
+  nnoremap gq :pclose<CR>
+  set updatetime=100
   highlight GitGutterAdd ctermfg=green
   highlight GitGutterChange ctermfg=blue
   highlight GitGutterDelete ctermfg=red
+  let g:gitgutter_map_keys = 0
 '''
 
 # nerdtree上での差分表示
