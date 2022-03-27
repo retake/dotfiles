@@ -20,16 +20,10 @@ hook_add = '''
 	    \   "<Plug>(fern-action-expand)",
 	    \   "<Plug>(fern-action-collapse)",
 	    \ )
-    nmap <buffer> o <Plug>(fern-my-open-or-expand-or-collapse)
-    nmap <buffer> <cr> <Plug>(fern-my-open-or-expand-or-collapse)
-    "nmap <buffer> go <Plug>(fern-action-open:edit)<C-w>p
-    "nmap <buffer> t <Plug>(fern-action-open:tabedit)
-    "nmap <buffer> T <Plug>(fern-action-open:tabedit)gT
-    nmap <buffer> i <Plug>(fern-action-open:split)
-    "nmap <buffer> gi <Plug>(fern-action-open:split)<C-w>p
-    nmap <buffer> s <Plug>(fern-action-open:vsplit)
-    "nmap <buffer> gs <Plug>(fern-action-open:vsplit)<C-w>p
-    "nmap <buffer> ma <Plug>(fern-action-new-path)
+    nmap <silent> <buffer> o <Plug>(fern-my-open-or-expand-or-collapse)
+    nmap <silent> <buffer> <cr> <Plug>(fern-my-open-or-expand-or-collapse)
+    nmap <silent> <buffer> i <Plug>(fern-action-open:split)
+    nmap <silent> <buffer> s <Plug>(fern-action-open:vsplit)
 
     nmap <buffer> <backspace> <Plug>(fern-action-leave)
   endfunction
@@ -182,9 +176,9 @@ hook_add ='''
 [[plugins]]
 repo = 'prabirshrestha/vim-lsp'
 hook_add = '''
-  nmap <silent> <Leader>t :LspDefinition<CR>
-  nmap <silent> <Leader>r :LspReferences<CR>
-  nmap <silent> <Leader>i :LspImplementation<CR>
+  nmap <silent> <Leader>de :LspDefinition<CR>
+  nmap <silent> <Leader>re :LspReferences<CR>
+  nmap <silent> <Leader>im :LspImplementation<CR>
 
   let g:lsp_diagnostics_enabled = 0
   "let g:lsp_diagnostics_echo_cursor = 1
@@ -276,18 +270,17 @@ repo = 'vim-airline/vim-airline-themes'
 repo = 'cespare/vim-toml'
 
 # vim上でrspecを実行
-# FileTypeでのスコープ制限が上手く動いていない気がする…
 [[plugins]]
 repo = 'thoughtbot/vim-rspec'
 hook_add = '''
-  au BufRead,BufNewFile *_spec.rb set filetype=rspec
+  autocmd BufRead,BufNewFile *_spec.rb set filetype=rspec
 
-  function! SpecBufferInit() abort
+  function SpecBufferInit() abort
     let g:rspec_command = "Dispatch docker-compose run operator_web bundle exec rspec {spec}"
-    map <Leader>r :call RunNearestSpec()<CR>
+    nmap <silent> <Leader>t :call RunNearestSpec()<CR>
   endfunction
 
-  function! SpecResultInit() abort
+  function SpecResultInit() abort
     hi Failures ctermfg=red
     syn match Failures 'Failures:'
     hi Expected ctermfg=green

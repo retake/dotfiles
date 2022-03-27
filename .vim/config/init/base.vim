@@ -35,15 +35,13 @@ nmap <silent> <Leader>k <C-w>k
 nmap <silent> <Leader>l <C-w>l
 
 " 折りたたみ関連
-nmap <silent> <Leader>c zc
-nmap <silent> <Leader>o zo
-nmap <silent> <Leader><Leader>o zO
-nmap <silent> <Leader>m zm
-nmap <silent> <Leader><Leader>m zM
-nmap <silent> <Leader>r zr
-nmap <silent> <Leader><Leader>r zR
+nmap <silent> <Leader><Leader>o zR
+nmap <silent> <Leader><Leader>c zM
 
 
 " インクリメント/デクリメント
 nnoremap = <C-a>
 nnoremap - <C-x>
+
+" quickfixを閉じる
+nmap <silent> <Leader>c :cclose<CR>
