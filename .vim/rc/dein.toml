@@ -25,7 +25,7 @@ hook_add = '''
     nmap <silent> <buffer> i <Plug>(fern-action-open:split)
     nmap <silent> <buffer> s <Plug>(fern-action-open:vsplit)
 
-    nmap <buffer> <backspace> <Plug>(fern-action-leave)
+    nmap <silent> <buffer> <backspace> <Plug>(fern-action-leave)
   endfunction
   augroup fern
     autocmd!
@@ -43,9 +43,8 @@ repo = 'yuki-yano/fern-preview.vim'
 hook_add = '''
   function! s:fern_settings() abort
     nmap <silent> <buffer> p     <Plug>(fern-action-preview:auto:toggle)
-    nmap <silent> <buffer> <C-p> <Plug>(fern-action-preview:toggle)
-    nmap <silent> <buffer> <Leader>j <Plug>(fern-action-preview:scroll:down:half)
-    nmap <silent> <buffer> <Leader>k <Plug>(fern-action-preview:scroll:up:half)
+    nmap <silent> <buffer> n <Plug>(fern-action-preview:scroll:down:half)
+    nmap <silent> <buffer> u <Plug>(fern-action-preview:scroll:up:half)
     nmap <silent> <buffer> <expr> <Plug>(fern-quit-or-close-preview) fern_preview#smart_preview("\<Plug>(fern-action-preview:close)", ":q\<CR>")
     nmap <silent> <buffer> q <Plug>(fern-quit-or-close-preview)
 
@@ -105,7 +104,7 @@ hook_add = '''
 [[plugins]]
 repo = 'nathanaelkane/vim-indent-guides'
 hook_add ='''
-  nnoremap <Leader>in :IndentGuidesToggle<CR>
+  nnoremap <Leader>in <Plug>IndentGuidesToggle
 
   let g:indent_guides_enable_on_vim_startup = 1
 
@@ -176,18 +175,23 @@ hook_add ='''
 [[plugins]]
 repo = 'prabirshrestha/vim-lsp'
 hook_add = '''
-  nmap <silent> <Leader>de :LspDefinition<CR>
-  nmap <silent> <Leader>re :LspReferences<CR>
-  nmap <silent> <Leader>im :LspImplementation<CR>
+  nmap <silent> <Leader>def <Plug>(lsp-definition)
+  nmap <silent> <Leader>ref <Plug>(lsp-references)
+  nmap <silent> <Leader>imp <Plug>(lsp-implementation)
 
-  let g:lsp_diagnostics_enabled = 0
-  "let g:lsp_diagnostics_echo_cursor = 1
-  "let g:asyncomplete_auto_popup = 1
-  "let g:asyncomplete_auto_completeopt = 0
-  "let g:asyncomplete_popup_delay = 300
-  "let g:lsp_text_edit_enabled = 1
+  nmap <silent> <Leader>sym <Plug>(lsp-document-symbol)
+  nmap <silent> <Leader>wsym <Plug>(lsp-document-symbol)
+  nmap <silent> <Leader>ren <Plug>(lsp-rename)
 
-  let g:lsp_log_verbose = 0
+  let g:lsp_completion_documentation_delay = 100
+  let g:lsp_diagnostics_echo_cursor = 1
+  let g:lsp_diagnostics_echo_delay = 100
+  let g:lsp_text_edit_enabled = 1
+  let g:lsp_log_file = expand('~/tmp/vim-lsp.log')
+  let g:lsp_log_verbose = 1
+  let g:lsp_semantic_enabled = 1
+
+
 '''
 
 # LSP自動インストールプラグイン
@@ -201,6 +205,11 @@ repo = 'prabirshrestha/async.vim'
 # コード補完？
 [[plugins]]
 repo = 'prabirshrestha/asyncomplete.vim'
+hook_add = '''
+  "let g:asyncomplete_auto_popup = 1
+  "let g:asyncomplete_auto_completeopt = 0
+  let g:asyncomplete_popup_delay = 0
+'''
 
 # コード補完？
 [[plugins]]
@@ -231,9 +240,9 @@ hook_add = '''
 [[plugins]]
 repo = 'airblade/vim-gitgutter'
 hook_add = '''
-  nnoremap gh :GitGutterLineHighlightsToggle<CR>
-  nnoremap gp :GitGutterPreviewHunk<CR>
-  nnoremap gq :pclose<CR>
+  nnoremap <silent> <Leader>gh :GitGutterLineHighlightsToggle<CR>
+  nnoremap <silent> <Leader>gp :GitGutterPreviewHunk<CR>
+  nnoremap <silent> <Leader>gq :pclose<CR>
   set updatetime=100
   highlight GitGutterAdd ctermfg=green
   highlight GitGutterChange ctermfg=blue
@@ -273,14 +282,10 @@ repo = 'cespare/vim-toml'
 [[plugins]]
 repo = 'thoughtbot/vim-rspec'
 hook_add = '''
-  autocmd BufRead,BufNewFile *_spec.rb set filetype=rspec
+  let g:rspec_command = "Dispatch docker-compose run operator_web bundle exec rspec {spec}"
+  nmap <silent> <Leader>test :call RunNearestSpec()<CR>
 
-  function SpecBufferInit() abort
-    let g:rspec_command = "Dispatch docker-compose run operator_web bundle exec rspec {spec}"
-    nmap <silent> <Leader>t :call RunNearestSpec()<CR>
-  endfunction
-
-  function SpecResultInit() abort
+  function! SpecResultInit() abort
     hi Failures ctermfg=red
     syn match Failures 'Failures:'
     hi Expected ctermfg=green
@@ -295,7 +300,6 @@ hook_add = '''
 
   augroup vim-rspec
     autocmd!
-    autocmd FileType rspec call SpecBufferInit()
     autocmd FileType qf call SpecResultInit()
   augroup END
 '''
