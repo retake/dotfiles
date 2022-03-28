@@ -1,4 +1,4 @@
-" ファイル設定
+"Gファイル設定
 set encoding=utf-8
 set fileencoding=utf8
 set fileencodings=utf8
@@ -92,5 +92,10 @@ set expandtab
 
 " タブが占める幅
 set tabstop=2
+
+" ctagsの検索範囲
+set tags=./tags;,tags;
+nmap tag <C-]>
+nmap tagback <C-T>
 
 runtime! config/init/**
