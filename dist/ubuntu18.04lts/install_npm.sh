@@ -6,3 +6,5 @@ sudo npm install -g n -y
 sudo n stable -y
 sudo apt purge nodejs npm -y
 exec $SHELL -l
+
+curl -fsSL https://deno.land/install.sh | sudo DENO_INSTALL=/usr/local sh
