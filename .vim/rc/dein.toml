@@ -188,7 +188,7 @@ hook_add = '''
   let g:lsp_diagnostics_echo_delay = 100
   let g:lsp_text_edit_enabled = 1
   let g:lsp_log_file = expand('~/tmp/vim-lsp.log')
-  let g:lsp_log_verbose = 1
+  let g:lsp_log_verbose = 0
   let g:lsp_semantic_enabled = 1
 '''
 
@@ -196,22 +196,24 @@ hook_add = '''
 [[plugins]]
 repo = 'mattn/vim-lsp-settings'
 
-# vim-lsp-settingsで必要だった？今は必要ないっぽい？
-[[plugins]]
-repo = 'prabirshrestha/async.vim'
-
-# コード補完？
-[[plugins]]
-repo = 'prabirshrestha/asyncomplete.vim'
-hook_add = '''
-  let g:asyncomplete_popup_delay = 0
-  let g:asyncomplete_auto_completeopt = 0
-  set completeopt=menuone,noinsert
-'''
-
-# コード補完？
-[[plugins]]
-repo = 'prabirshrestha/asyncomplete-lsp.vim'
+## vim-lsp-settingsで必要だった？今は必要ないっぽい？
+#[[plugins]]
+#repo = 'prabirshrestha/async.vim'
+#
+## コード補完？
+#[[plugins]]
+#repo = 'prabirshrestha/asyncomplete.vim'
+#hook_add = '''
+#  let g:asyncomplete_popup_delay = 0
+#  let g:asyncomplete_auto_completeopt = 0
+#  set completeopt=menuone,noinsert
+#  imap <Tab> <Down>
+#'''
+#
+#
+## コード補完？
+#[[plugins]]
+#repo = 'prabirshrestha/asyncomplete-lsp.vim'
 
 # 良くわからない
 [[plugins]]
@@ -327,4 +329,58 @@ hook_add = '''
 # ヤンク位置をハイライト
 [[plugins]]
 repo = 'machakann/vim-highlightedyank'
+
+# deno
+[[plugins]]
+repo = 'vim-denops/denops.vim'
+
+
+# 補完
+[[plugins]]
+repo = 'Shougo/ddc.vim'
+hook_add = '''
+  "set completeopt=menuone,noinsert
+	inoremap <silent><expr> <TAB>
+	  \ ddc#map#pum_visible() ? '<C-n>' :
+	  \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
+	  \ '<TAB>' : ddc#map#manual_complete()
+	inoremap <expr><S-TAB>  ddc#map#pum_visible() ? '<C-p>' : '<C-h>'
+  "call ddc#custom#patch_global('completionMenu', 'pum.vim')
+  call ddc#custom#patch_global('sources', ['around', 'nextword', 'vim-lsp'])
+  call ddc#custom#patch_global('sourceOptions', {
+        \ '_': {
+        \   'matchers': ['matcher_head'],
+        \   'sorters': ['sorter_rank']},
+        \ 'around': {'mark': '周辺'},
+        \ 'nextword': {'mark': 'NextWord'},
+        \ 'vim-lsp': {
+        \   'mark': 'LSP',
+        \   'forceCompletionPattern': '\.|:|->|"\w+/*',
+        \ },
+        \ })
+  call ddc#enable()
+'''
+
+# 補完用のsource,filter
+[[plugins]]
+repo = 'Shougo/ddc-around'
+
+[[plugins]]
+repo = 'Shougo/ddc-matcher_head'
+
+[[plugins]]
+repo = 'Shougo/ddc-sorter_rank'
+
+[[plugins]]
+repo = 'Shougo/ddc-nextword'
+
+# 標準外のpopup
+[[plugins]]
+repo = 'Shougo/pum.vim'
+
+# ddcとvim-lspの橋渡し
+[[plugins]]
+repo = 'shun/ddc-vim-lsp'
+
+
 
