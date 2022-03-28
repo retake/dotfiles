@@ -42,7 +42,7 @@ repo = 'lambdalisue/fern-git-status.vim'
 repo = 'yuki-yano/fern-preview.vim'
 hook_add = '''
   function! s:fern_settings() abort
-    nmap <silent> <buffer> p     <Plug>(fern-action-preview:auto:toggle)
+    nmap <silent> <buffer> p <Plug>(fern-action-preview:auto:toggle)
     nmap <silent> <buffer> n <Plug>(fern-action-preview:scroll:down:half)
     nmap <silent> <buffer> u <Plug>(fern-action-preview:scroll:up:half)
     nmap <silent> <buffer> <expr> <Plug>(fern-quit-or-close-preview) fern_preview#smart_preview("\<Plug>(fern-action-preview:close)", ":q\<CR>")
@@ -204,9 +204,9 @@ repo = 'prabirshrestha/async.vim'
 [[plugins]]
 repo = 'prabirshrestha/asyncomplete.vim'
 hook_add = '''
-  "let g:asyncomplete_auto_popup = 1
-  "let g:asyncomplete_auto_completeopt = 0
   let g:asyncomplete_popup_delay = 0
+  let g:asyncomplete_auto_completeopt = 0
+  set completeopt=menuone,noinsert
 '''
 
 # コード補完？
@@ -301,3 +301,30 @@ hook_add = '''
     autocmd FileType qf call SpecResultInit()
   augroup END
 '''
+
+# vimヘルプの日本語化
+[[plugins]]
+repo = 'vim-jp/vimdoc-ja'
+hook_add = 'set helplang=ja'
+
+# 置換結果のプレビュー
+[[plugins]]
+repo = 'markonm/traces.vim'
+
+# 翻訳
+[[plugins]]
+repo = 'skanehira/translate.vim'
+hook_add = '''
+  let g:translate_source = "en"
+  let g:translate_target = "ja"
+  let g:translate_popup_window = 1 " if you want use popup window, set value 1
+  let g:translate_winsize = 10 " set buffer window height size if you doesn't use popup window
+
+  nmap <Leader>tr <Plug>(Translate)
+  vmap <Leader>tr <Plug>(VTranslate)
+'''
+
+# ヤンク位置をハイライト
+[[plugins]]
+repo = 'machakann/vim-highlightedyank'
+
