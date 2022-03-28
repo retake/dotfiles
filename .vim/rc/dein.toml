@@ -130,7 +130,7 @@ repo = "tpope/vim-fugitive"
 repo = "simeji/winresizer"
 hook_add = 'nmap <silent> <Leader>e <C-e>'
 
-# ファジーファインダ
+# ファジーファインダ(ctrlp)
 [[plugins]]
 repo = 'ctrlpvim/ctrlp.vim'
 hook_add = '''
@@ -145,7 +145,7 @@ hook_add = '''
   endif
 '''
 
-# ファジーファインダ（any-jumpの設定だけ）
+# ファジーファインダ（any-jump）
 [[plugins]]
 repo = 'pechorin/any-jump.vim'
 hook_add = '''
@@ -180,7 +180,7 @@ hook_add = '''
   nmap <silent> <Leader>imp <Plug>(lsp-implementation)
 
   nmap <silent> <Leader>sym <Plug>(lsp-document-symbol)
-  nmap <silent> <Leader>wsym <Plug>(lsp-document-symbol)
+  nmap <silent> <Leader>wsym <Plug>(lsp-workspace-symbol)
   nmap <silent> <Leader>ren <Plug>(lsp-rename)
 
   let g:lsp_completion_documentation_delay = 100
@@ -190,8 +190,6 @@ hook_add = '''
   let g:lsp_log_file = expand('~/tmp/vim-lsp.log')
   let g:lsp_log_verbose = 1
   let g:lsp_semantic_enabled = 1
-
-
 '''
 
 # LSP自動インストールプラグイン

@@ -1,4 +1,4 @@
-" Gァイル設定
+" ファイル設定
 set encoding=utf-8
 set fileencoding=utf8
 set fileencodings=utf8

@@ -35,7 +35,7 @@ nmap <silent> <Leader>k <C-w>k
 nmap <silent> <Leader>l <C-w>l
 
 " 折りたたみ関連
-nmap <silent> <Leader><Leader>o zR
+nmap <silent> <Leader><Leader>r zR
 nmap <silent> <Leader><Leader>c zM
 
 
