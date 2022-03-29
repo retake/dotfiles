@@ -49,4 +49,5 @@ nnoremap <silent> <Leader>c :cclose<CR>
 " ターミナルモードのマッピング
 "set termkey=<C-l> " 何故か動かない
 tnoremap jj <C-\><C-n>
+nnoremap <Leader>term :bo terminal ++close /bin/bash --login<CR>
 
