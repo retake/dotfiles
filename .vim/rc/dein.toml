@@ -346,17 +346,17 @@ hook_add = '''
 	  \ '<TAB>' : ddc#map#manual_complete()
 	inoremap <expr><S-TAB>  ddc#map#pum_visible() ? '<C-p>' : '<C-h>'
   "call ddc#custom#patch_global('completionMenu', 'pum.vim')
-  call ddc#custom#patch_global('sources', ['around', 'nextword', 'vim-lsp'])
+  call ddc#custom#patch_global('sources', ['vim-lsp', 'around', 'nextword'])
   call ddc#custom#patch_global('sourceOptions', {
         \ '_': {
         \   'matchers': ['matcher_head'],
         \   'sorters': ['sorter_rank']},
-        \ 'around': {'mark': '周辺'},
-        \ 'nextword': {'mark': 'NextWord'},
         \ 'vim-lsp': {
         \   'mark': 'LSP',
         \   'forceCompletionPattern': '\.|:|->|"\w+/*',
         \ },
+        \ 'around': {'mark': '周辺'},
+        \ 'nextword': {'mark': 'NextWord'},
         \ })
   call ddc#enable()
 '''
@@ -381,3 +381,7 @@ repo = 'Shougo/pum.vim'
 # ddcとvim-lspの橋渡し
 [[plugins]]
 repo = 'shun/ddc-vim-lsp'
+
+# ddcの候補の重複防止
+[[plugins]]
+repo = 'Shougo/ddc-converter_remove_overlap'
