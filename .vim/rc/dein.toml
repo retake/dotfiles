@@ -349,6 +349,7 @@ hook_add = '''
 	  \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
 	  \ '<TAB>' : ddc#map#manual_complete()
 	inoremap <expr><S-TAB>  ddc#map#pum_visible() ? '<C-p>' : '<C-h>'
+  inoremap <expr><CR>  pumvisible() ? "<C-y>" : "<CR>"
   "call ddc#custom#patch_global('completionMenu', 'pum.vim')
   call ddc#custom#patch_global('sources', ['vim-lsp', 'around', 'nextword'])
   call ddc#custom#patch_global('sourceOptions', {
