@@ -104,7 +104,7 @@ hook_add = '''
 [[plugins]]
 repo = 'nathanaelkane/vim-indent-guides'
 hook_add ='''
-  nnoremap <Leader>in <Plug>IndentGuidesToggle
+  nmap <Leader>in <Plug>IndentGuidesToggle
 
   let g:indent_guides_enable_on_vim_startup = 1
 
@@ -381,6 +381,3 @@ repo = 'Shougo/pum.vim'
 # ddcとvim-lspの橋渡し
 [[plugins]]
 repo = 'shun/ddc-vim-lsp'
-
-
-
