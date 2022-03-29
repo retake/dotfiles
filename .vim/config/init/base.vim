@@ -41,7 +41,12 @@ nmap <silent> <Leader><Leader>c zM
 
 " インクリメント/デクリメント
 nnoremap = <C-a>
-nnoremap - <C-x>
+nnoremap = <C-x>
 
 " quickfixを閉じる
 nmap <silent> <Leader>c :cclose<CR>
+
+" ターミナルモードのマッピング
+"set termkey=<C-l> " 何故か動かない
+tnoremap jj <C-\><C-n>
+
