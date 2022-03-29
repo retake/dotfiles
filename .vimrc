@@ -98,7 +98,4 @@ set tags=./tags;,tags;
 nmap tag <C-]>
 nmap tagback <C-T>
 
-" terminalコマンドの設定
-let &shell='/bin/bash --login'
-
 runtime! config/init/**
