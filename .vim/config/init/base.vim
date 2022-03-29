@@ -29,14 +29,14 @@ noremap <C-k> <Up>
 noremap <C-l> <Right>
 
 " ウィンドウの移動
-nmap <silent> <Leader>h <C-w>h
-nmap <silent> <Leader>j <C-w>j
-nmap <silent> <Leader>k <C-w>k
-nmap <silent> <Leader>l <C-w>l
+nnoremap <silent> <Leader>h <C-w>h
+nnoremap <silent> <Leader>j <C-w>j
+nnoremap <silent> <Leader>k <C-w>k
+nnoremap <silent> <Leader>l <C-w>l
 
 " 折りたたみ関連
-nmap <silent> <Leader><Leader>r zR
-nmap <silent> <Leader><Leader>c zM
+nnoremap <silent> <Leader><Leader>r zR
+nnoremap <silent> <Leader><Leader>c zM
 
 
 " インクリメント/デクリメント
@@ -44,7 +44,7 @@ nnoremap = <C-a>
 nnoremap = <C-x>
 
 " quickfixを閉じる
-nmap <silent> <Leader>c :cclose<CR>
+nnoremap <silent> <Leader>c :cclose<CR>
 
 " ターミナルモードのマッピング
 "set termkey=<C-l> " 何故か動かない
