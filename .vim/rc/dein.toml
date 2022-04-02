@@ -36,7 +36,7 @@ hook_add = '''
 # fernにgitの差分を表示
 [[plugins]]
 repo = 'lambdalisue/fern-git-status.vim'
-on_source = 'lambdalisue/fern.vim'
+depends = ['lambdalisue/fern.vim']
 
 # fernにpreviewを表示
 [[plugins]]
@@ -56,12 +56,12 @@ hook_add = '''
     autocmd FileType fern call s:fern_settings()
   augroup END
 '''
-on_source = 'lambdalisue/fern.vim'
+depends = ['lambdalisue/fern.vim']
 
 [[plugins]]
 repo = 'lambdalisue/fern-renderer-nerdfont.vim'
 hook_add = 'let g:fern#renderer = "nerdfont"'
-on_source = 'lambdalisue/fern.vim'
+depends = ['lambdalisue/fern.vim']
 
 # fernアイコン表示
 [[plugins]]
@@ -198,25 +198,33 @@ hook_add = '''
 # LSP自動インストールプラグイン
 [[plugins]]
 repo = 'mattn/vim-lsp-settings'
+hook_add = '''
+  if executable('solargraph')
+    au User lsp_setup call lsp#register_server({
+      \ 'name': 'solargraph',
+      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph stdio']},
+      \ 'initialization_options': {"diagnostics": "true"},
+      \ 'whitelist': ['ruby'],
+      \ })
+  endif
+'''
 
-## vim-lsp-settingsで必要だった？今は必要ないっぽい？
-#[[plugins]]
-#repo = 'prabirshrestha/async.vim'
-#
-## コード補完？
-#[[plugins]]
-#repo = 'prabirshrestha/asyncomplete.vim'
-#hook_add = '''
-#  let g:asyncomplete_popup_delay = 0
-#  let g:asyncomplete_auto_completeopt = 0
-#  set completeopt=menuone,noinsert
-#  imap <Tab> <Down>
-#'''
-#
-#
-## コード補完？
-#[[plugins]]
-#repo = 'prabirshrestha/asyncomplete-lsp.vim'
+# vim-lsp-settingsで必要だった？今は必要ないっぽい？
+[[plugins]]
+repo = 'prabirshrestha/async.vim'
+
+# コード補完
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete.vim'
+hook_add = '''
+  let g:asyncomplete_popup_delay = 0
+  let g:asyncomplete_auto_completeopt = 0
+  set completeopt=menuone,noinsert
+  imap <Tab> <Down>
+'''
+
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete-lsp.vim'
 
 # 良くわからない
 [[plugins]]
@@ -333,66 +341,61 @@ hook_add = '''
 [[plugins]]
 repo = 'machakann/vim-highlightedyank'
 
-# deno
-[[plugins]]
-repo = 'vim-denops/denops.vim'
+# ddc.vimを使った補間コーナー。イマイチ上手く動かないので封印。
 
-# 補完
-[[plugins]]
-repo = 'Shougo/ddc.vim'
-on_source = 'vim-denops/denops.vim'
-
-hook_add = '''
-  "set completeopt=menuone,noinsert
-	inoremap <silent><expr> <TAB>
-	  \ ddc#map#pum_visible() ? '<C-n>' :
-	  \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
-	  \ '<TAB>' : ddc#map#manual_complete()
-	inoremap <expr><S-TAB>  ddc#map#pum_visible() ? '<C-p>' : '<C-h>'
-  inoremap <expr><CR>  pumvisible() ? "<C-y>" : "<CR>"
-  "call ddc#custom#patch_global('completionMenu', 'pum.vim')
-  call ddc#custom#patch_global('sources', ['vim-lsp', 'around', 'nextword'])
-  call ddc#custom#patch_global('sourceOptions', {
-        \ '_': {
-        \   'matchers': ['matcher_head'],
-        \   'sorters': ['sorter_rank']},
-        \ 'vim-lsp': {
-        \   'mark': 'LSP',
-        \   'forceCompletionPattern': '\.|:|->|"\w+/*',
-        \ },
-        \ 'around': {'mark': '周辺'},
-        \ 'nextword': {'mark': 'NextWord'},
-        \ })
-  call ddc#enable()
-'''
-
-# 補完用のsource,filter
-[[plugins]]
-repo = 'Shougo/ddc-around'
-on_source = 'Shougo/ddc.vim'
-
-[[plugins]]
-repo = 'Shougo/ddc-matcher_head'
-on_source = 'Shougo/ddc.vim'
-
-[[plugins]]
-repo = 'Shougo/ddc-sorter_rank'
-on_source = 'Shougo/ddc.vim'
-
-[[plugins]]
-repo = 'Shougo/ddc-nextword'
-on_source = 'Shougo/ddc.vim'
-
-# 標準外のpopup
-[[plugins]]
-repo = 'Shougo/pum.vim'
-
-# ddcとvim-lspの橋渡し
-[[plugins]]
-repo = 'shun/ddc-vim-lsp'
-on_source = 'Shougo/ddc.vim'
-
-# ddcの候補の重複防止
-[[plugins]]
-repo = 'Shougo/ddc-converter_remove_overlap'
-on_source = 'Shougo/ddc.vim'
+## deno
+#[[plugins]]
+#repo = 'vim-denops/denops.vim'
+#
+## 補完
+#[[plugins]]
+#repo = 'Shougo/ddc.vim'
+#hook_add = '''
+#  "set completeopt=menuone,noinsert
+#	inoremap <silent><expr> <TAB>
+#	  \ ddc#map#pum_visible() ? '<C-n>' :
+#	  \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
+#	  \ '<TAB>' : ddc#map#manual_complete()
+#	inoremap <expr><S-TAB>  ddc#map#pum_visible() ? '<C-p>' : '<C-h>'
+#  inoremap <expr><CR>  pumvisible() ? "<C-y>" : "<CR>"
+#  call ddc#custom#patch_global('completionMenu', 'pum.vim')
+#  "call ddc#custom#patch_global('sources', ['vim-lsp', 'around', 'nextword'])
+#  call ddc#custom#patch_global('sources', ['vim-lsp', 'around'])
+#  call ddc#custom#patch_global('sourceOptions', {
+#        \ '_': {
+#        \   'matchers': ['matcher_head'],
+#        \   'sorters': ['sorter_rank']},
+#        \ 'vim-lsp': {
+#        \   'mark': 'LSP',
+#        \   'forceCompletionPattern': '\.|:|->|"\w+/*',
+#        \ },
+#        \ 'around': {'mark': '周辺'},
+#        \ })
+#  call ddc#enable()
+#'''
+#
+## 補完用のsource,filter
+#[[plugins]]
+#repo = 'Shougo/ddc-around'
+#
+#[[plugins]]
+#repo = 'Shougo/ddc-matcher_head'
+#
+#[[plugins]]
+#repo = 'Shougo/ddc-sorter_rank'
+#
+##[[plugins]]
+##repo = 'Shougo/ddc-nextword'
+##depends = ['Shougo/ddc.vim']
+#
+## 標準外のpopup
+#[[plugins]]
+#repo = 'Shougo/pum.vim'
+#
+## ddcとvim-lspの橋渡し
+#[[plugins]]
+#repo = 'shun/ddc-vim-lsp'
+#
+## ddcの候補の重複防止
+#[[plugins]]
+#repo = 'Shougo/ddc-converter_remove_overlap'
