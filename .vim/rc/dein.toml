@@ -120,9 +120,37 @@ hook_add ='''
   hi IndentGuidesEven ctermbg=233
 '''
 
-# rubyのシンタックスハイライト
+# シンタックスチェック
+[[plugins]]
+repo = 'dense-analysis/ale'
+hook_add = '''
+  let g:ale_lint_on_enter = 0
+  let g:ale_linters = {
+  \   'ruby': ['rubocop'],
+  \}
+  let g:ale_linters_explicit = 1
+  let g:airline#extensions#ale#enabled = 1
+'''
+
+## シンタックスチェッカー
+#[[plugins]]
+#repo = 'scrooloose/syntastic'
+#hook_add ='''
+#  let g:syntastic_check_on_open = 0
+#  let g:syntastic_check_on_wq = 0
+#  let g:syntastic_mode_map = { 'mode': 'passive', 'passive_filetypes': ['ruby'] }
+#  let g:syntastic_ruby_checkers = ['rubocop']
+#
+#  nnoremap <Leader>ru :w<CR>:SyntasticCheck<CR>
+#'''
+
+# rubyのヒアドキュメントシンタックスハイライト
 [[plugins]]
 repo = 'joker1007/vim-ruby-heredoc-syntax'
+
+# tomlのsyntax
+[[plugins]]
+repo = 'cespare/vim-toml'
 
 # git操作
 [[plugins]]
@@ -160,18 +188,6 @@ hook_add = '''
   let g:any_jump_grouping_enabled = 1
 
   let g:any_jump_search_prefered_engine = 'ag'
-'''
-
-# シンタックスチェッカー
-[[plugins]]
-repo = 'scrooloose/syntastic'
-hook_add ='''
-  let g:syntastic_check_on_open = 0
-  let g:syntastic_check_on_wq = 0
-  let g:syntastic_mode_map = { 'mode': 'passive', 'passive_filetypes': ['ruby'] }
-  let g:syntastic_ruby_checkers = ['rubocop']
-
-  nnoremap <Leader>ru :w<CR>:SyntasticCheck<CR>
 '''
 
 # LSPプラグイン
@@ -297,10 +313,6 @@ hook_add = 'let g:airline#extensions#tabline#enabled = 1'
 
 [[plugins]]
 repo = 'vim-airline/vim-airline-themes'
-
-# tomlのsyntax
-[[plugins]]
-repo = 'cespare/vim-toml'
 
 # vim上でrspecを実行
 [[plugins]]
