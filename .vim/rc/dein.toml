@@ -320,8 +320,17 @@ repo = 'vim-airline/vim-airline-themes'
 [[plugins]]
 repo = 'thoughtbot/vim-rspec'
 hook_add = '''
-  let g:rspec_command = "Dispatch docker-compose run operator_web bundle exec rspec {spec}"
-  nmap <silent> <Leader>test :call RunNearestSpec()<CR>
+  " Dcoker-composeでのテスト用定義
+  function! RunNearestSpecCustom() abort
+    let absolute_path = expand("%:p")
+    let relation_path = absolute_path[stridx(absolute_path, "spec/"):]
+    echo relation_path
+    let g:rspec_command = "Dispatch docker-compose run operator_web bundle exec rspec " . relation_path . ":" . line(".")
+    " 行数まで自力で指定しているので、RunNearestSpec()を使う必要は無いが、他に合っている関数も無いので、仕方なく使っている。
+    call RunNearestSpec()
+  endfunction
+
+  nmap <silent> <Leader>test :call RunNearestSpecCustom()<CR>
 
   function! SpecResultInit() abort
     hi Failures ctermfg=red
