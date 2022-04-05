@@ -199,12 +199,8 @@ hook_add = '''
   let g:lsp_semantic_enabled = 1
   let g:lsp_diagnostics_virtual_text_enabled = 1
   let g:lsp_diagnostics_signs_enabled = 1
-'''
 
-# LSP自動インストールプラグイン
-[[plugins]]
-repo = 'mattn/vim-lsp-settings'
-hook_add = '''
+  " vim-lsp-settings で、typeprofと競合して上手く動いてくれないので、手動設定をしている
   if executable('solargraph')
     au User lsp_setup call lsp#register_server({
       \ 'name': 'solargraph',
@@ -214,6 +210,20 @@ hook_add = '''
       \ })
   endif
 '''
+
+# LSP自動インストールプラグイン
+[[plugins]]
+repo = 'mattn/vim-lsp-settings'
+#hook_add = '''
+#  if executable('solargraph')
+#    au User lsp_setup call lsp#register_server({
+#      \ 'name': 'solargraph',
+#      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph stdio']},
+#      \ 'initialization_options': {"diagnostics": "true"},
+#      \ 'whitelist': ['ruby'],
+#      \ })
+#  endif
+#'''
 
 # vim-lsp-settingsで必要だった？今は必要ないっぽい？
 [[plugins]]
@@ -228,22 +238,23 @@ hook_add = '''
   set completeopt=menuone,noinsert
   inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
   inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+  inoremap <expr> <CR>  pumvisible() ? "\<C-y>" : "\<CR>"
 '''
 
 [[plugins]]
 repo = 'prabirshrestha/asyncomplete-lsp.vim'
 
-[[plugins]]
-repo = 'akaimo/asyncomplete-around.vim'
-hook_add = '''
-  call asyncomplete#register_source(asyncomplete#sources#around#get_source_options({
-      \ 'name': 'around',
-      \ 'allowlist': ['*'],
-      \ 'priority': 20,
-      \ 'completor': function('asyncomplete#sources#around#completor'),
-      \ }))
-  let g:asyncomplete_around_range = 50
-'''
+#[[plugins]]
+#repo = 'akaimo/asyncomplete-around.vim'
+#hook_add = '''
+#  call asyncomplete#register_source(asyncomplete#sources#around#get_source_options({
+#      \ 'name': 'around',
+#      \ 'allowlist': ['*'],
+#      \ 'priority': 20,
+#      \ 'completor': function('asyncomplete#sources#around#completor'),
+#      \ }))
+#  let g:asyncomplete_around_range = 50
+#'''
 
 # 良くわからない
 [[plugins]]
