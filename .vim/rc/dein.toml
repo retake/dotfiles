@@ -244,17 +244,17 @@ hook_add = '''
 [[plugins]]
 repo = 'prabirshrestha/asyncomplete-lsp.vim'
 
-#[[plugins]]
-#repo = 'akaimo/asyncomplete-around.vim'
-#hook_add = '''
-#  call asyncomplete#register_source(asyncomplete#sources#around#get_source_options({
-#      \ 'name': 'around',
-#      \ 'allowlist': ['*'],
-#      \ 'priority': 20,
-#      \ 'completor': function('asyncomplete#sources#around#completor'),
-#      \ }))
-#  let g:asyncomplete_around_range = 50
-#'''
+[[plugins]]
+repo = 'akaimo/asyncomplete-around.vim'
+hook_add = '''
+  call asyncomplete#register_source(asyncomplete#sources#around#get_source_options({
+      \ 'name': 'around',
+      \ 'allowlist': ['*'],
+      \ 'priority': 20,
+      \ 'completor': function('asyncomplete#sources#around#completor'),
+      \ }))
+  let g:asyncomplete_around_range = 50
+'''
 
 # 良くわからない
 [[plugins]]
