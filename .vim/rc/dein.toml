@@ -132,18 +132,6 @@ hook_add = '''
   let g:airline#extensions#ale#enabled = 1
 '''
 
-## シンタックスチェッカー
-#[[plugins]]
-#repo = 'scrooloose/syntastic'
-#hook_add ='''
-#  let g:syntastic_check_on_open = 0
-#  let g:syntastic_check_on_wq = 0
-#  let g:syntastic_mode_map = { 'mode': 'passive', 'passive_filetypes': ['ruby'] }
-#  let g:syntastic_ruby_checkers = ['rubocop']
-#
-#  nnoremap <Leader>ru :w<CR>:SyntasticCheck<CR>
-#'''
-
 # rubyのヒアドキュメントシンタックスハイライト
 [[plugins]]
 repo = 'joker1007/vim-ruby-heredoc-syntax'
@@ -291,14 +279,6 @@ hook_add = '''
   highlight GitGutterDelete ctermfg=red
   let g:gitgutter_map_keys = 0
 '''
-
-## nerdtree上での差分表示
-#[[plugins]]
-#repo = 'Xuyuanp/nerdtree-git-plugin'
-#
-## タブの同期
-#[[plugins]]
-##repo = 'jistr/vim-nerdtree-tabs'
 
 # カッコの一括変換
 [[plugins]]
