@@ -78,6 +78,18 @@ hook_add = '''
   augroup END
 '''
 
+# 便利なんだけど、vim-railsで関連ファイルにジャンプすると競合してしまう
+## 構造を表示
+#[[plugins]]
+#repo = 'preservim/tagbar'
+#hook_add = '''
+#  nmap <Leader>m :TagbarToggle<CR>
+#'''
+
+# カーソル行のメソッド名をステータスバーに表示
+[[plugins]]
+repo = 'tyru/current-func-info.vim'
+
 # スタート画面の追加
 [[plugins]]
 repo = 'mhinz/vim-startify'
@@ -144,6 +156,16 @@ repo = 'cespare/vim-toml'
 [[plugins]]
 repo = "tpope/vim-fugitive"
 
+# blame操作
+[[plugins]]
+repo = "APZelos/blamer.nvim"
+hook_add = """
+  let g:blamer_enabled = 1
+  let g:blamer_delay = 50
+  let g:blamer_date_format = '%Y/%m/%d %H:%M'
+  hi Blamer ctermfg=darkgray
+"""
+
 # タブのサイズ変更
 [[plugins]]
 repo = "simeji/winresizer"
@@ -200,7 +222,21 @@ hook_add = '''
   let g:lsp_diagnostics_virtual_text_enabled = 1
   let g:lsp_diagnostics_signs_enabled = 1
 
-  " vim-lsp-settings で、typeprofと競合して上手く動いてくれないので、手動設定をしている
+  "" vim-lsp-settings で、typeprofと競合して上手く動いてくれないので、手動設定をしている
+  "if executable('solargraph')
+  "  au User lsp_setup call lsp#register_server({
+  "    \ 'name': 'solargraph',
+  "    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph stdio']},
+  "    \ 'initialization_options': {"diagnostics": "true"},
+  "    \ 'whitelist': ['ruby'],
+  "    \ })
+  "endif
+'''
+
+# LSP自動インストールプラグイン
+[[plugins]]
+repo = 'mattn/vim-lsp-settings'
+hook_add = '''
   if executable('solargraph')
     au User lsp_setup call lsp#register_server({
       \ 'name': 'solargraph',
@@ -211,23 +247,9 @@ hook_add = '''
   endif
 '''
 
-# LSP自動インストールプラグイン
-[[plugins]]
-repo = 'mattn/vim-lsp-settings'
-#hook_add = '''
-#  if executable('solargraph')
-#    au User lsp_setup call lsp#register_server({
-#      \ 'name': 'solargraph',
-#      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph stdio']},
-#      \ 'initialization_options': {"diagnostics": "true"},
-#      \ 'whitelist': ['ruby'],
-#      \ })
-#  endif
-#'''
-
-# vim-lsp-settingsで必要だった？今は必要ないっぽい？
-[[plugins]]
-repo = 'prabirshrestha/async.vim'
+## vim-lsp-settingsで必要だった？今は必要ないっぽい？
+#[[plugins]]
+#repo = 'prabirshrestha/async.vim'
 
 # コード補完
 [[plugins]]
@@ -333,8 +355,8 @@ hook_add = '''
 [[plugins]]
 repo = 'machakann/vim-highlightedyank'
 
-# ddc.vimを使った補間コーナー。イマイチ上手く動かないので封印。
-
+## ddc.vimを使った補間コーナー。イマイチ上手く動かないので封印。
+#
 ## deno
 #[[plugins]]
 #repo = 'vim-denops/denops.vim'
@@ -343,14 +365,18 @@ repo = 'machakann/vim-highlightedyank'
 #[[plugins]]
 #repo = 'Shougo/ddc.vim'
 #hook_add = '''
-#  "set completeopt=menuone,noinsert
+#  set completeopt=menuone,noinsert
 #	inoremap <silent><expr> <TAB>
 #	  \ ddc#map#pum_visible() ? '<C-n>' :
 #	  \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
 #	  \ '<TAB>' : ddc#map#manual_complete()
 #	inoremap <expr><S-TAB>  ddc#map#pum_visible() ? '<C-p>' : '<C-h>'
-#  inoremap <expr><CR>  pumvisible() ? "<C-y>" : "<CR>"
-#  call ddc#custom#patch_global('completionMenu', 'pum.vim')
+#  inoremap <expr> <CR>  pumvisible() ? "\<C-y>" : "\<CR>"
+#
+#  "inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+#  "inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+#  "inoremap <expr> <CR>  pumvisible() ? "\<C-y>" : "\<CR>"
+#  "call ddc#custom#patch_global('completionMenu', 'pum.vim')
 #  "call ddc#custom#patch_global('sources', ['vim-lsp', 'around', 'nextword'])
 #  call ddc#custom#patch_global('sources', ['vim-lsp', 'around'])
 #  call ddc#custom#patch_global('sourceOptions', {
@@ -380,9 +406,9 @@ repo = 'machakann/vim-highlightedyank'
 ##repo = 'Shougo/ddc-nextword'
 ##depends = ['Shougo/ddc.vim']
 #
-## 標準外のpopup
-#[[plugins]]
-#repo = 'Shougo/pum.vim'
+### 標準外のpopup
+##[[plugins]]
+##repo = 'Shougo/pum.vim'
 #
 ## ddcとvim-lspの橋渡し
 #[[plugins]]

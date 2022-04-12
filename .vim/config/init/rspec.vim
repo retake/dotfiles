@@ -2,7 +2,9 @@
   function! RunLineSpec() abort
     let absolute_path = expand("%:p")
     let relation_path = absolute_path[stridx(absolute_path, "spec/"):]
-    let rspec_cmd = 'docker-compose run operator_web bundle exec rspec ' . relation_path . ':' . line(".")
+    let rspec_cmd = 'docker-compose run operator_web bundle exec rspec -f documentation ' . relation_path . ':' . line(".")
+    "let rspec_cmd = 'docker compose run operator_web bundle exec rspec --format progress --require /app/quickfix_formatter.rb --format QuickfixFormatter --out quickfix.out spec'
+    "let rspec_cmd = 'docker compose run operator_web bundle exec rspec --format progress --require /app/quickfix_formatter.rb --format QuickfixFormatter --out quickfix.out '. relation_path . ":" . line(".")
     execute 'Dispatch' rspec_cmd
   endfunction
 
