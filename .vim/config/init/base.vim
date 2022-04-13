@@ -51,3 +51,6 @@ nnoremap <silent> <Leader>c :cclose<CR>
 tnoremap jj <C-\><C-n>
 nnoremap <Leader>term :bo terminal ++close /bin/bash --login<CR>
 
+" インデントの自動修正
+nmap <silent> <leader>in vv=
+

@@ -119,7 +119,8 @@ hook_add = '''
 [[plugins]]
 repo = 'nathanaelkane/vim-indent-guides'
 hook_add ='''
-  nmap <Leader>in <Plug>IndentGuidesToggle
+  " インデントの自動修正と重複するので
+  "nmap <Leader>in <Plug>IndentGuidesToggle
 
   let g:indent_guides_enable_on_vim_startup = 1
 
