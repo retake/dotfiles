@@ -54,3 +54,6 @@ nnoremap <Leader>term :bo terminal ++close /bin/bash --login<CR>
 " インデントの自動修正
 nmap <silent> <leader>in vv=
 
+
+" ファイルを開く際に分割にする
+nmap <silent> gf <C-w>f
