@@ -161,8 +161,8 @@ repo = "tpope/vim-fugitive"
 [[plugins]]
 repo = "APZelos/blamer.nvim"
 hook_add = """
-  let g:blamer_enabled = 1
-  let g:blamer_delay = 50
+  let g:blamer_enabled = 0
+  let g:blamer_delay = 100
   let g:blamer_show_in_insert_modes = 0
   let g:blamer_date_format = '%Y/%m/%d %H:%M'
   hi Blamer ctermfg=darkgray
@@ -260,7 +260,8 @@ repo = 'prabirshrestha/asyncomplete.vim'
 hook_add = '''
   let g:asyncomplete_popup_delay = 0
   let g:asyncomplete_auto_completeopt = 0
-  set completeopt=menuone,noinsert
+  "set completeopt=menuone,noinsert
+  set completeopt=noinsert
   inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
   inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
   inoremap <expr> <CR>  pumvisible() ? "\<C-y>" : "\<CR>"
