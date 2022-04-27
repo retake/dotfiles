@@ -32,3 +32,5 @@
     autocmd FileType qf call SpecResultInit()
   augroup END
 
+
+nmap <silent><Leader>tc :vert term rspec_parser.sh %:p<CR>
