@@ -38,25 +38,25 @@ hook_add = '''
 repo = 'lambdalisue/fern-git-status.vim'
 depends = ['lambdalisue/fern.vim']
 
-# fernにpreviewを表示
-[[plugins]]
-repo = 'yuki-yano/fern-preview.vim'
-hook_add = '''
-  function! s:fern_settings() abort
-    nmap <silent> <buffer> p <Plug>(fern-action-preview:auto:toggle)
-    nmap <silent> <buffer> l <Plug>(fern-action-preview:scroll:down:half)
-    nmap <silent> <buffer> h <Plug>(fern-action-preview:scroll:up:half)
-    nmap <silent> <buffer> <expr> <Plug>(fern-quit-or-close-preview) fern_preview#smart_preview("\<Plug>(fern-action-preview:close)", ":q\<CR>")
-    nmap <silent> <buffer> q <Plug>(fern-quit-or-close-preview)
-
-  endfunction
-
-  augroup fern-settings
-    autocmd!
-    autocmd FileType fern call s:fern_settings()
-  augroup END
-'''
-depends = ['lambdalisue/fern.vim']
+## fernにpreviewを表示
+#[[plugins]]
+#repo = 'yuki-yano/fern-preview.vim'
+#hook_add = '''
+#  function! s:fern_settings() abort
+#    nmap <silent> <buffer> p <Plug>(fern-action-preview:auto:toggle)
+#    nmap <silent> <buffer> l <Plug>(fern-action-preview:scroll:down:half)
+#    nmap <silent> <buffer> h <Plug>(fern-action-preview:scroll:up:half)
+#    nmap <silent> <buffer> <expr> <Plug>(fern-quit-or-close-preview) fern_preview#smart_preview("\<Plug>(fern-action-preview:close)", ":q\<CR>")
+#    nmap <silent> <buffer> q <Plug>(fern-quit-or-close-preview)
+#
+#  endfunction
+#
+#  augroup fern-settings
+#    autocmd!
+#    autocmd FileType fern call s:fern_settings()
+#  augroup END
+#'''
+#depends = ['lambdalisue/fern.vim']
 
 [[plugins]]
 repo = 'lambdalisue/fern-renderer-nerdfont.vim'
@@ -86,9 +86,9 @@ hook_add = '''
 #  nmap <Leader>m :TagbarToggle<CR>
 #'''
 
-# カーソル行のメソッド名をステータスバーに表示
-[[plugins]]
-repo = 'tyru/current-func-info.vim'
+## カーソル行のメソッド名をステータスバーに表示
+#[[plugins]]
+#repo = 'tyru/current-func-info.vim'
 
 # スタート画面の追加
 [[plugins]]
@@ -157,17 +157,17 @@ repo = 'cespare/vim-toml'
 [[plugins]]
 repo = "tpope/vim-fugitive"
 
-# blame操作
-[[plugins]]
-repo = "APZelos/blamer.nvim"
-hook_add = """
-  let g:blamer_enabled = 0
-  let g:blamer_delay = 100
-  let g:blamer_show_in_insert_modes = 0
-  let g:blamer_date_format = '%Y/%m/%d %H:%M'
-  hi Blamer ctermfg=darkgray
-  nmap <silent> <Leader>b :BlamerToggle<CR>
-"""
+## blame操作
+#[[plugins]]
+#repo = "APZelos/blamer.nvim"
+#hook_add = """
+#  let g:blamer_enabled = 0
+#  let g:blamer_delay = 100
+#  let g:blamer_show_in_insert_modes = 0
+#  let g:blamer_date_format = '%Y/%m/%d %H:%M'
+#  hi Blamer ctermfg=darkgray
+#  nmap <silent> <Leader>b :BlamerToggle<CR>
+#"""
 
 # タブのサイズ変更
 [[plugins]]
@@ -224,16 +224,6 @@ hook_add = '''
   let g:lsp_semantic_enabled = 1
   let g:lsp_diagnostics_virtual_text_enabled = 1
   let g:lsp_diagnostics_signs_enabled = 1
-
-  "" vim-lsp-settings で、typeprofと競合して上手く動いてくれないので、手動設定をしている
-  "if executable('solargraph')
-  "  au User lsp_setup call lsp#register_server({
-  "    \ 'name': 'solargraph',
-  "    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph stdio']},
-  "    \ 'initialization_options': {"diagnostics": "true"},
-  "    \ 'whitelist': ['ruby'],
-  "    \ })
-  "endif
 '''
 
 # LSP自動インストールプラグイン
@@ -250,16 +240,12 @@ hook_add = '''
   endif
 '''
 
-## vim-lsp-settingsで必要だった？今は必要ないっぽい？
-#[[plugins]]
-#repo = 'prabirshrestha/async.vim'
-
 # コード補完
 [[plugins]]
 repo = 'prabirshrestha/asyncomplete.vim'
 hook_add = '''
   let g:asyncomplete_popup_delay = 0
-  let g:asyncomplete_auto_completeopt = 0
+"  let g:asyncomplete_auto_completeopt = 0
   "set completeopt=menuone,noinsert
   set completeopt=noinsert
   inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -282,9 +268,9 @@ hook_add = '''
   let g:asyncomplete_around_range = 50
 '''
 
-# 良くわからない
-[[plugins]]
-repo = 'tpope/vim-bundler'
+## 良くわからない
+#[[plugins]]
+#repo = 'tpope/vim-bundler'
 
 # 非同期実行
 [[plugins]]
@@ -317,13 +303,13 @@ hook_add = '''
   let g:gitgutter_map_keys = 0
 '''
 
-# カッコの一括変換
-[[plugins]]
-repo = 'tpope/vim-surround'
-
-# .で繰り返しが出来ない場合でも繰り返し可能にする
-[[plugins]]
-repo = 'tpope/vim-repeat'
+## カッコの一括変換
+#[[plugins]]
+#repo = 'tpope/vim-surround'
+#
+## .で繰り返しが出来ない場合でも繰り返し可能にする
+#[[plugins]]
+#repo = 'tpope/vim-repeat'
 
 # ステータスバー拡張
 [[plugins]]
