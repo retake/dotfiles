@@ -35,9 +35,12 @@ nnoremap <silent> <Leader>k <C-w>k
 nnoremap <silent> <Leader>l <C-w>l
 
 " 折りたたみ関連
-nnoremap <silent> <Leader><Leader>r zR
-nnoremap <silent> <Leader><Leader>c zM
+set foldlevel=1
 
+nnoremap <silent> <CR> zo
+nnoremap <silent> <Leader><CR> zc
+nnoremap <silent> <Leader>r zR
+nnoremap <silent> <Leader><Leader>r zM
 
 " インクリメント/デクリメント
 nnoremap = <C-a>
