@@ -153,6 +153,15 @@ repo = 'joker1007/vim-ruby-heredoc-syntax'
 [[plugins]]
 repo = 'cespare/vim-toml'
 
+# coffee-scriptのsyntax
+[[plugins]]
+repo = 'kchmck/vim-coffee-script'
+
+# まだちゃんと動いていない？
+# # rspecのカレント取得
+# [[plucins]]
+# repo = 'okuramasafumi/rspec-current'
+
 # git操作
 [[plugins]]
 repo = "tpope/vim-fugitive"
@@ -168,6 +177,10 @@ repo = "tpope/vim-fugitive"
 #  hi Blamer ctermfg=darkgray
 #  nmap <silent> <Leader>b :BlamerToggle<CR>
 #"""
+
+# scala
+[[plugins]]
+repo = "derekwyatt/vim-scala"
 
 # タブのサイズ変更
 [[plugins]]
