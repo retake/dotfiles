@@ -51,3 +51,6 @@ if ~/.rbenv/bin/rbenv --version > /dev/null 2>&1; then
 fi
 
 cd ~
+export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:~/go/bin
+

@@ -9,3 +9,5 @@ export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 
 export GITHUB_AUTH_KEY="API_KEYを入れる"
 export GITHUB_ORG_NAME="組織名を入れる"
+
+export CHATGPT_API_KEY="chatGPTのAPI_KEYを入れる"
