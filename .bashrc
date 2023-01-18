@@ -35,7 +35,7 @@ if git --version > /dev/null 2>&1; then
   alias gbr="git branch --all"
   alias gf="git fetch"
   alias gpu="git pull"
-  alias glogone='git log --pretty=oneline'
+  alias glogone='git log --pretty=oneline --graph'
   alias grebase='git rebase'
 fi
 
