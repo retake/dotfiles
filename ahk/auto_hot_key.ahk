@@ -83,3 +83,8 @@ vkFF & /::Send, ^{Tab}
 vkEB & vkFF::Send, {vk19}
 vkFF & vkEB::Send, {vk19}
 
+
+;やりたい事、案
+;日本語キーボードでの日本語切り替えショートカット作成
+
+
