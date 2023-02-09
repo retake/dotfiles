@@ -60,3 +60,10 @@ nmap <silent> <leader>in vv=
 
 " ファイルを開く際に分割にする
 nmap <silent> gf <C-w>f
+
+" カーソルラインを必要な時だけ有効にする
+augroup vimrc-auto-cursorline
+  autocmd!
+  autocmd CursorMoved,CursorMovedI,WinLeave * setlocal nocursorline
+  autocmd CursorHold,CursorHoldI * setlocal cursorline
+augroup END
