@@ -32,16 +32,25 @@ vkFF & k::Send, {Blind}{Up}
 vkFF & l::Send, {Blind}{Right}
 
 ;Backspace,Enter
-vkEB & p::Send, {Blind}{BS}
 vkEB & [::Send, {Blind}{BS}
 vkEB & ]::Send, {Blind}{BS}
 vkEB & `;::Send, {Blind}{ENTER}
-vkEB  & '::Send, {Blind}{ENTER}
-vkFF & p::Send, {Blind}{BS}
+vkEB & '::Send, {Blind}{ENTER}
+vkEB & f::Send, {Blind}{Enter}
+vkEB & g::Send, {Blind}{BS}
+vkEB & p::Send, {Blind}{Enter}
+vkEB & o::Send, {Blind}{Enter}
+vkEB & q::Send, {Blind}{BS}
+
 vkFF & [::Send, {Blind}{BS}
 vkFF & ]::Send, {Blind}{BS}
 vkFF & `;::Send, {Blind}{ENTER}
 vkFF & '::Send, {Blind}{ENTER}
+vkFF & f::Send, {Blind}{Enter}
+vkFF & g::Send, {Blind}{BS}
+vkFF & p::Send, {Blind}{Enter}
+vkFF & o::Send, {Blind}{Enter}
+vkFF & q::Send, {Blind}{BS}
 
 ;Ctrl+c
 vkEB & s::Send, {Blind}^s
@@ -51,6 +60,9 @@ vkFF & s::Send, {Blind}^s
 change_desktop(arrow_button) {
   Send {Blind}^#{%arrow_button%}
 }
+
+vkEB & t::Send, {Blind}{Tab}
+vkFF & t::Send, {Blind}{Tab}
 
 vkEB & Left::change_desktop("Left")
 vkFF & Left::change_desktop("Left")
