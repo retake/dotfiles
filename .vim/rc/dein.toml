@@ -2,6 +2,24 @@
 [[plugins]]
 repo = 'Shougo/dein.vim'
 
+## ファイラー
+
+# fern が不安定なので、
+#[[plugins]]
+#repo = 'preservim/nerdtree'
+#hook_add = '''
+#  " Exit Vim if NERDTree is the only window remaining in the only tab.
+#  "autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+#  nnorema <leader>n :NERDTreeToggle<CR>
+#  let NERDTreeShowHidden = 1
+#'''
+#
+#[[plugins]]
+#repo = 'Xuyuanp/nerdtree-git-plugin'
+
+[[plugins]]
+repo = 'ryanoasis/vim-devicons'
+
 # fernの設定
 [[plugins]]
 repo = 'lambdalisue/fern.vim'
@@ -38,29 +56,32 @@ hook_add = '''
 repo = 'lambdalisue/fern-git-status.vim'
 depends = ['lambdalisue/fern.vim']
 
-## fernにpreviewを表示
-#[[plugins]]
-#repo = 'yuki-yano/fern-preview.vim'
-#hook_add = '''
-#  function! s:fern_settings() abort
-#    nmap <silent> <buffer> p <Plug>(fern-action-preview:auto:toggle)
-#    nmap <silent> <buffer> l <Plug>(fern-action-preview:scroll:down:half)
-#    nmap <silent> <buffer> h <Plug>(fern-action-preview:scroll:up:half)
-#    nmap <silent> <buffer> <expr> <Plug>(fern-quit-or-close-preview) fern_preview#smart_preview("\<Plug>(fern-action-preview:close)", ":q\<CR>")
-#    nmap <silent> <buffer> q <Plug>(fern-quit-or-close-preview)
-#
-#  endfunction
-#
-#  augroup fern-settings
-#    autocmd!
-#    autocmd FileType fern call s:fern_settings()
-#  augroup END
-#'''
-#depends = ['lambdalisue/fern.vim']
+# fernにpreviewを表示
+[[plugins]]
+repo = 'yuki-yano/fern-preview.vim'
+hook_add = '''
+  function! s:fern_settings() abort
+    nmap <silent> <buffer> p <Plug>(fern-action-preview:auto:toggle)
+    nmap <silent> <buffer> l <Plug>(fern-action-preview:scroll:down:half)
+    nmap <silent> <buffer> h <Plug>(fern-action-preview:scroll:up:half)
+    nmap <silent> <buffer> <expr> <Plug>(fern-quit-or-close-preview) fern_preview#smart_preview("\<Plug>(fern-action-preview:close)", ":q\<CR>")
+    nmap <silent> <buffer> q <Plug>(fern-quit-or-close-preview)
+
+  endfunction
+
+  augroup fern-settings
+    autocmd!
+    autocmd FileType fern call s:fern_settings()
+  augroup END
+'''
+depends = ['lambdalisue/fern.vim']
 
 [[plugins]]
 repo = 'lambdalisue/fern-renderer-nerdfont.vim'
-hook_add = 'let g:fern#renderer = "nerdfont"'
+hook_add = '''
+  let g:fern#renderer = "nerdfont"
+  let g:fern#renderer#nerdfont#indent_markers=1
+'''
 depends = ['lambdalisue/fern.vim']
 
 # fernアイコン表示
@@ -86,7 +107,7 @@ hook_add = '''
 #  nmap <Leader>m :TagbarToggle<CR>
 #'''
 
-## カーソル行のメソッド名をステータスバーに表示
+# カーソル行のメソッド名をステータスバーに表示
 #[[plugins]]
 #repo = 'tyru/current-func-info.vim'
 
@@ -166,17 +187,17 @@ repo = 'kchmck/vim-coffee-script'
 [[plugins]]
 repo = "tpope/vim-fugitive"
 
-## blame操作
-#[[plugins]]
-#repo = "APZelos/blamer.nvim"
-#hook_add = """
-#  let g:blamer_enabled = 0
-#  let g:blamer_delay = 100
-#  let g:blamer_show_in_insert_modes = 0
-#  let g:blamer_date_format = '%Y/%m/%d %H:%M'
-#  hi Blamer ctermfg=darkgray
-#  nmap <silent> <Leader>b :BlamerToggle<CR>
-#"""
+# blame操作
+[[plugins]]
+repo = "APZelos/blamer.nvim"
+hook_add = """
+  let g:blamer_enabled = 0
+  let g:blamer_delay = 100
+  let g:blamer_show_in_insert_modes = 0
+  let g:blamer_date_format = '%Y/%m/%d'
+  hi Blamer ctermfg=darkgray
+  nmap <silent> <Leader>b :BlamerToggle<CR>
+"""
 
 # scala
 [[plugins]]
@@ -239,47 +260,47 @@ hook_add = '''
   let g:lsp_diagnostics_signs_enabled = 1
 '''
 
-# LSP自動インストールプラグイン
-[[plugins]]
-repo = 'mattn/vim-lsp-settings'
-hook_add = '''
-  if executable('solargraph')
-    au User lsp_setup call lsp#register_server({
-      \ 'name': 'solargraph',
-      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph stdio']},
-      \ 'initialization_options': {"diagnostics": "true"},
-      \ 'whitelist': ['ruby'],
-      \ })
-  endif
-'''
-
-# コード補完
-[[plugins]]
-repo = 'prabirshrestha/asyncomplete.vim'
-hook_add = '''
-  let g:asyncomplete_popup_delay = 0
-"  let g:asyncomplete_auto_completeopt = 0
-  "set completeopt=menuone,noinsert
-  set completeopt=noinsert
-  inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-  inoremap <expr> <CR>  pumvisible() ? "\<C-y>" : "\<CR>"
-'''
-
-[[plugins]]
-repo = 'prabirshrestha/asyncomplete-lsp.vim'
-
-[[plugins]]
-repo = 'akaimo/asyncomplete-around.vim'
-hook_add = '''
-  call asyncomplete#register_source(asyncomplete#sources#around#get_source_options({
-      \ 'name': 'around',
-      \ 'allowlist': ['*'],
-      \ 'priority': 20,
-      \ 'completor': function('asyncomplete#sources#around#completor'),
-      \ }))
-  let g:asyncomplete_around_range = 50
-'''
+## LSP自動インストールプラグイン
+#[[plugins]]
+#repo = 'mattn/vim-lsp-settings'
+#hook_add = '''
+#  if executable('solargraph')
+#    au User lsp_setup call lsp#register_server({
+#      \ 'name': 'solargraph',
+#      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph stdio']},
+#      \ 'initialization_options': {"diagnostics": "true"},
+#      \ 'whitelist': ['ruby'],
+#      \ })
+#  endif
+#'''
+#
+## コード補完
+#[[plugins]]
+#repo = 'prabirshrestha/asyncomplete.vim'
+#hook_add = '''
+#  let g:asyncomplete_popup_delay = 0
+#"  let g:asyncomplete_auto_completeopt = 0
+#  "set completeopt=menuone,noinsert
+#  set completeopt=noinsert
+#  inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+#  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+#  inoremap <expr> <CR>  pumvisible() ? "\<C-y>" : "\<CR>"
+#'''
+#
+#[[plugins]]
+#repo = 'prabirshrestha/asyncomplete-lsp.vim'
+#
+#[[plugins]]
+#repo = 'akaimo/asyncomplete-around.vim'
+#hook_add = '''
+#  call asyncomplete#register_source(asyncomplete#sources#around#get_source_options({
+#      \ 'name': 'around',
+#      \ 'allowlist': ['*'],
+#      \ 'priority': 20,
+#      \ 'completor': function('asyncomplete#sources#around#completor'),
+#      \ }))
+#  let g:asyncomplete_around_range = 50
+#'''
 
 ## 良くわからない
 #[[plugins]]
@@ -359,12 +380,8 @@ hook_add = '''
 repo = 'machakann/vim-highlightedyank'
 
 ## ddc.vimを使った補間コーナー。イマイチ上手く動かないので封印。
-#
-## deno
-#[[plugins]]
-#repo = 'vim-denops/denops.vim'
-#
-## 補完
+
+# 補完
 #[[plugins]]
 #repo = 'Shougo/ddc.vim'
 #hook_add = '''
@@ -405,9 +422,9 @@ repo = 'machakann/vim-highlightedyank'
 #[[plugins]]
 #repo = 'Shougo/ddc-sorter_rank'
 #
-##[[plugins]]
-##repo = 'Shougo/ddc-nextword'
-##depends = ['Shougo/ddc.vim']
+#[[plugins]]
+#repo = 'Shougo/ddc-nextword'
+#depends = ['Shougo/ddc.vim']
 #
 ### 標準外のpopup
 ##[[plugins]]
@@ -420,8 +437,19 @@ repo = 'machakann/vim-highlightedyank'
 ## ddcの候補の重複防止
 #[[plugins]]
 #repo = 'Shougo/ddc-converter_remove_overlap'
+#
+#[[plugins]]
+#repo = 'Shougo/ddc-ui-native'
+#on_source = 'ddc.vim'
 
 # chatGPT連携
 [[plugins]]
 repo = 'mattn/vim-chatgpt'
+
+[[plugins]]
+repo = 'yuki-yano/ai-review.vim'
+
+# deno
+[[plugins]]
+repo = 'vim-denops/denops.vim'
 
