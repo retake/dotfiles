@@ -34,6 +34,10 @@ nnoremap <silent> <Leader>j <C-w>j
 nnoremap <silent> <Leader>k <C-w>k
 nnoremap <silent> <Leader>l <C-w>l
 
+" バッファの設定
+nmap <silent> <Leader><leader>n :bprev<CR>
+nmap <silent> <Leader><Leader>l :bnext<CR>
+
 " 折りたたみ関連
 set foldlevel=1
 
