@@ -71,3 +71,7 @@ augroup vimrc-auto-cursorline
   autocmd CursorMoved,CursorMovedI,WinLeave * setlocal nocursorline
   autocmd CursorHold,CursorHoldI * setlocal cursorline
 augroup END
+
+" lazygitを起動する
+nmap <silent> <Leader>git :vert term ++close lazygit<CR>
+
