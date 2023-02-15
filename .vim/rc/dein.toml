@@ -479,10 +479,4 @@ repo = "mattn/vim-chatgpt"
 [[plugins]]
 repo = "yuki-yano/ai-review.vim"
 
-[[plugins]]
-repo = 'yuki-yano/ai-review.vim'
-
-# deno
-[[plugins]]
-repo = 'vim-denops/denops.vim'
 
