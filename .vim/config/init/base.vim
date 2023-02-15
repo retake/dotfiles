@@ -34,6 +34,10 @@ nnoremap <silent> <Leader>j <C-w>j
 nnoremap <silent> <Leader>k <C-w>k
 nnoremap <silent> <Leader>l <C-w>l
 
+" バッファの設定
+nmap <silent> <Leader><leader>n :bprev<CR>
+nmap <silent> <Leader><Leader>l :bnext<CR>
+
 " 折りたたみ関連
 set foldlevel=1
 
@@ -60,3 +64,10 @@ nmap <silent> <leader>in vv=
 
 " ファイルを開く際に分割にする
 nmap <silent> gf <C-w>f
+
+" カーソルラインを必要な時だけ有効にする
+augroup vimrc-auto-cursorline
+  autocmd!
+  autocmd CursorMoved,CursorMovedI,WinLeave * setlocal nocursorline
+  autocmd CursorHold,CursorHoldI * setlocal cursorline
+augroup END
