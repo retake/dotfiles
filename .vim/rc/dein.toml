@@ -44,6 +44,11 @@ hook_add = '''
     nmap <silent> <buffer> s <Plug>(fern-action-open:vsplit)
 
     nmap <silent> <buffer> <backspace> <Plug>(fern-action-leave)
+
+    nmap <silent> <buffer> cp <Plug>(fern-action-clipboard-copy)
+    nmap <silent> <buffer> mv <Plug>(fern-action-clipboard-move)
+    nmap <silent> <buffer> p <Plug>(fern-action-clipboard-paste)
+    nmap <silent> <buffer> r <Plug>(fern-action-rename)
   endfunction
   augroup fern
     autocmd!
