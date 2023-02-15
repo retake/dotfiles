@@ -15,7 +15,7 @@ nnoremap <Leader>; :so ~/.vimrc<Cr>
 
 " ファイル保存、閉じる
 nnoremap <silent> <Leader>w :w<CR>
-nnoremap <silent> <Leader>q :q<CR>
+nnoremap <silent> <Leader><leader>q :q<CR>
 
 nnoremap <silent> <Leader>v <C-v>
 
@@ -37,6 +37,7 @@ nnoremap <silent> <Leader>l <C-w>l
 " バッファの設定
 nmap <silent> <Leader><leader>n :bprev<CR>
 nmap <silent> <Leader><Leader>l :bnext<CR>
+nnoremap <silent> <Leader>q :bd<CR>
 
 " 折りたたみ関連
 set foldlevel=1
