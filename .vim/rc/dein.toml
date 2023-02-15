@@ -479,4 +479,11 @@ repo = "mattn/vim-chatgpt"
 [[plugins]]
 repo = "yuki-yano/ai-review.vim"
 
+# チートシート
+[[plugins]]
+repo = 'reireias/vim-cheatsheet'
+hook_add = '''
+  let g:cheatsheet#cheat_file = '~/.cheatsheet.md'
+  nnoremap <silent> <leader>c :Cheat<CR>
+'''
 
