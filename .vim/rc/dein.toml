@@ -330,10 +330,14 @@ repo = 'ngmy/vim-rubocop'
 [[plugins]]
 repo = 'prettier/vim-prettier'
 hook_add = '''
-  augroup fmt
-  autocmd!
-  autocmd BufWritePre,TextChanged,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.svelte,*.yaml,*.html,*.rb PrettierAsync
-  augroup END
+  let g:prettier#config#print_width = '120'
+  let g:prettier#config#single_quote = 'true'
+  let g:prettier#config#jsx_bracket_same_line = 'true'
+  let g:prettier#config#bracket_spacing = 'true'
+  "augroup fmt
+  "autocmd!
+  "autocmd BufWritePre,TextChanged,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.svelte,*.yaml,*.html,*.rb,*.haml PrettierAsync
+  "augroup END
 '''
 
 # マークダウンのプレビュー
@@ -403,6 +407,10 @@ repo = 'machakann/vim-highlightedyank'
 
 ## ddc.vimを使った補間コーナー。イマイチ上手く動かないので封印。
 
+# deno
+[[plugins]]
+repo = 'vim-denops/denops.vim'
+
 # 補完
 #[[plugins]]
 #repo = 'Shougo/ddc.vim'
@@ -466,7 +474,10 @@ repo = 'machakann/vim-highlightedyank'
 
 # chatGPT連携
 [[plugins]]
-repo = 'mattn/vim-chatgpt'
+repo = "mattn/vim-chatgpt"
+
+[[plugins]]
+repo = "yuki-yano/ai-review.vim"
 
 [[plugins]]
 repo = 'yuki-yano/ai-review.vim'
