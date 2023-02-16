@@ -5,6 +5,11 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 #InstallKeybdHook
 
+; Shift +
+; Ctrl ^
+; Alt !
+; Win #
+
 WriteLog(log) {
   logText = [%A_Now%]%log%
   EnvGet, homepath, HOMEPATH
@@ -12,33 +17,52 @@ WriteLog(log) {
   FileAppend,  %logText%, %LOG_FILE%
 }
 
+;exit
+vkEB & c::Send, {Blind}^c
+vkFF & c::Send, {Blind}^c
 
-;矢印/バックスペース，エンター/home,end
+;矢印
 vkEB & h::Send, {Blind}{Left}
 vkEB & j::Send, {Blind}{Down}
 vkEB & k::Send, {Blind}{Up}
 vkEB & l::Send, {Blind}{Right}
-vkEB & d::Send, {Blind}{BS}
-vkEB & f::Send, {Blind}{DELETE}
-vkEB & g::Send, {Blind}{ENTER}
-vkEB & s::Send, {Blind}{Space}
-vkEB & a::Send, {Blind}{Tab}
-
 vkFF & h::Send, {Blind}{Left}
 vkFF & j::Send, {Blind}{Down}
 vkFF & k::Send, {Blind}{Up}
 vkFF & l::Send, {Blind}{Right}
-vkFF & d::Send, {Blind}{BS}
-vkFF & f::Send, {Blind}{DELETE}
-vkFF & g::Send, {Blind}{Enter}
-vkFF & s::Send, {Blind}{Space}
-vkFF & a::Send, {Blind}{Tab}
 
+;Backspace,Enter
+vkEB & [::Send, {Blind}{BS}
+vkEB & ]::Send, {Blind}{BS}
+vkEB & `;::Send, {Blind}{ENTER}
+vkEB & '::Send, {Blind}{ENTER}
+vkEB & f::Send, {Blind}{Enter}
+vkEB & g::Send, {Blind}{BS}
+vkEB & p::Send, {Blind}{Enter}
+vkEB & o::Send, {Blind}{Enter}
+vkEB & q::Send, {Blind}{BS}
+
+vkFF & [::Send, {Blind}{BS}
+vkFF & ]::Send, {Blind}{BS}
+vkFF & `;::Send, {Blind}{ENTER}
+vkFF & '::Send, {Blind}{ENTER}
+vkFF & f::Send, {Blind}{Enter}
+vkFF & g::Send, {Blind}{BS}
+vkFF & p::Send, {Blind}{Enter}
+vkFF & o::Send, {Blind}{Enter}
+vkFF & q::Send, {Blind}{BS}
+
+;Ctrl+c
+vkEB & s::Send, {Blind}^s
+vkFF & s::Send, {Blind}^s
 
 ;windowsデスクトップ切替
 change_desktop(arrow_button) {
   Send {Blind}^#{%arrow_button%}
 }
+
+vkEB & t::Send, {Blind}{Tab}
+vkFF & t::Send, {Blind}{Tab}
 
 vkEB & Left::change_desktop("Left")
 vkFF & Left::change_desktop("Left")
@@ -49,23 +73,30 @@ vkFF & Up::Send, #{Tab}
 ;vkEB & Down::Send, ^#{F4}
 ;vkFF & Down::Send, ^#{F4}
 
-LCtrl & WheelUp::change_desktop("Left")
-LCtrl & WheelDown::change_desktop("Right")
+MButton & WheelUp::change_desktop("Left")
+MButton & WheelDown::change_desktop("Right")
 
 ;アプリ切り替え
-vkEB & Tab::Send, !{Esc}
-vkFF & Tab::Send, !{Esc}
-LShift & WheelUp::Send, {Blind}!{Esc}
-LShift & WheelDown::Send, {Blind}!{Esc}
+vkEB & m::send, !+{Esc}
+vkFF & m::send, !+{Esc}
+vkEB & <::send, !{Esc}
+vkFF & <::Send, !{Esc}
+LWin & WheelUp::Send, {Blind}!{Esc}
+LWin & WheelDown::Send, {Blind}!+{Esc}
 
-;タブ切替
-vkEB & t::Send, {Blind}^{Tab}
-vkFF & t::Send, {Blind}^{Tab}
-RCtrl & WheelUp::Send, {Blind}^+{Tab}
-RCtrl & WheelDown::Send, {Blind}^{Tab}
+;タブ切り替え
+vkEB & >::send, ^+{Tab}
+vkFF & >::send, ^+{Tab}
+vkEB & /::send, ^{Tab}
+vkFF & /::Send, ^{Tab}
 
 
 ;日本語入力切替
 vkEB & vkFF::Send, {vk19}
 vkFF & vkEB::Send, {vk19}
+
+
+;やりたい事、案
+;日本語キーボードでの日本語切り替えショートカット作成
+
 

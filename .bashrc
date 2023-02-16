@@ -23,11 +23,9 @@ if docker --version > /dev/null 2>&1; then
   alias drmi="docker rmi"
   alias dkia="docker ps --all | awk '{print $1}' | xargs docker kill > /dev/null 2>&1"
   alias drma="docker ps --all | awk '{print $1}' | xargs docker rm > /dev/null 2>&1"
+  alias dcom="docker compose"
 fi
 
-if docker-compose --help > /dev/null 2>&1; then
-  alias dcom="docker-compose"
-fi
 
 if git --version > /dev/null 2>&1; then
   alias gadd="git add"
@@ -37,7 +35,7 @@ if git --version > /dev/null 2>&1; then
   alias gbr="git branch --all"
   alias gf="git fetch"
   alias gpu="git pull"
-  alias glogone='git log --pretty=oneline'
+  alias glogone='git log --pretty=oneline --graph'
   alias grebase='git rebase'
 fi
 
@@ -53,3 +51,6 @@ if ~/.rbenv/bin/rbenv --version > /dev/null 2>&1; then
 fi
 
 cd ~
+export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:~/go/bin
+

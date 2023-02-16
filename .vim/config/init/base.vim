@@ -1,6 +1,3 @@
-let g:any_jump_disable_default_keybindings = 1
-nnoremap <Leader>f :AnyJump<CR>
-
 " pathの設定（デフォルトで入って居るべきパスが何故か入って居ないため、手動で現在のパスを追加）
 set path=$PWD/**
 "set path+=$PWD/**
@@ -18,12 +15,9 @@ nnoremap <Leader>; :so ~/.vimrc<Cr>
 
 " ファイル保存、閉じる
 nnoremap <silent> <Leader>w :w<CR>
-nnoremap <silent> <Leader>q :q<CR>
+nnoremap <silent> <Leader><leader>q :q<CR>
 
 nnoremap <silent> <Leader>v <C-v>
-
-" ツリーのトグル
-nnoremap <silent> <Leader>n :NERDTreeToggle<CR>
 
 " キーバインド
 "nmap <silent> <Leader><Leader>c <C-c>
@@ -35,24 +29,58 @@ noremap <C-k> <Up>
 noremap <C-l> <Right>
 
 " ウィンドウの移動
-nmap <silent> <Leader>h <C-w>h
-nmap <silent> <Leader>j <C-w>j
-nmap <silent> <Leader>k <C-w>k
-nmap <silent> <Leader>l <C-w>l
+nnoremap <silent> <Leader>h <C-w>h
+nnoremap <silent> <Leader>j <C-w>j
+nnoremap <silent> <Leader>k <C-w>k
+nnoremap <silent> <Leader>l <C-w>l
+
+" バッファの設定
+nmap <silent> <Leader><leader>n :bprev<CR>
+nmap <silent> <Leader><Leader>l :bnext<CR>
+nnoremap <silent> <Leader>q :bd<CR>
+
+" バッファが空であればvim自体を停止する様にしたいが、バッファが空である事を確認する方法がわからない
+" augroup auto-close-if-nobuffer
+"   autocmd!
+"   これだとvimを開いたら即座に終了してしまう。
+"   バッファを閉じる前に残りバッファ数が1である事がわかればそれで行けそう。
+"   autocmd BufLeave <buffer> if winnr('$') == 1 | quit! | endif
+" augroup END
 
 " 折りたたみ関連
-nmap <silent> <Leader>c zc
-nmap <silent> <Leader>o zo
-nmap <silent> <Leader><Leader>o zO
-nmap <silent> <Leader>m zm
-nmap <silent> <Leader><Leader>m zM
-nmap <silent> <Leader>r zr
-nmap <silent> <Leader><Leader>r zR
+set foldlevel=1
 
-" 高速移動
-nmap j <Plug>(accelerated_jk_gj)
-nmap k <Plug>(accelerated_jk_gk)
+nnoremap <silent> <CR> zo
+nnoremap <silent> <Leader><CR> zc
+nnoremap <silent> <Leader>r zR
+nnoremap <silent> <Leader><Leader>r zM
 
 " インクリメント/デクリメント
 nnoremap = <C-a>
-nnoremap - <C-x>
+nnoremap = <C-x>
+
+" quickfixを閉じる
+nnoremap <silent> <Leader>c :cclose<CR>
+
+" ターミナルモードのマッピング
+"set termkey=<C-l> " 何故か動かない
+tnoremap jj <C-\><C-n>
+nnoremap <Leader>term :bo terminal ++close /bin/bash --login<CR>
+
+" インデントの自動修正
+nmap <silent> <leader>in vv=
+
+
+" ファイルを開く際に分割にする
+nmap <silent> gf <C-w>f
+
+" カーソルラインを必要な時だけ有効にする
+augroup vimrc-auto-cursorline
+  autocmd!
+  autocmd CursorMoved,CursorMovedI,WinLeave * setlocal nocursorline
+  autocmd CursorHold,CursorHoldI * setlocal cursorline
+augroup END
+
+" lazygitを起動する
+nmap <silent> <Leader>git :vert term ++close lazygit<CR>
+

@@ -1,1 +1,0 @@
-sudo apt-get install gcc make libssl-dev libreadline-dev zlib1g-dev -y
