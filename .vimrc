@@ -1,8 +1,11 @@
-" Gァイル設定
+"Gファイル設定
 set encoding=utf-8
 set fileencoding=utf8
 set fileencodings=utf8
 set fileformat=unix
+
+" ファイルタイプ識別
+set filetype=on
 
 " beep音を消す
 set belloff=all
@@ -20,6 +23,8 @@ syntax enable
 
 " 色設定
 colorscheme desert
+hi LineNr ctermbg=234 ctermfg=238
+hi CursorLineNr ctermbg=black ctermfg=darkgray
 hi comment ctermfg=lightblue
 set cursorline
 
@@ -88,6 +93,9 @@ set expandtab
 " タブが占める幅
 set tabstop=2
 
-runtime! config/init/**
-runtime! config/plugins/**
+" ctagsの検索範囲
+set tags=./tags;,tags;
+nmap tag <C-]>
+nmap tagback <C-T>
 
+runtime! config/init/**
