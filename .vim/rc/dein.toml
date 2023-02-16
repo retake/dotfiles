@@ -31,25 +31,25 @@ hook_add = '''
     set norelativenumber
     set nonumber
     set signcolumn=no
-   	nmap <buffer><expr>
+   	nnoremap <buffer><expr>
 	    \ <Plug>(fern-my-open-or-expand-or-collapse)
 	    \ fern#smart#leaf(
 	    \   "<Plug>(fern-action-open)",
 	    \   "<Plug>(fern-action-expand)",
 	    \   "<Plug>(fern-action-collapse)",
 	    \ )
-    nmap <silent> <buffer> o <Plug>(fern-my-open-or-expand-or-collapse)
-    nmap <silent> <buffer> <cr> <Plug>(fern-my-open-or-expand-or-collapse)
-    nmap <silent> <buffer> i <Plug>(fern-action-open:split)
-    nmap <silent> <buffer> s <Plug>(fern-action-open:vsplit)
+    nnoremap <silent> <buffer> o <Plug>(fern-my-open-or-expand-or-collapse)
+    nnoremap <silent> <buffer> <cr> <Plug>(fern-my-open-or-expand-or-collapse)
+    nnoremap <silent> <buffer> i <Plug>(fern-action-open:split)
+    nnoremap <silent> <buffer> s <Plug>(fern-action-open:vsplit)
 
-    nmap <silent> <buffer> <backspace> <Plug>(fern-action-leave)
+    nnoremap <silent> <buffer> <backspace> <Plug>(fern-action-leave)
 
-    nmap <silent> <buffer> cp <Plug>(fern-action-clipboard-copy)
-    nmap <silent> <buffer> mv <Plug>(fern-action-clipboard-move)
-    nmap <silent> <buffer> p <Plug>(fern-action-clipboard-paste)
-    nmap <silent> <buffer> rename <Plug>(fern-action-rename)
-    nmap <silent> <buffer> del <Plug>(fern-action-remove)
+    nnoremap <silent> <buffer> cp <Plug>(fern-action-clipboard-copy)
+    nnoremap <silent> <buffer> mv <Plug>(fern-action-clipboard-move)
+    nnoremap <silent> <buffer> pp <Plug>(fern-action-clipboard-paste)
+    nnoremap <silent> <buffer> rename <Plug>(fern-action-rename)
+    nnoremap <silent> <buffer> del <Plug>(fern-action-remove)
   endfunction
   augroup fern
     autocmd!
@@ -67,11 +67,11 @@ depends = ['lambdalisue/fern.vim']
 repo = 'yuki-yano/fern-preview.vim'
 hook_add = '''
   function! s:fern_settings() abort
-    nmap <silent> <buffer> p <Plug>(fern-action-preview:auto:toggle)
-    nmap <silent> <buffer> l <Plug>(fern-action-preview:scroll:down:half)
-    nmap <silent> <buffer> h <Plug>(fern-action-preview:scroll:up:half)
-    nmap <silent> <buffer> <expr> <Plug>(fern-quit-or-close-preview) fern_preview#smart_preview("\<Plug>(fern-action-preview:close)", ":q\<CR>")
-    nmap <silent> <buffer> q <Plug>(fern-quit-or-close-preview)
+    nnoremap <silent> <buffer> <leader>p <Plug>(fern-action-preview:auto:toggle)
+    nnoremap <silent> <buffer> l <Plug>(fern-action-preview:scroll:down:half)
+    nnoremap <silent> <buffer> h <Plug>(fern-action-preview:scroll:up:half)
+    nnoremap <silent> <buffer> <expr> <Plug>(fern-quit-or-close-preview) fern_preview#smart_preview("\<Plug>(fern-action-preview:close)", ":q\<CR>")
+    nnoremap <silent> <buffer> q <Plug>(fern-quit-or-close-preview)
 
   endfunction
 
@@ -110,7 +110,7 @@ hook_add = '''
 #[[plugins]]
 #repo = 'preservim/tagbar'
 #hook_add = '''
-#  nmap <Leader>m :TagbarToggle<CR>
+#  nnoremap <Leader>m :TagbarToggle<CR>
 #'''
 
 # カーソル行のメソッド名をステータスバーに表示
@@ -124,7 +124,7 @@ repo = 'mhinz/vim-startify'
 # Rails内のシームレスな移動、Railsコマンド実行
 [[plugins]]
 repo = 'tpope/vim-rails'
-hook_add = 'nmap <buffer> <Leader>gf :bo sfind <Plug><cfile><CR>'
+hook_add = 'nnoremap <buffer> <Leader>gf :bo sfind <Plug><cfile><CR>'
 
 # 文字色変更
 [[plugins]]
@@ -138,8 +138,8 @@ repo = 'bronson/vim-trailing-whitespace'
 [[plugins]]
 repo = 'rhysd/accelerated-jk'
 hook_add = '''
-  nmap j <Plug>(accelerated_jk_gj)
-  nmap k <Plug>(accelerated_jk_gk)
+  nnoremap j <Plug>(accelerated_jk_gj)
+  nnoremap k <Plug>(accelerated_jk_gk)
 '''
 
 # インデントの可視化
@@ -147,7 +147,7 @@ hook_add = '''
 repo = 'nathanaelkane/vim-indent-guides'
 hook_add ='''
   " インデントの自動修正と重複するので
-  "nmap <Leader>in <Plug>IndentGuidesToggle
+  "nnoremap <Leader>in <Plug>IndentGuidesToggle
 
   let g:indent_guides_enable_on_vim_startup = 1
 
@@ -202,7 +202,7 @@ hook_add = """
   let g:blamer_show_in_insert_modes = 0
   let g:blamer_date_format = '%Y/%m/%d'
   hi Blamer ctermfg=darkgray
-  nmap <silent> <Leader>b :BlamerToggle<CR>
+  nnoremap <silent> <Leader>b :BlamerToggle<CR>
 """
 
 # scala
@@ -219,7 +219,7 @@ hook_add = 'nmap <silent> <Leader>e <C-e>'
 repo = 'ctrlpvim/ctrlp.vim'
 hook_add = '''
   let g:ctrlp_map = '<Nop>'
-  nmap <silent> <Leader><Leader>f :CtrlP<CR>
+  nnoremap <silent> <Leader><Leader>f :CtrlP<CR>
   nnoremap <silent> <Leader>tag :CtrlPTag<CR>
   if executable('ag')
     let g:ctrlp_use_caching=0
@@ -247,13 +247,13 @@ hook_add = '''
 [[plugins]]
 repo = 'prabirshrestha/vim-lsp'
 hook_add = '''
-  nmap <silent> <Leader>def <Plug>(lsp-definition)
-  nmap <silent> <Leader>ref <Plug>(lsp-references)
-  nmap <silent> <Leader>imp <Plug>(lsp-implementation)
+  nnoremap <silent> <Leader>def <Plug>(lsp-definition)
+  nnoremap <silent> <Leader>ref <Plug>(lsp-references)
+  nnoremap <silent> <Leader>imp <Plug>(lsp-implementation)
 
-  nmap <silent> <Leader>sym <Plug>(lsp-document-symbol)
-  nmap <silent> <Leader>wsym <Plug>(lsp-workspace-symbol)
-  nmap <silent> <Leader>ren <Plug>(lsp-rename)
+  nnoremap <silent> <Leader>sym <Plug>(lsp-document-symbol)
+  nnoremap <silent> <Leader>wsym <Plug>(lsp-workspace-symbol)
+  nnoremap <silent> <Leader>ren <Plug>(lsp-rename)
 
   let g:lsp_completion_documentation_delay = 100
   let g:lsp_diagnostics_echo_cursor = 1
@@ -267,19 +267,19 @@ hook_add = '''
 '''
 
 ## LSP自動インストールプラグイン
-#[[plugins]]
-#repo = 'mattn/vim-lsp-settings'
-#hook_add = '''
-#  if executable('solargraph')
-#    au User lsp_setup call lsp#register_server({
-#      \ 'name': 'solargraph',
-#      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph stdio']},
-#      \ 'initialization_options': {"diagnostics": "true"},
-#      \ 'whitelist': ['ruby'],
-#      \ })
-#  endif
-#'''
-#
+[[plugins]]
+repo = 'mattn/vim-lsp-settings'
+hook_add = '''
+  if executable('solargraph')
+    au User lsp_setup call lsp#register_server({
+      \ 'name': 'solargraph',
+      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph stdio']},
+      \ 'initialization_options': {"diagnostics": "true"},
+      \ 'whitelist': ['ruby'],
+      \ })
+  endif
+'''
+
 ## コード補完
 #[[plugins]]
 #repo = 'prabirshrestha/asyncomplete.vim'
@@ -397,7 +397,7 @@ hook_add = '''
   let g:translate_popup_window = 1 " if you want use popup window, set value 1
   let g:translate_winsize = 10 " set buffer window height size if you doesn't use popup window
 
-  nmap <Leader>tr <Plug>(Translate)
+  noremap <Leader>tr <Plug>(Translate)
   vmap <Leader>tr <Plug>(VTranslate)
 '''
 
@@ -412,65 +412,66 @@ repo = 'machakann/vim-highlightedyank'
 repo = 'vim-denops/denops.vim'
 
 # 補完
+[[plugins]]
+repo = 'Shougo/ddc.vim'
+hook_add = '''
+  set completeopt=menuone,noinsert
+	inoremap <silent><expr> <TAB>
+	  \ ddc#map#pum_visible() ? '<C-n>' :
+	  \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
+	  \ '<TAB>' : ddc#map#manual_complete()
+	inoremap <expr><S-TAB>  ddc#map#pum_visible() ? '<C-p>' : '<C-h>'
+  inoremap <expr> <CR>  pumvisible() ? "\<C-y>" : "\<CR>"
+
+  "inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+  "inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+  "inoremap <expr> <CR>  pumvisible() ? "\<C-y>" : "\<CR>"
+  call ddc#custom#patch_global('ui', 'native')
+  "call ddc#custom#patch_global('completionMenu', 'pum.vim')
+  "call ddc#custom#patch_global('sources', ['vim-lsp', 'around', 'nextword'])
+  call ddc#custom#patch_global('sources', ['vim-lsp', 'around'])
+  call ddc#custom#patch_global('sourceOptions', {
+        \ '_': {
+        \   'matchers': ['matcher_head'],
+        \   'sorters': ['sorter_rank']},
+        \ 'vim-lsp': {
+        \   'mark': 'LSP',
+        \   'forceCompletionPattern': '\.|:|->|"\w+/*',
+        \ },
+        \ 'around': {'mark': '周辺'},
+        \ })
+  call ddc#enable()
+'''
+
+# 補完用のsource,filter
+[[plugins]]
+repo = 'Shougo/ddc-around'
+
+[[plugins]]
+repo = 'Shougo/ddc-matcher_head'
+
+[[plugins]]
+repo = 'Shougo/ddc-sorter_rank'
+
+[[plugins]]
+repo = 'Shougo/ddc-nextword'
+depends = ['Shougo/ddc.vim']
+
+## 標準外のpopup
 #[[plugins]]
-#repo = 'Shougo/ddc.vim'
-#hook_add = '''
-#  set completeopt=menuone,noinsert
-#	inoremap <silent><expr> <TAB>
-#	  \ ddc#map#pum_visible() ? '<C-n>' :
-#	  \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
-#	  \ '<TAB>' : ddc#map#manual_complete()
-#	inoremap <expr><S-TAB>  ddc#map#pum_visible() ? '<C-p>' : '<C-h>'
-#  inoremap <expr> <CR>  pumvisible() ? "\<C-y>" : "\<CR>"
-#
-#  "inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-#  "inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-#  "inoremap <expr> <CR>  pumvisible() ? "\<C-y>" : "\<CR>"
-#  "call ddc#custom#patch_global('completionMenu', 'pum.vim')
-#  "call ddc#custom#patch_global('sources', ['vim-lsp', 'around', 'nextword'])
-#  call ddc#custom#patch_global('sources', ['vim-lsp', 'around'])
-#  call ddc#custom#patch_global('sourceOptions', {
-#        \ '_': {
-#        \   'matchers': ['matcher_head'],
-#        \   'sorters': ['sorter_rank']},
-#        \ 'vim-lsp': {
-#        \   'mark': 'LSP',
-#        \   'forceCompletionPattern': '\.|:|->|"\w+/*',
-#        \ },
-#        \ 'around': {'mark': '周辺'},
-#        \ })
-#  call ddc#enable()
-#'''
-#
-## 補完用のsource,filter
-#[[plugins]]
-#repo = 'Shougo/ddc-around'
-#
-#[[plugins]]
-#repo = 'Shougo/ddc-matcher_head'
-#
-#[[plugins]]
-#repo = 'Shougo/ddc-sorter_rank'
-#
-#[[plugins]]
-#repo = 'Shougo/ddc-nextword'
-#depends = ['Shougo/ddc.vim']
-#
-### 標準外のpopup
-##[[plugins]]
-##repo = 'Shougo/pum.vim'
-#
-## ddcとvim-lspの橋渡し
-#[[plugins]]
-#repo = 'shun/ddc-vim-lsp'
-#
-## ddcの候補の重複防止
-#[[plugins]]
-#repo = 'Shougo/ddc-converter_remove_overlap'
-#
-#[[plugins]]
-#repo = 'Shougo/ddc-ui-native'
-#on_source = 'ddc.vim'
+#repo = 'Shougo/pum.vim'
+
+# ddcとvim-lspの橋渡し
+[[plugins]]
+repo = 'shun/ddc-vim-lsp'
+
+[[plugins]]
+repo = 'Shougo/ddc-ui-native'
+on_source = 'ddc.vim'
+
+# ddcの候補の重複防止
+[[plugins]]
+repo = 'Shougo/ddc-converter_remove_overlap'
 
 # chatGPT連携
 [[plugins]]
