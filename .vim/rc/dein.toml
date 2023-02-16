@@ -485,6 +485,6 @@ repo = "yuki-yano/ai-review.vim"
 repo = 'reireias/vim-cheatsheet'
 hook_add = '''
   let g:cheatsheet#cheat_file = '~/.cheatsheet.md'
-  nnoremap <silent> <leader>c :Cheat<CR>
+  nnoremap <silent> <leader><leader>c :Cheat<CR>
 '''
 
