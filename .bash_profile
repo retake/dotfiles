@@ -10,9 +10,9 @@ export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 export GITHUB_AUTH_KEY="API_KEYを入れる"
 export GITHUB_ORG_NAME="組織名を入れる"
 
-export CHATGPT_API_KEY="chatgptのキーを入れる"
-export OPENAI_API_KEY="chatgptのキーを入れる"
-
+set -a
+source ~/.credentials
+set +a
 
 # terraformのパス
 export PATH="$HOME/.tfenv/bin:$PATH"
