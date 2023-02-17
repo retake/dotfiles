@@ -243,42 +243,42 @@ hook_add = '''
   let g:any_jump_search_prefered_engine = 'ag'
 '''
 
-# LSPプラグイン
-[[plugins]]
-repo = 'prabirshrestha/vim-lsp'
-hook_add = '''
-  nnoremap <silent> <Leader>def <Plug>(lsp-definition)
-  nnoremap <silent> <Leader>ref <Plug>(lsp-references)
-  nnoremap <silent> <Leader>imp <Plug>(lsp-implementation)
-
-  nnoremap <silent> <Leader>sym <Plug>(lsp-document-symbol)
-  nnoremap <silent> <Leader>wsym <Plug>(lsp-workspace-symbol)
-  nnoremap <silent> <Leader>ren <Plug>(lsp-rename)
-
-  let g:lsp_completion_documentation_delay = 100
-  let g:lsp_diagnostics_echo_cursor = 1
-  let g:lsp_diagnostics_echo_delay = 100
-  let g:lsp_text_edit_enabled = 1
-  let g:lsp_log_file = expand('~/tmp/vim-lsp.log')
-  let g:lsp_log_verbose = 0
-  let g:lsp_semantic_enabled = 1
-  let g:lsp_diagnostics_virtual_text_enabled = 1
-  let g:lsp_diagnostics_signs_enabled = 1
-'''
-
-## LSP自動インストールプラグイン
-[[plugins]]
-repo = 'mattn/vim-lsp-settings'
-hook_add = '''
-  if executable('solargraph')
-    au User lsp_setup call lsp#register_server({
-      \ 'name': 'solargraph',
-      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph stdio']},
-      \ 'initialization_options': {"diagnostics": "true"},
-      \ 'whitelist': ['ruby'],
-      \ })
-  endif
-'''
+## LSPプラグイン
+#[[plugins]]
+#repo = 'prabirshrestha/vim-lsp'
+#hook_add = '''
+#  nnoremap <silent> <Leader>def <Plug>(lsp-definition)
+#  nnoremap <silent> <Leader>ref <Plug>(lsp-references)
+#  nnoremap <silent> <Leader>imp <Plug>(lsp-implementation)
+#
+#  nnoremap <silent> <Leader>sym <Plug>(lsp-document-symbol)
+#  nnoremap <silent> <Leader>wsym <Plug>(lsp-workspace-symbol)
+#  nnoremap <silent> <Leader>ren <Plug>(lsp-rename)
+#
+#  let g:lsp_completion_documentation_delay = 100
+#  let g:lsp_diagnostics_echo_cursor = 1
+#  let g:lsp_diagnostics_echo_delay = 100
+#  let g:lsp_text_edit_enabled = 1
+#  let g:lsp_log_file = expand('~/tmp/vim-lsp.log')
+#  let g:lsp_log_verbose = 0
+#  let g:lsp_semantic_enabled = 1
+#  let g:lsp_diagnostics_virtual_text_enabled = 1
+#  let g:lsp_diagnostics_signs_enabled = 1
+#'''
+#
+### LSP自動インストールプラグイン
+#[[plugins]]
+#repo = 'mattn/vim-lsp-settings'
+#hook_add = '''
+#  if executable('solargraph')
+#    au User lsp_setup call lsp#register_server({
+#      \ 'name': 'solargraph',
+#      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph stdio']},
+#      \ 'initialization_options': {"diagnostics": "true"},
+#      \ 'whitelist': ['ruby'],
+#      \ })
+#  endif
+#'''
 
 ## コード補完
 #[[plugins]]
@@ -412,66 +412,66 @@ repo = 'machakann/vim-highlightedyank'
 repo = 'vim-denops/denops.vim'
 
 # 補完
-[[plugins]]
-repo = 'Shougo/ddc.vim'
-hook_add = '''
-  set completeopt=menuone,noinsert
-	inoremap <silent><expr> <TAB>
-	  \ ddc#map#pum_visible() ? '<C-n>' :
-	  \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
-	  \ '<TAB>' : ddc#map#manual_complete()
-	inoremap <expr><S-TAB>  ddc#map#pum_visible() ? '<C-p>' : '<C-h>'
-  inoremap <expr> <CR>  pumvisible() ? "\<C-y>" : "\<CR>"
-
-  "inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-  "inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-  "inoremap <expr> <CR>  pumvisible() ? "\<C-y>" : "\<CR>"
-  call ddc#custom#patch_global('ui', 'native')
-  "call ddc#custom#patch_global('completionMenu', 'pum.vim')
-  "call ddc#custom#patch_global('sources', ['vim-lsp', 'around', 'nextword'])
-  call ddc#custom#patch_global('sources', ['vim-lsp', 'around'])
-  call ddc#custom#patch_global('sourceOptions', {
-        \ '_': {
-        \   'matchers': ['matcher_head'],
-        \   'sorters': ['sorter_rank']},
-        \ 'vim-lsp': {
-        \   'mark': 'LSP',
-        \   'forceCompletionPattern': '\.|:|->|"\w+/*',
-        \ },
-        \ 'around': {'mark': '周辺'},
-        \ })
-  call ddc#enable()
-'''
-
-# 補完用のsource,filter
-[[plugins]]
-repo = 'Shougo/ddc-around'
-
-[[plugins]]
-repo = 'Shougo/ddc-matcher_head'
-
-[[plugins]]
-repo = 'Shougo/ddc-sorter_rank'
-
-[[plugins]]
-repo = 'Shougo/ddc-nextword'
-depends = ['Shougo/ddc.vim']
-
-## 標準外のpopup
 #[[plugins]]
-#repo = 'Shougo/pum.vim'
-
-# ddcとvim-lspの橋渡し
-[[plugins]]
-repo = 'shun/ddc-vim-lsp'
-
-[[plugins]]
-repo = 'Shougo/ddc-ui-native'
-on_source = 'ddc.vim'
-
-# ddcの候補の重複防止
-[[plugins]]
-repo = 'Shougo/ddc-converter_remove_overlap'
+#repo = 'Shougo/ddc.vim'
+#hook_add = '''
+#  set completeopt=menuone,noinsert
+#	inoremap <silent><expr> <TAB>
+#	  \ ddc#map#pum_visible() ? '<C-n>' :
+#	  \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
+#	  \ '<TAB>' : ddc#map#manual_complete()
+#	inoremap <expr><S-TAB>  ddc#map#pum_visible() ? '<C-p>' : '<C-h>'
+#  inoremap <expr> <CR>  pumvisible() ? "\<C-y>" : "\<CR>"
+#
+#  "inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+#  "inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+#  "inoremap <expr> <CR>  pumvisible() ? "\<C-y>" : "\<CR>"
+#  call ddc#custom#patch_global('ui', 'native')
+#  "call ddc#custom#patch_global('completionMenu', 'pum.vim')
+#  "call ddc#custom#patch_global('sources', ['vim-lsp', 'around', 'nextword'])
+#  call ddc#custom#patch_global('sources', ['vim-lsp', 'around'])
+#  call ddc#custom#patch_global('sourceOptions', {
+#        \ '_': {
+#        \   'matchers': ['matcher_head'],
+#        \   'sorters': ['sorter_rank']},
+#        \ 'vim-lsp': {
+#        \   'mark': 'LSP',
+#        \   'forceCompletionPattern': '\.|:|->|"\w+/*',
+#        \ },
+#        \ 'around': {'mark': '周辺'},
+#        \ })
+#  call ddc#enable()
+#'''
+#
+## 補完用のsource,filter
+#[[plugins]]
+#repo = 'Shougo/ddc-around'
+#
+#[[plugins]]
+#repo = 'Shougo/ddc-matcher_head'
+#
+#[[plugins]]
+#repo = 'Shougo/ddc-sorter_rank'
+#
+#[[plugins]]
+#repo = 'Shougo/ddc-nextword'
+#depends = ['Shougo/ddc.vim']
+#
+### 標準外のpopup
+##[[plugins]]
+##repo = 'Shougo/pum.vim'
+#
+## ddcとvim-lspの橋渡し
+#[[plugins]]
+#repo = 'shun/ddc-vim-lsp'
+#
+#[[plugins]]
+#repo = 'Shougo/ddc-ui-native'
+#on_source = 'ddc.vim'
+#
+## ddcの候補の重複防止
+#[[plugins]]
+#repo = 'Shougo/ddc-converter_remove_overlap'
 
 # chatGPT連携
 [[plugins]]
@@ -485,6 +485,11 @@ repo = "yuki-yano/ai-review.vim"
 repo = 'reireias/vim-cheatsheet'
 hook_add = '''
   let g:cheatsheet#cheat_file = '~/.cheatsheet.md'
-  nremap <silent> <leader><leader>c :Cheat<CR>
+  nnoremap <silent> <leader><leader>c :Cheat<CR>
 '''
 
+# coc
+[[plugins]]
+repo = 'neoclide/coc.nvim'
+source = 'release'
+build = 'coc#util#install()'
