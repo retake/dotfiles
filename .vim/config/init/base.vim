@@ -37,15 +37,16 @@ nnoremap <silent> <Leader>l <C-w>l
 " バッファの設定
 nmap <silent> <Leader><leader>n :bprev<CR>
 nmap <silent> <Leader><Leader>l :bnext<CR>
-nnoremap <silent> <Leader>q :bd<CR>
+"nnoremap <silent> <Leader>q :bd<CR>
+nnoremap <silent> <Leader>q :up<CR>:call CloseBuf()<CR>
 
-" バッファが空であればvim自体を停止する様にしたいが、バッファが空である事を確認する方法がわからない
-" augroup auto-close-if-nobuffer
-"   autocmd!
-"   これだとvimを開いたら即座に終了してしまう。
-"   バッファを閉じる前に残りバッファ数が1である事がわかればそれで行けそう。
-"   autocmd BufLeave <buffer> if winnr('$') == 1 | quit! | endif
-" augroup END
+function! CloseBuf()
+  if len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
+    :q
+  else
+    :bd
+  endif
+endfunction
 
 " 折りたたみ関連
 set foldlevel=1
