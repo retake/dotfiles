@@ -334,10 +334,10 @@ hook_add = '''
   let g:prettier#config#single_quote = 'true'
   let g:prettier#config#jsx_bracket_same_line = 'true'
   let g:prettier#config#bracket_spacing = 'true'
-  "augroup fmt
-  "autocmd!
-  "autocmd BufWritePre,TextChanged,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.svelte,*.yaml,*.html,*.rb,*.haml PrettierAsync
-  "augroup END
+  augroup fmt
+    autocmd!
+    autocmd BufWritePre,TextChanged,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.svelte,*.yaml,*.html,*.rb,*.haml PrettierAsync
+  augroup END
 '''
 
 # マークダウンのプレビュー
