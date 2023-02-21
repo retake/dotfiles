@@ -1,5 +1,3 @@
-" pathの設定（デフォルトで入って居るべきパスが何故か入って居ないため、手動で現在のパスを追加）
-set path=$PWD/**
 "set path+=$PWD/**
 
 " リーダー設定
@@ -18,6 +16,9 @@ nnoremap <silent> <Leader>w :w<CR>
 nnoremap <silent> <Leader><leader>q :q<CR>
 
 nnoremap <silent> <Leader>v <C-v>
+
+" インサートモードで保存
+inoremap <silent> jw <C-o>:w<CR>
 
 " キーバインド
 "nmap <silent> <Leader><Leader>c <C-c>
@@ -84,4 +85,3 @@ augroup END
 
 " lazygitを起動する
 nmap <silent> <Leader>git :vert term ++close lazygit<CR>
-
