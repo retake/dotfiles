@@ -496,4 +496,5 @@ build = 'coc#util#install()'
 hook_add = '''
   "inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm(): "\<CR>"
   inoremap <silent><expr> <TAB> coc#pum#visible() ? coc#pum#confirm(): "\<CR>"
+  hi CocMenuSel ctermbg=109
 '''

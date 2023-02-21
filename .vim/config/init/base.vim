@@ -85,3 +85,6 @@ augroup END
 
 " lazygitを起動する
 nmap <silent> <Leader>git :vert term ++close lazygit<CR>
+
+" 補完windowの設定
+set completeopt=menuone,noinsert
