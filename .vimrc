@@ -98,4 +98,7 @@ set tags=./tags;,tags;
 nmap tag <C-]>
 nmap tagback <C-T>
 
+" backspace/deleteで改行の削除が出来る
+set backspace=indent,eol,start
+
 runtime! config/init/**
