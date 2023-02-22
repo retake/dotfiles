@@ -36,8 +36,8 @@ nnoremap <silent> <Leader>k <C-w>k
 nnoremap <silent> <Leader>l <C-w>l
 
 " バッファの設定
-nmap <silent> <Leader><leader>n :bprev<CR>
-nmap <silent> <Leader><Leader>l :bnext<CR>
+nmap <silent> <Leader><leader>k :bprev<CR>
+nmap <silent> <Leader><Leader>j :bnext<CR>
 "nnoremap <silent> <Leader>q :bd<CR>
 nnoremap <silent> <Leader>q :up<CR>:call CloseBuf()<CR>
 
