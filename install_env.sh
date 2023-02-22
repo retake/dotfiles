@@ -6,6 +6,7 @@ cd $(dirname $0)
 for file in .??*
 do
   [ "${file}" = ".git" ] && continue
+  [ "${file}" = ".github" ] && continue
   [ "${file}" = ".rbenv" ] && continue
   [ "${file}" = "README.md" ] && continue
 
