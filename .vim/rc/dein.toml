@@ -168,8 +168,13 @@ hook_add = '''
   let g:ale_linters = {
   \   'ruby': ['rubocop'],
   \}
+  let g:ale_fixers = {
+  \   'ruby': ['rubocop'],
+  \}
   let g:ale_linters_explicit = 1
   let g:airline#extensions#ale#enabled = 1
+  let g:ale_ruby_rubocop_auto_correct_all = 1
+  let g:ale_fix_on_save = 1
 '''
 
 # rubyのヒアドキュメントシンタックスハイライト
@@ -327,18 +332,18 @@ repo = 'ngmy/vim-rubocop'
 # 例： ruby追加
 # npm install --save-dev prettier @prettier/plugin-ruby
 # gem install bundler prettier_print syntax_tree syntax_tree-haml syntax_tree-rbs
-[[plugins]]
-repo = 'prettier/vim-prettier'
-hook_add = '''
-  let g:prettier#config#print_width = '120'
-  let g:prettier#config#single_quote = 'true'
-  let g:prettier#config#jsx_bracket_same_line = 'true'
-  let g:prettier#config#bracket_spacing = 'true'
-  augroup fmt
-    autocmd!
-    autocmd BufWritePre,TextChanged,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.svelte,*.yaml,*.html,*.rb,*.haml PrettierAsync
-  augroup END
-'''
+#[[plugins]]
+#repo = 'prettier/vim-prettier'
+#hook_add = '''
+#  let g:prettier#config#print_width = '120'
+#  let g:prettier#config#single_quote = 'true'
+#  let g:prettier#config#jsx_bracket_same_line = 'true'
+#  let g:prettier#config#bracket_spacing = 'true'
+#  augroup fmt
+#    autocmd!
+#    autocmd BufWritePre,TextChanged,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.svelte,*.yaml,*.html,*.rb,*.haml PrettierAsync
+#  augroup END
+#'''
 
 # マークダウンのプレビュー
 # コマンド例:PreviewMarkdown right
