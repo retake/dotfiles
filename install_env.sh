@@ -6,6 +6,13 @@ create_symlink() {
   ln -snfv "${source_path}" "${target_path}"
 }
 
+create_directory_if_not_exists() {
+  local dir_path=$1
+  if [ ! -d "${dir_path}" ]; then
+    mkdir "${dir_path}"
+  fi
+}
+
 cd $(dirname $0)
 
 # 必要なファイルのリンクを作成
@@ -20,9 +27,7 @@ done
 # 必要なディレクトリのリンクを作成
 create_symlink $(pwd)/.vim ${HOME}/.vim
 
-if [ ! -d ${HOME}/bin ]; then
-  mkdir ${HOME}/bin
-fi
+create_directory_if_not_exists ${HOME}/bin
 
 cd bin
 
