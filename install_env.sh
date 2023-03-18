@@ -8,7 +8,6 @@ do
   [ "${file}" = ".git" ] && continue
   [ "${file}" = ".github" ] && continue
   [ "${file}" = ".rbenv" ] && continue
-  [ "${file}" = "README.md" ] && continue
 
   ln -snfv $(pwd)/${file} ~/${file}
 done
@@ -25,6 +24,4 @@ for script in ?*.sh
 do
   ln -snfv $(pwd)/${script} ~/bin/${script}
 done
-
-source ~/.bash_profile
 
