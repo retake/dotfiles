@@ -14,19 +14,19 @@ for file in .??*; do
   [ "${file}" = ".github" ] && continue
   [ "${file}" = ".rbenv" ] && continue
 
-  create_symlink $(pwd)/${file} ~/${file}
+  create_symlink $(pwd)/${file} ${HOME}/${file}
 done
 
 # 必要なディレクトリのリンクを作成
-create_symlink $(pwd)/.vim ~/.vim
+create_symlink $(pwd)/.vim ${HOME}/.vim
 
-if [ ! -d ~/bin ]; then
-  mkdir ~/bin
+if [ ! -d ${HOME}/bin ]; then
+  mkdir ${HOME}/bin
 fi
 
 cd bin
 
 for script in ?*.sh; do
-  create_symlink $(pwd)/${script} ~/bin/${script}
+  create_symlink $(pwd)/${script} ${HOME}/bin/${script}
 done
 
