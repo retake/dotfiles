@@ -485,6 +485,9 @@ repo = "mattn/vim-chatgpt"
 [[plugins]]
 repo = "yuki-yano/ai-review.vim"
 
+[[plugins]]
+repo = "github/copilot.vim"
+
 # チートシート
 [[plugins]]
 repo = 'reireias/vim-cheatsheet'
