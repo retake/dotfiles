@@ -485,8 +485,13 @@ repo = "mattn/vim-chatgpt"
 [[plugins]]
 repo = "yuki-yano/ai-review.vim"
 
+# copilot
 [[plugins]]
 repo = "github/copilot.vim"
+hook_add = '''
+  inoremap <silent> ]] <Plug>(copilot-next)
+  inoremap <silent> ]] <Plug>(copilot-previous)
+'''
 
 # チートシート
 [[plugins]]
