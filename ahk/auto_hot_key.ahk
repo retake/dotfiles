@@ -20,8 +20,6 @@ WriteLog(log) {
 ;Esc
 vkEB & f::Send, {Blind}{Esc}
 
-;exit
-vkEB & c::Send, {Blind}^c
 
 ;矢印
 vkEB & h::Send, {Blind}{Left}
@@ -35,6 +33,9 @@ vkEB & p::Send, {Blind}{BS}
 vkEB & [::Send, {Blind}{Delete}
 vkEB & `;::Send, {Blind}{ENTER}
 vkEB & q::Send, {Blind}{Tab}
+vkFF & c::Send, ^c
+vkFF & v::Send, ^v
+vkFF & x::Send, ^x
 
 ;カタカナ
 vkEB & i::Send, {F7}
