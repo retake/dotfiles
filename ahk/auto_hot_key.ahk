@@ -33,9 +33,20 @@ vkEB & p::Send, {Blind}{BS}
 vkEB & [::Send, {Blind}{Delete}
 vkEB & `;::Send, {Blind}{ENTER}
 vkEB & q::Send, {Blind}{Tab}
+vkEB & c::Send, ^c
+vkEB & v::Send, ^v
+vkEB & x::Send, ^x
+
+vkFF & p::Send, {Blind}{BS}
+vkFF & [::Send, {Blind}{Delete}
+vkFF & `;::Send, {Blind}{ENTER}
+vkFF & q::Send, {Blind}{Tab}
 vkFF & c::Send, ^c
 vkFF & v::Send, ^v
 vkFF & x::Send, ^x
+
+vkFF & e::Send {Esc}
+vkEB & e::Send {Esc}
 
 ;カタカナ
 vkEB & i::Send, {F7}
