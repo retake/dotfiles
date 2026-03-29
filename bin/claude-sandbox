@@ -1,0 +1,44 @@
+#!/bin/bash
+set -euo pipefail
+
+# Usage: claude-sandbox [project-dir] [claude-args...]
+#   project-dir: defaults to current directory
+#   claude-args: passed through to claude
+
+# Resolve project directory
+if [[ $# -gt 0 && -d "$1" ]]; then
+  PROJECT_DIR="$(realpath "$1")"
+  shift
+else
+  PROJECT_DIR="$(realpath "$(pwd)")"
+fi
+
+CREDENTIALS_FILE="${HOME}/.claude/.credentials.json"
+if [[ -z "${ANTHROPIC_API_KEY:-}" && ! -f "$CREDENTIALS_FILE" ]]; then
+  echo "Error: ANTHROPIC_API_KEY is not set and ${CREDENTIALS_FILE} not found" >&2
+  exit 1
+fi
+
+CLAUDE_BIN="$(realpath "$HOME/.local/bin/claude")"
+DOTFILES_CLAUDE="$(realpath "$(dirname "$(realpath "$0")")/../claude")"
+
+# Build image if not present
+if ! docker image inspect claude-sandbox &>/dev/null; then
+  echo "Building claude-sandbox image..." >&2
+  docker build -t claude-sandbox "$DOTFILES_CLAUDE"
+fi
+
+API_KEY_ARG=()
+if [[ -n "${ANTHROPIC_API_KEY:-}" ]]; then
+  API_KEY_ARG=(-e "ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}")
+fi
+
+exec docker run -it --rm \
+  -v "${CLAUDE_BIN}:/usr/local/bin/claude:ro" \
+  -v "${HOME}/.claude:/root/.claude" \
+  -v "${DOTFILES_CLAUDE}:${DOTFILES_CLAUDE}:ro" \
+  -v "${PROJECT_DIR}:/workspace" \
+  "${API_KEY_ARG[@]}" \
+  -w /workspace \
+  claude-sandbox \
+  "$@"
