@@ -54,3 +54,7 @@ cd ~
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:~/go/bin
 
+export EDITOR=nvim
+export VISUAL=nvim
+alias vim=nvim
+
