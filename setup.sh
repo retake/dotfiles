@@ -1,4 +1,4 @@
-#which nvim!/bin/bash -ex
+#!/bin/bash -ex
 
 create_symlink() {
   local source_path=$1
