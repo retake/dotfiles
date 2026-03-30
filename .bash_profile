@@ -3,7 +3,9 @@
 source ~/.bashrc
 
 export MANPATH=${MANPATH}:/usr/local/share/man/ja
-export PS1="\[\e[1;36m\][\W]\[\e[1;37m\]:\[\e[4;32m\](\$(git branch --no-color 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'))\[\e[0;37m\]\\$ "
+
+# starship プロンプト
+eval "$(starship init bash)"
 
 export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 
