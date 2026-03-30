@@ -1,0 +1,28 @@
+# starship プロンプト設定
+
+format = """
+[$directory](bold cyan)[$git_branch](bold green)[$git_status](bold yellow) $character"""
+
+[directory]
+truncation_length = 3
+truncate_to_repo = false
+
+[git_branch]
+format = ':($branch) '
+symbol = ""
+
+[git_status]
+format = '([$all_status$ahead_behind]($style) )'
+conflicted = "!"
+ahead = "↑${count}"
+behind = "↓${count}"
+diverged = "↕"
+untracked = "?"
+stashed = "$"
+modified = "*"
+staged = "+"
+deleted = "-"
+
+[character]
+success_symbol = "[\\$](bold white)"
+error_symbol = "[\\$](bold red)"

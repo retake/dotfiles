@@ -28,6 +28,10 @@ done
 # 必要なディレクトリのリンクを作成
 create_symlink $(pwd)/.vim ${HOME}/.vim
 
+# starship設定ファイルのリンクを作成
+create_directory_if_not_exists ${HOME}/.config
+create_symlink $(pwd)/starship.toml ${HOME}/.config/starship.toml
+
 create_directory_if_not_exists ${HOME}/bin
 
 cd bin
