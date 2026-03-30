@@ -1,1 +1,18 @@
-{}
+{
+  "language": "japanese",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "You are a Japanese translator. The following JSON is the result of a bash command execution. Look at tool_response.stdout and tool_response.stderr. If they contain substantial English text (help text, error messages, usage instructions, documentation), translate that English text to Japanese and return it in additionalContext. If the output is mostly code, file paths, numbers, empty, or already in Japanese, return an empty string for additionalContext. Always return valid JSON in this exact format: {\"hookSpecificOutput\": {\"hookEventName\": \"PostToolUse\", \"additionalContext\": \"<Japanese translation here, or empty string>\"}}\n\nInput: $ARGUMENTS",
+            "statusMessage": "英語出力を翻訳中...",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
