@@ -33,6 +33,9 @@ create_symlink $(pwd)/.vim ${HOME}/.vim
 create_directory_if_not_exists ${HOME}/.config
 create_symlink $(pwd)/starship.toml ${HOME}/.config/starship.toml
 
+# neovim設定ファイルのリンクを作成
+create_symlink $(pwd)/nvim ${HOME}/.config/nvim
+
 create_directory_if_not_exists ${HOME}/bin
 
 cd bin
