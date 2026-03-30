@@ -20,6 +20,7 @@ for dotfile in .??*; do
   [ "${dotfile}" = ".git" ] && continue
   [ "${dotfile}" = ".github" ] && continue
   [ "${dotfile}" = ".rbenv" ] && continue
+  [ "${dotfile}" = ".credentials" ] && continue
 
   create_symlink $(pwd)/${dotfile} ${HOME}/${dotfile}
 done
@@ -34,4 +35,3 @@ cd bin
 for shell_script in ?*.sh; do
   create_symlink $(pwd)/${shell_script} ${HOME}/bin/${shell_script}
 done
-
