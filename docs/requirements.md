@@ -47,25 +47,7 @@ dotfiles/
 
 ## セットアップ手順
 
-```bash
-# 1. dotfilesをクローン
-git clone https://github.com/retake/dotfiles.git ~/dotfiles
-
-# 2. シンボリックリンクを作成
-cd ~/dotfiles && bash setup.sh
-
-# 3. .credentialsを手動配置（リポジトリ管理外）
-# ~/.credentials に環境変数を記述する
-
-# 4. Neovimを最新版にアップグレード（apt版は古いため）
-curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-arm64.tar.gz
-tar xzf nvim-linux-arm64.tar.gz
-cp -r nvim-linux-arm64/* ~/.local/
-rm -rf nvim-linux-arm64 nvim-linux-arm64.tar.gz
-
-# 5. nvim を起動してプラグインをインストール
-nvim  # lazy.nvimが自動インストール → :Lazy sync
-```
+→ [SETUP.md](../SETUP.md) を参照。
 
 ---
 
