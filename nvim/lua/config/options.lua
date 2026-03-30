@@ -13,6 +13,7 @@ opt.swapfile = false    -- swapファイル無効
 
 -- 表示
 vim.cmd("syntax enable")
+vim.cmd("colorscheme desert")
 opt.number = true
 opt.cursorline = true
 opt.laststatus = 2
