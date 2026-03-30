@@ -28,10 +28,17 @@
       "Write(/home/keita/.ssh/**)",
       "Write(/home/keita/.aws/**)",
       "Write(/home/keita/.gnupg/**)",
-      "Bash(rm -rf *)",
+      "Write(/home/keita/.config/gh/**)",
+      "Write(/home/keita/.netrc)",
+      "Write(/home/keita/.git-credentials)",
+      "Write(/home/keita/.claude/.credentials.json)",
+      "Write(/home/keita/.credentials)",
+      "Bash(rm -r*)",
       "Bash(git push --force*)",
-      "Bash(git push -f *)",
-      "Bash(sudo rm *)"
+      "Bash(git push -f*)",
+      "Bash(git push*--force*)",
+      "Bash(git reset --hard*)",
+      "Bash(sudo *)"
     ],
     "allow": [
       "Read(/home/keita/**)",
