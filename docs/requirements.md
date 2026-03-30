@@ -37,6 +37,7 @@
 | E（排除） | `dein_lazy.toml` のRuby/未使用プラグイン | `dein.toml` と同様に精査・削除 |
 | E（排除） | `bin/parse_git_branch.sh` | `.bash_profile` へのインライン化により不要になる |
 | E（排除） | `install_env.sh` の `.credentials` symlink | シークレットをsymlink対象から除外 |
+| E（排除） | `setup.sh` の `.claude` symlink | Claude Codeのプロジェクト設定ディレクトリをsymlink対象から除外 |
 | C（結合） | `install_env.sh` + `dist/*/install_bulk.sh` | `setup.sh` 1ファイルに統合 |
 | R（再配置） | `dist/windows/` | `os/windows/` に移動 |
 | R（再配置） | `ahk/` | `os/windows/ahk/` に移動（Windows固有設定の集約） |

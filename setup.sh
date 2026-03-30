@@ -21,6 +21,7 @@ for dotfile in .??*; do
   [ "${dotfile}" = ".github" ] && continue
   [ "${dotfile}" = ".rbenv" ] && continue
   [ "${dotfile}" = ".credentials" ] && continue
+  [ "${dotfile}" = ".claude" ] && continue
 
   create_symlink $(pwd)/${dotfile} ${HOME}/${dotfile}
 done
