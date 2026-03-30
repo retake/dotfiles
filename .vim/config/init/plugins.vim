@@ -2,7 +2,7 @@
 let s:plug_path = expand('~/.vim/autoload/plug.vim')
 if !filereadable(s:plug_path)
   execute '!curl -fLo ' . s:plug_path . ' --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  autocmd VimEnter * PlugInstall --sync
 endif
 
 call plug#begin('~/.vim/plugged')
