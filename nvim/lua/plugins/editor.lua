@@ -76,9 +76,6 @@ return {
   -- ヘルプ日本語化
   { "vim-jp/vimdoc-ja" },
 
-  -- Deno統合（denops）
-  { "vim-denops/denops.vim" },
-
   -- チートシート
   {
     "reireias/vim-cheatsheet",
