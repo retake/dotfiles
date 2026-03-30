@@ -14,5 +14,32 @@
         ]
       }
     ]
+  },
+  "permissions": {
+    "deny": [
+      "Read(/home/keita/.ssh/**)",
+      "Read(/home/keita/.aws/**)",
+      "Read(/home/keita/.gnupg/**)",
+      "Read(/home/keita/.config/gh/**)",
+      "Read(/home/keita/.netrc)",
+      "Read(/home/keita/.git-credentials)",
+      "Read(/home/keita/.claude/.credentials.json)",
+      "Read(/home/keita/.credentials)",
+      "Write(/home/keita/.ssh/**)",
+      "Write(/home/keita/.aws/**)",
+      "Write(/home/keita/.gnupg/**)",
+      "Bash(rm -rf *)",
+      "Bash(git push --force*)",
+      "Bash(git push -f *)",
+      "Bash(sudo rm *)"
+    ],
+    "allow": [
+      "Read(/home/keita/**)",
+      "Bash(git status*)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(ls*)",
+      "Bash(pwd)"
+    ]
   }
 }
