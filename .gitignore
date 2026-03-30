@@ -1,1 +1,3 @@
 .credentials
+.vim/plugged/
+.vim/autoload/
