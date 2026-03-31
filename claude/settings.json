@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -f ~/dev-log/retrospectives/_index.md ] && cat ~/dev-log/retrospectives/_index.md || true",
+            "command": "python3 -c \"import json,sys; content=open(sys.argv[1]).read() if __import__('os').path.exists(sys.argv[1]) else ''; print(json.dumps({'hookSpecificOutput':{'hookEventName':'PreToolUse','additionalContext':content}}))\" ~/dev-log/retrospectives/_index.md",
             "statusMessage": "過去の教訓を読み込み中..."
           }
         ]
