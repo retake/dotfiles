@@ -164,6 +164,15 @@ dev-log/
 
 人間が承認した場合のみ記録する。
 
+### サブエージェントへの教訓注入
+
+Agentツールを呼ぶ前に、必ず以下を行う：
+
+1. `~/dev-log/retrospectives/_index.md` を読む（Readツールで実在確認してから）
+2. 読んだ教訓の内容をサブエージェントのプロンプトに明示的に含める
+
+理由：PreToolUseフックのadditionalContextは親Claudeのコンテキストにのみ注入され、サブエージェントには届かない。
+
 ### allowリストの整備
 
 バックグラウンドエージェントはユーザー承認ダイアログを出せないため、自動実行させたいコマンドは事前に `settings.json` の `allow` に追加しておく。現在許可済み：`bash -n`、`shellcheck`、`git status/log/diff`、`ls`、`pwd`。
