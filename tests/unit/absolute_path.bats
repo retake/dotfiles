@@ -17,6 +17,7 @@ teardown() {
   local tmpfile="${TEST_DIR}/sample.txt"
   touch "${tmpfile}"
 
+  # BATSはstdinをパイプに接続するため< /dev/nullで明示的に封じる
   run bash "${SCRIPT}" "${tmpfile}" < /dev/null
 
   assert_success
@@ -24,6 +25,7 @@ teardown() {
 }
 
 @test "ディレクトリの絶対パスを返す" {
+  # BATSはstdinをパイプに接続するため< /dev/nullで明示的に封じる
   run bash "${SCRIPT}" "${TEST_DIR}" < /dev/null
 
   assert_success
