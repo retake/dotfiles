@@ -1,4 +1,5 @@
-#!/bin/bash -eu
+#!/usr/bin/env bash
+set -euo pipefail
 
 # --- usage ---
 usage() {
@@ -7,13 +8,13 @@ usage() {
 # --- usage ---
 
 # --- initialize ---
-if [ "${1}" = "" ]; then
+if [ "${1:-}" = "" ]; then
   target_path=./
 else
   target_path=${1}
 fi
 
-if [ "${2}" = "" ]; then
+if [ "${2:-}" = "" ]; then
   parallel_number=1
 else
   parallel_number=${2}

@@ -1,6 +1,7 @@
-#!/bin/bash -eu
+#!/usr/bin/env bash
+set -euo pipefail
 
-[ -p /dev/stdin ] && export relate_path=`cat -` || export relate_path=${1}
+[ -p /dev/stdin ] && export relate_path=`cat -` || export relate_path=${1:-}
 if [ -e ${relate_path} ];then
   if [ -d ${relate_path} ]; then
     echo $(cd ${relate_path};pwd)
