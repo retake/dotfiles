@@ -8,8 +8,8 @@ if [ -e "${relative_path}" ];then
   else
     if [ -f "${relative_path}" ]; then
       dir_path=$(dirname "${relative_path}")
-      absolute_dir_path=$(cd ${dir_path};pwd)
-      echo ${absolute_dir_path}/$(basename "${relative_path}")
+      absolute_dir_path=$(cd "${dir_path}";pwd)
+      echo "${absolute_dir_path}/$(basename "${relative_path}")"
     else
       exit 1
     fi
