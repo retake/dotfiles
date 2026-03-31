@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cat ~/dev-log/retrospectives/_index.md",
+            "command": "[ -f ~/dev-log/retrospectives/_index.md ] && cat ~/dev-log/retrospectives/_index.md || true",
             "statusMessage": "過去の教訓を読み込み中..."
           }
         ]
