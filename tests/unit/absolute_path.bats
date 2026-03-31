@@ -43,7 +43,26 @@ teardown() {
 }
 
 @test "存在しないパスは出力なしで終了する" {
-  run bash "${SCRIPT}" "${TEST_DIR}/nonexistent"
+  # BATSはstdinをパイプに接続するため< /dev/nullで明示的に封じる
+  run bash "${SCRIPT}" "${TEST_DIR}/nonexistent" < /dev/null
+
+  assert_success
+  assert_output ""
+}
+
+@test "相対パスを絶対パスに変換する" {
+  local tmpfile="${TEST_DIR}/sample.txt"
+  touch "${tmpfile}"
+
+  # サブシェルでTEST_DIRに移動して相対パスで渡す
+  run bash -c "cd '${TEST_DIR}' && bash '${SCRIPT}' './sample.txt' < /dev/null"
+
+  assert_success
+  assert_output "${tmpfile}"
+}
+
+@test "引数なし・stdinも空のとき出力なしで終了する" {
+  run bash "${SCRIPT}" < /dev/null
 
   assert_success
   assert_output ""
