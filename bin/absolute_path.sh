@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-[ -p /dev/stdin ] && export relative_path=$(cat -) || export relative_path=${1:-}
+if [ -p /dev/stdin ]; then
+  relative_path=$(cat -)
+else
+  relative_path=${1:-}
+fi
+export relative_path
 if [ -e "${relative_path}" ];then
   if [ -d "${relative_path}" ]; then
-    echo $(cd "${relative_path}";pwd)
+    echo "$(cd "${relative_path}";pwd)"
   else
     if [ -f "${relative_path}" ]; then
       dir_path=$(dirname "${relative_path}")
