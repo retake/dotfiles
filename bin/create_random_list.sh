@@ -22,13 +22,13 @@ fi
 # --- initialize ---
 
 # --- error check ---
-if [ ! -e ${target_path} ]; then
+if [ ! -e "${target_path}" ]; then
   echo "target_path is not exist"
   usage
   exit 1
 fi
 
-if [ ${parallel_number} -eq 0 ]; then
+if [ "${parallel_number}" -eq 0 ]; then
   echo "parallel_number must be 1 or more"
   usage
   exit 1
@@ -44,9 +44,9 @@ file_paths() {
 
 
 # --- main ---
-file_paths | while read file_path
+file_paths | while read -r file_path
 do
-  file_number=$((($(random_number.sh) % ${parallel_number}) + 1 ))
+  file_number=$((($(random_number.sh) % parallel_number) + 1 ))
   echo "${file_number}: ${file_path}"
 done
 # --- main ---
