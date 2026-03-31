@@ -1,4 +1,5 @@
-#!/bin/bash -eu
+#!/usr/bin/env bash
+set -euo pipefail
 
 if [ -p /dev/stdin ]; then
   echo "after_pipe!"

@@ -1,4 +1,5 @@
-#!/bin/bash -ex
+#!/usr/bin/env bash
+set -euxo pipefail
 
 create_symlink() {
   local source_path=$1
