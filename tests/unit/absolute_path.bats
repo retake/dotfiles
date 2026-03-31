@@ -17,14 +17,14 @@ teardown() {
   local tmpfile="${TEST_DIR}/sample.txt"
   touch "${tmpfile}"
 
-  run bash "${SCRIPT}" "${tmpfile}"
+  run bash "${SCRIPT}" "${tmpfile}" < /dev/null
 
   assert_success
   assert_output "${tmpfile}"
 }
 
 @test "ディレクトリの絶対パスを返す" {
-  run bash "${SCRIPT}" "${TEST_DIR}"
+  run bash "${SCRIPT}" "${TEST_DIR}" < /dev/null
 
   assert_success
   assert_output "${TEST_DIR}"
