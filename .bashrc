@@ -45,14 +45,14 @@ if gh --version > /dev/null 2>&1; then
   alias iss='gh issue status'
 fi
 
-if ~/.rbenv/bin/rbenv --version > /dev/null 2>&1; then
-  export PATH="~/.rbenv/bin:${PATH}"
+if "${HOME}/.rbenv/bin/rbenv" --version > /dev/null 2>&1; then
+  export PATH="${HOME}/.rbenv/bin:${PATH}"
   eval "$(rbenv init -)"
 fi
 
 cd ~
-export PATH=$PATH:/usr/local/go/bin
-export PATH=$PATH:~/go/bin
+export PATH="${PATH}:/usr/local/go/bin"
+export PATH="${PATH}:${HOME}/go/bin"
 
 export EDITOR=nvim
 export VISUAL=nvim
