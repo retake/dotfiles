@@ -1,6 +1,18 @@
 {
   "language": "japanese",
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat ~/dev-log/retrospectives/_index.md",
+            "statusMessage": "過去の教訓を読み込み中..."
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Bash",
