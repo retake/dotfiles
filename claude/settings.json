@@ -33,11 +33,14 @@
       "Write(/home/keita/.git-credentials)",
       "Write(/home/keita/.claude/.credentials.json)",
       "Write(/home/keita/.credentials)",
-      "Bash(rm -r*)",
+      "Bash(rm*)",
       "Bash(git push --force*)",
       "Bash(git push -f*)",
       "Bash(git push*--force*)",
       "Bash(git reset --hard*)",
+      "Bash(git push *)",
+      "Bash(ssh *)",
+      "Bash(npm publish*)",
       "Bash(sudo *)"
     ],
     "allow": [
@@ -45,8 +48,13 @@
       "Bash(git status*)",
       "Bash(git log*)",
       "Bash(git diff*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
       "Bash(ls*)",
       "Bash(pwd)",
+      "Bash(find*)",
+      "Bash(grep*)",
+      "Bash(date*)",
       "Bash(bash -n *)",
       "Bash(shellcheck *)"
     ]
