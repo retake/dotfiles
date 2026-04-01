@@ -30,7 +30,6 @@ cd ~/dotfiles && bash setup.sh
 - `~/.vim/`
 - `~/.config/starship.toml`
 - `~/.config/nvim/`
-- `~/.claude/CLAUDE.md`, `~/.claude/settings.json`, `~/.claude/skills/`
 - `~/bin/` 配下のスクリプト群
 
 ### 3. `.credentials` を手動配置
@@ -98,4 +97,45 @@ source ~/.bash_profile
 nvim --version   # v0.11以上であること
 vim --version    # nvimが起動すること（aliasが効いていること）
 starship --version
+```
+
+---
+
+## Claude Code 開発環境
+
+Claude Code を使った自律開発フロー（/orchestrate）を使う場合のみ実施する。
+
+### 1. Claude Code をインストール
+
+```bash
+npm install -g @anthropic-ai/claude-code
+```
+
+Node.js が未インストールの場合は先にインストールする。
+
+### 2. Claude Code 設定を展開
+
+```bash
+cd ~/dotfiles && bash setup-claude.sh
+```
+
+以下のシンボリックリンクが作成される：
+
+- `~/.claude/CLAUDE.md`
+- `~/.claude/settings.json`
+- `~/.claude/skills/`（/orchestrate スキルを含む）
+- `~/.claude/docs/`（requirements.md・design.md）
+
+### 3. 認証
+
+```bash
+claude
+```
+
+初回起動時に認証フローが走る。
+
+### 4. dev-log をクローン（教訓ログ）
+
+```bash
+git clone https://github.com/retake/dev-log.git ~/dev-log
 ```

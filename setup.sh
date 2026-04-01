@@ -34,11 +34,6 @@ create_symlink "$(pwd)/starship.toml" "${HOME}/.config/starship.toml"
 # neovim設定ファイルのリンクを作成
 create_symlink "$(pwd)/nvim" "${HOME}/.config/nvim"
 
-# Claude Code設定ファイルのリンクを作成
-create_directory_if_not_exists "${HOME}/.claude"
-create_symlink "$(pwd)/claude/CLAUDE.md" "${HOME}/.claude/CLAUDE.md"
-create_symlink "$(pwd)/claude/settings.json" "${HOME}/.claude/settings.json"
-create_symlink "$(pwd)/claude/skills" "${HOME}/.claude/skills"
 
 create_directory_if_not_exists "${HOME}/bin"
 
