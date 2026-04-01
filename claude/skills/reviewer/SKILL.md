@@ -116,3 +116,6 @@ allowed-tools:
 セキュリティ停止: SECURITY_STOP 使用回数: N回 停止箇所: （ファイル:行番号） 内容: （問題の概要）
 インタフェース変更: ESCALATED 使用回数: N回 変更理由: （理由） 変更箇所: （詳細）
 ```
+
+※ ReviewerのDONEは FR-7（レビュー）と FR-8（成果物出力）の両方が完了したことを意味する。
+  traceability.md・completion-summary.md の両方が生成済みであること。
