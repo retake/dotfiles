@@ -46,7 +46,7 @@ allowed-tools:
 1. 完了条件に基づいてテストコードを `src/` 以下に生成する（テストファイルの命名規則は設計に従う）
 2. テストを実行する（コマンドはallowリスト記載済みのものを使用）
 3. 失敗した場合はエラーメッセージを確認し、種別を判定する
-   - 外部依存エラー: `timeout / ECONNREFUSED / connection refused / ENOTFOUND / network` のいずれかを含む場合
+   - 外部依存エラー: `timeout / ECONNREFUSED / connection refused / ENOTFOUND / network` のいずれかを含む場合（これらは代表例。ETIMEDOUT・socket hang up等、外部接続に起因すると判断されるエラー全般を含む）
    - 通常エラー: それ以外
 4. 自律修正を行い、上限内で再実行する
 5. 上限を超えても解消しない場合は ESCALATED を返す

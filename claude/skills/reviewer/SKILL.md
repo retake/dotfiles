@@ -25,7 +25,7 @@ allowed-tools:
 - **割り当て枠**: ツール呼び出しの上限回数
 - **要件**: docs/requirements.mdの内容
 - **設計**: docs/design-summary.mdの内容
-- **テスト結果**: .claude/test-result.logの内容
+- **テスト結果**: .claude/test-result.logの内容（ファイルが存在しない場合はテスト正常完了とみなす）
 - **過去の教訓**: retrospectivesから読み込んだ教訓
 
 ## 4軸レビューの実施

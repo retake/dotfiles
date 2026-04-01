@@ -40,7 +40,7 @@ allowed-tools:
 1. lint設定ファイルを確認する（`.eslintrc / .flake8 / pyproject.toml` 等）
 2. lintを実行する（コマンドはallowリスト記載済みのものを使用）
 3. 指摘がある場合はエラーメッセージを確認し、種別を判定する
-   - 外部依存エラー: `timeout / ECONNREFUSED / connection refused / ENOTFOUND / network` のいずれかを含む場合
+   - 外部依存エラー: `timeout / ECONNREFUSED / connection refused / ENOTFOUND / network` のいずれかを含む場合（これらは代表例。ETIMEDOUT・socket hang up等、外部接続に起因すると判断されるエラー全般を含む）
    - 通常エラー: それ以外のlint指摘
 4. 自律修正を行い、上限内で再実行する
    - **スタイル修正**（命名・フォーマット等）はlintの責務として実施してよい
