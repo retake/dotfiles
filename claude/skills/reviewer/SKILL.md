@@ -26,6 +26,7 @@ allowed-tools:
 - **要件**: docs/requirements.mdの内容
 - **設計**: docs/design-summary.mdの内容
 - **テスト結果**: .claude/test-result.logの内容（ファイルが存在しない場合はテスト正常完了とみなす）
+- **lint結果**: FR-6のDONE/ESCALATED状況（ESCALATEDの場合は.claude/lint-result.logの内容）
 - **過去の教訓**: retrospectivesから読み込んだ教訓
 
 ## 4軸レビューの実施
