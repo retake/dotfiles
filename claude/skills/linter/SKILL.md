@@ -19,7 +19,6 @@ allowed-tools:
   - Bash(go vet*)
   - Bash(golangci-lint*)
   - Bash(bundle exec rubocop*)
-  - Bash(bats*)
 ---
 
 # Linter — コード品質エンジニアエージェント

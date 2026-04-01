@@ -26,7 +26,8 @@ allowed-tools:
 - **要件**: docs/requirements.mdの内容
 - **設計**: docs/design-summary.mdの内容
 - **過去の教訓**: retrospectivesから読み込んだ教訓
-- **前回の指摘**（再実行時のみ）: 前回の問題点
+- **前回のESCALATED内容**（ESCALATEDによる再実行時のみ）: ESCALATEDの理由・詳細
+- **未実装の要件・インタフェース**（実装完全性レビューによる再実行時のみ）: grepで確認した未実装のREQ-x.x識別子・関数名のリスト
 
 ## 実装ルール
 

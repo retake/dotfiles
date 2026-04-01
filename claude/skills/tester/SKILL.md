@@ -12,6 +12,7 @@ allowed-tools:
   - Bash(find*)
   - Bash(pwd)
   - Bash(npm test*)
+  - Bash(npm run test*)
   - Bash(npx jest*)
   - Bash(npx vitest*)
   - Bash(pytest*)
