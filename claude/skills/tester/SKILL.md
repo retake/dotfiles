@@ -1,6 +1,7 @@
 ---
 name: tester
 description: テストエンジニアエージェント。テストコードを生成・実行し、失敗時は自律修正する。orchestrateスキルから呼び出される。
+model: sonnet
 user-invocable: false
 allowed-tools:
   - Read

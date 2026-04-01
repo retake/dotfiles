@@ -1,6 +1,7 @@
 ---
 name: linter
 description: コード品質エンジニアエージェント。lintを実行しスタイル・フォーマット問題を修正する。orchestrateスキルから呼び出される。
+model: haiku
 user-invocable: false
 allowed-tools:
   - Read
