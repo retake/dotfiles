@@ -247,6 +247,11 @@ docs/design-summary.md に以下の形式で出力してください：
 【過去の教訓】
 （~/retrospectives/_index.mdから読んだ内容をここに転記する）
 
+【使用可能なツール】
+- Read, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd) — コード・ファイル探索
+- Write — docs/design-summary.md への出力のみ
+- 禁止: Edit（既存ファイルを上書きしない）/ Bash(git*) / テスト・lintコマンド
+
 【制約】
 - プロジェクトディレクトリ内のみ操作すること
 - docs/design-summary.md への書き込みのみ行うこと
@@ -450,6 +455,10 @@ Implementerを呼び出す前に以下を確認する：
 - 選択肢のある実装は作る前に一言確認する。作ってから修正するより確認してから作る
 - 環境依存の操作の前に前提を確認する
 
+【使用可能なツール】
+- Read, Write, Edit, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd) — 実装全般
+- 禁止: Bash(git*) / テスト実行コマンド（npm test / pytest / go test 等）/ lintコマンド（ruff / eslint 等）
+
 【制約】
 - プロジェクトディレクトリ内のみ操作すること
 - git push・デプロイは絶対に実行しないこと
@@ -582,6 +591,11 @@ src/ ディレクトリ以下
 - stdinを引数で呼び出すテストでは `< /dev/null` で封じること（ローカルとCIで挙動が異なる）
 - バックグラウンドエージェントに自動実行させるコマンドは委譲前にallowリストへ追加しておく
 
+【使用可能なツール】
+- Read, Write, Edit, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd) — テストコード生成・調査
+- Bash(テスト実行コマンド) — allowリストに記載済みのコマンドのみ（npm test / pytest / go test 等）
+- 禁止: Bash(git*) / lintコマンド（ruff / eslint 等）/ src/以外への Write
+
 【制約】
 - プロジェクトディレクトリ内のみ操作すること
 - git push・デプロイは絶対に実行しないこと
@@ -670,6 +684,11 @@ Linterを呼び出す前に以下を実行する：
 【過去の教訓】
 （~/retrospectives/_index.mdから読んだ内容を転記）
 - バックグラウンドエージェントに自動実行させるコマンドは委譲前にallowリストへ追加しておく
+
+【使用可能なツール】
+- Read, Edit, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd) — lint実行・スタイル修正
+- Bash(lintコマンド) — allowリストに記載済みのコマンドのみ（npm run lint / ruff / eslint 等）
+- 禁止: Write（新規ファイル作成なし）/ Bash(git*) / テスト実行コマンド / ロジック変更を伴う Edit
 
 【制約】
 - プロジェクトディレクトリ内のみ操作すること
@@ -814,6 +833,12 @@ Reviewerを呼び出す前に以下を実行する：
 
 【過去の教訓】
 （~/retrospectives/_index.mdから読んだ内容を転記）
+
+【使用可能なツール】
+- Read, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd) — コードレビュー・調査
+- Write — docs/traceability.md・docs/completion-summary.md への出力のみ
+- Edit — ロジックバグの自動修正のみ（セキュリティ問題・スタイル修正には使わない）
+- 禁止: Bash(git*) / テスト実行コマンド / lintコマンド / セキュリティ問題への Edit
 
 【制約】
 - プロジェクトディレクトリ内のみ操作すること
