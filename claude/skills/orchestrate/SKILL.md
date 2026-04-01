@@ -45,7 +45,7 @@ allowed-tools:
 - `status` フィールドを読む
 - `waiting_approval` → 該当するフェーズの確認内容を表示し、ユーザーの指示（「承認」「修正」「中止」）を待つ
   **特殊ケース** — phase=FR-4-redesign の場合: FR-7 ESCALATED処理（§7b）の手順4〜5に従う（承認後にFR-4再実行回数+1、FR-4〜FR-7 PENDING化、Implementer再実行）
-- `escalated` → エスカレーション内容を表示し、ユーザーの指示（「再開」「中止」）を待つ
+- `escalated` → エスカレーション内容を表示し、ユーザーの指示（「再開」「中止」）を待つ。ユーザーが「再開」と入力したら FR-9「escalated再開時の処理」の手順1〜5を実行する
 - `done` → 「このタスクは完了済みです」と表示して終了
 - `running` → 以下を表示して確認停止する（誤って2回起動した場合のstate破壊を防ぐ）：
   ```
@@ -139,7 +139,7 @@ allowed-tools:
 - 入力テンプレートの内容をもとに `docs/requirements.md` を新規作成する（確認停止なし）
 - 要件IDは `REQ-1.1` から採番する
 
-### FR-1完了後のallowリスト確認停止
+### allowリスト確認停止（技術スタック確定後）
 
 技術スタックが判明した時点で確認停止する（タイミング: FR-2スキップ時はFR-1完了後、FR-2実行時はFR-2承認後）。以下を表示して確認停止する：
 
@@ -387,7 +387,7 @@ task-state.mdにstatus=waiting_approval、phase=FR-3として保存する。
 | FR-5 | テスト | PENDING | - |
 | FR-6 | lint | PENDING | - |
 | FR-7 | レビュー | PENDING | - |
-| FR-8 | 成果物出力 | PENDING | - |
+| FR-8 | 成果物出力 | PENDING | - | ← ReviewerのDONEと同時に完了。独立呼び出しなし |
 
 ※ FR-8はReviewerのDONEと同時に完了とする（独立呼び出しなし）
 
@@ -611,6 +611,7 @@ Testerを呼び出す前に以下を実行する：
 **DONE の場合：**
 - task-state.mdのFR-5ステータスをDONEに更新
 - agent-reportに追記
+- 検証方法が「手動確認」の場合は `.claude/manual-check.md` が生成済みであることを確認する
 - FR-6へ進む
 
 **ESCALATED の場合：**
@@ -952,7 +953,10 @@ task-state.mdのstatusが `escalated` の場合、ユーザーが「再開」と
 2. 停止していたFRを特定する（task-state.mdのphaseフィールドを参照）
 3. **phase=FR-5 / FR-6の場合**: 試行回数を0にリセットしてから再呼び出しする
 4. **phase=FR-7-security-stop の場合**: FR-5試行回数・FR-6試行回数を0にリセットし、FR-5から再実行する
-5. **その他のFRの場合**: 対応方針に基づいて該当FRから再実行する
+5. **phase=FR-3の場合**: FR-3（Architect）から再実行する
+6. **phase=FR-4の場合（スコープ外）**: ユーザー指示に応じてFR-3またはFR-1から再実行する
+7. **phase=FR-4-redesignの場合（インタフェース変更）**: §FR-7 ESCALATEDの§7b手順に従い、design-summary.md更新後にFR-4から再実行する
+8. **その他のFRの場合**: 対応方針に基づいて該当FRから再実行する
 
 ---
 
