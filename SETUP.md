@@ -15,7 +15,6 @@
 
 ```bash
 git clone https://github.com/retake/dotfiles.git ~/dotfiles
-git clone https://github.com/retake/dev-log.git ~/dev-log
 ```
 
 ### 2. セットアップスクリプトを実行
@@ -119,12 +118,13 @@ Node.js が未インストールの場合は先にインストールする。
 cd ~/dotfiles && bash setup-claude.sh
 ```
 
-以下のシンボリックリンクが作成される：
+以下が作成される：
 
-- `~/.claude/CLAUDE.md`
-- `~/.claude/settings.json`
-- `~/.claude/skills/`（/orchestrate スキルを含む）
-- `~/.claude/docs/`（requirements.md・design.md）
+- `~/.claude/CLAUDE.md` → symlink
+- `~/.claude/settings.json` → テンプレートから実ファイルとして生成（`$HOME` を展開）
+- `~/.claude/skills/` → symlink（/orchestrate スキルを含む）
+- `~/.claude/docs/` → symlink（requirements.md・design.md）
+- `~/retrospectives/` → symlink（`_index.md` は dotfiles 管理、個別ファイルはローカルのみ）
 
 ### 3. 認証
 
@@ -133,9 +133,3 @@ claude
 ```
 
 初回起動時に認証フローが走る。
-
-### 4. dev-log をクローン（教訓ログ）
-
-```bash
-git clone https://github.com/retake/dev-log.git ~/dev-log
-```
