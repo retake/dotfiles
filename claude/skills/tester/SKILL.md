@@ -35,6 +35,7 @@ allowed-tools:
 - **タスクサイズ**: small / medium / large
 - **自律修正の上限回数**: サイズ別の上限
 - **要件**: docs/requirements.mdの内容
+- **設計**: docs/design-summary.mdの内容（テストファイルの命名規則・ディレクトリ構造の確認に使用）
 - **検証方法**: 手動確認か自動テストか
 - **過去の教訓**: retrospectivesから読み込んだ教訓
 
