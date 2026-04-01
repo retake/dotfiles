@@ -56,7 +56,12 @@
       "Bash(grep*)",
       "Bash(date*)",
       "Bash(bash -n *)",
-      "Bash(shellcheck *)"
+      "Bash(shellcheck *)",
+      "Bash(python3*)",
+      "Bash(pytest*)",
+      "Bash(ruff*)",
+      "Bash(pip3*)",
+      "Bash(flake8*)"
     ]
   }
 }
