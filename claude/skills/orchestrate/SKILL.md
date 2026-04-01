@@ -105,15 +105,17 @@ allowed-tools:
   - Bash(pytest*)      ← Pythonの場合
   - Bash(go test*)     ← Goの場合
 
-settings.jsonの場所: /home/keita/dotfiles/claude/settings.json
+手順:
+  1. ~/dotfiles/claude/settings.template.json の permissions.allow に追加する
+  2. bash ~/dotfiles/setup-claude.sh を実行して ~/.claude/settings.json を再生成する
 追加後に「承認」と入力してください
 ```
 
-停止時は以下のJSON差分を具体的に提示する（人間が手動でsettings.jsonに追加する）：
+停止時は以下のJSON差分を具体的に提示する（人間が手動でsettings.template.jsonに追加後、setup-claude.shを再実行する）：
 
 ```json
-// settings.jsonのpermissions.allowに追加してください
-// ファイルパス: /home/keita/dotfiles/claude/settings.json
+// ~/dotfiles/claude/settings.template.json の permissions.allow に追加してください
+// 追加後: bash ~/dotfiles/setup-claude.sh を実行して反映する
 "Bash(npm test*)",       // Node.jsの場合
 "Bash(npm run lint*)",
 "Bash(npm run build*)",

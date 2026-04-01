@@ -72,6 +72,18 @@ teardown() {
   assert_failure
 }
 
+@test "retrospectives のシンボリックリンクが作成される" {
+  bash "${DOTFILES_DIR}/setup-claude.sh" < /dev/null
+  assert [ -L "${FAKE_HOME}/retrospectives" ]
+}
+
+@test "retrospectives のリンク先が dotfiles のディレクトリを指している" {
+  bash "${DOTFILES_DIR}/setup-claude.sh" < /dev/null
+  local link_target
+  link_target=$(readlink "${FAKE_HOME}/retrospectives")
+  assert_equal "${link_target}" "${DOTFILES_DIR}/retrospectives"
+}
+
 @test "bin/absolute_path.sh のシンボリックリンクが作成される" {
   bash "${DOTFILES_DIR}/setup.sh" < /dev/null
   assert [ -L "${FAKE_HOME}/bin/absolute_path.sh" ]
