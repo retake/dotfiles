@@ -30,7 +30,7 @@ cd ~/dotfiles && bash setup.sh
 - `~/.vim/`
 - `~/.config/starship.toml`
 - `~/.config/nvim/`
-- `~/.claude/CLAUDE.md`, `~/.claude/settings.json`
+- `~/.claude/CLAUDE.md`, `~/.claude/settings.json`, `~/.claude/skills/`
 - `~/bin/` 配下のスクリプト群
 
 ### 3. `.credentials` を手動配置
