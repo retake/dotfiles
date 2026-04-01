@@ -32,7 +32,6 @@ allowed-tools:
 | FR-5 テスト | `tester` |
 | FR-6 lint | `linter` |
 | FR-7 レビュー | `reviewer` |
-設計ドキュメント（`~/.claude/docs/design.md`）の仕様に従い、以下の手順で動作してください。
 
 ---
 
@@ -152,8 +151,9 @@ allowed-tools:
   - Bash(go test*)     ← Goの場合
 
 手順:
-  1. ~/dotfiles/claude/settings.template.json の permissions.allow に追加する
-  2. bash ~/dotfiles/setup-claude.sh を実行して ~/.claude/settings.json を再生成する
+  1. dotfilesの settings.template.json の permissions.allow に追加する
+  2. dotfilesのセットアップスクリプトを実行して ~/.claude/settings.json を再生成する
+  （パスは環境によって異なります。通常は `ls ~/dotfiles/` または `cat ~/.claude/settings.json` で確認してください）
 追加後に「承認」と入力してください
 ```
 
@@ -287,19 +287,22 @@ Architectの完了後、以下を確認してから承認停止に入る：
 - 記載が薄い（概要のみで詳細なし）→ **軽微**（警告として記録し通過）
 
 **ループ動作：**
-- 重大な課題あり → Architectを再実行（課題リストをプロンプトに追記）、FR-3設計レビュー試行回数+1。再実行後は**設計ファイルの検証（構造チェック）を再度行ってから**品質レビューに戻る
-- 重大な課題なし → 設計承認確認停止へ進む
-- 上限超過 → 以下を出力して確認停止する：
-  ```
-  [ESCALATION] フェーズ: FR-3 設計品質レビュー上限超過
-  原因: （回数）回修正しても重大な課題が残っています
-  課題: （残存する重大課題のリスト）
-  選択肢:
-    A) 設計を手動修正後「再開」と入力
-    B) 「中止」と入力
-  ```
 
-task-state.mdのFR-3設計レビュー試行回数を更新する。
+```
+[品質OK] → 設計承認確認停止へ進む
+[品質NG] →
+  1. FR-3設計レビュー試行回数+1、task-state.md更新
+  2. 上限チェック：
+     - 上限超過 → [ESCALATION] フェーズ: FR-3 設計品質レビュー上限超過
+                   原因: （回数）回修正しても重大な課題が残っています
+                   課題: （残存する重大課題のリスト）
+                   選択肢:
+                     A) 設計を手動修正後「再開」と入力
+                     B) 「中止」と入力
+  3. Architectを再実行（課題リストをプロンプトに追記）
+  4. 設計ファイルの検証（構造チェック）を再度行う
+  5. → ループ先頭（品質レビュー）に戻る
+```
 
 ### 設計承認の確認停止
 
@@ -316,6 +319,11 @@ Architectの完了後、以下を出力して確認停止する：
 ```
 
 task-state.mdにstatus=waiting_approval、phase=FR-3として保存する。
+
+承認後、task-state.mdの「確定サイズ」を以下のルールで更新してから FR-4 へ進む：
+- requirements.mdの全要件ID数（REQ-x.x の件数）を数える
+- 1〜5件 → small / 6〜15件 → medium / 16件以上 → large
+- task-state.mdの「確定サイズ」と「ツール呼び出し上限」を更新する
 
 ---
 
@@ -549,7 +557,7 @@ Testerを呼び出す前に以下を実行する：
 （docs/requirements.mdの内容を転記）
 
 【検証方法】
-（docs/requirements.mdの「検証方法」セクションの内容を転記）
+（docs/requirements.mdの「検証方法」セクションの内容を転記。セクションが存在しない場合は「自動テスト（デフォルト）」と記載）
 
 【過去の教訓】
 （~/retrospectives/_index.mdから読んだ内容を転記）
@@ -689,9 +697,11 @@ Reviewerを呼び出す前に以下を実行する：
 **DONE（自動修正1件以上）の場合 — レビューループ継続：**
 
 Reviewerがコード品質のロジック不具合を自動修正した場合、以下のレビューループを実行する。
+1周 = 「FR-5→FR-6→Reviewerを1セット実行すること」とカウントする。
+**Reviewer呼び出しの前に**試行回数をインクリメントし、上限チェックを行う。
 重大な課題がなくなるまで繰り返す（上限: small=2 / medium=3 / large=5）。
 
-1. FR-7完了レビュー試行回数+1、task-state.mdを更新する
+1. FR-7完了レビュー試行回数+1、task-state.mdのFR-5試行回数・FR-6試行回数を0にリセットして更新する
 2. 上限チェック：
    - 上限超過 → 以下を出力して確認停止する：
      ```
@@ -870,6 +880,8 @@ Reviewerがコード品質のロジック不具合を自動修正した場合、
 記録場所: .claude/task-state.md
 ```
 
+※ 選択肢は文脈に応じて省略可（例: スキップが不適切な場合はBを省く）。
+
 ### escalated 再開時の処理（ステップ0のescalated分岐）
 
 task-state.mdのstatusが `escalated` の場合、ユーザーが「再開」と入力したら：
@@ -881,6 +893,9 @@ task-state.mdのstatusが `escalated` の場合、ユーザーが「再開」と
 ---
 
 ## FR-10: 完了記録・ターミナル通知（Orchestratorが直接実行）
+
+※ ReviewerのDONEは FR-7（レビュー）と FR-8（成果物出力）の両方の完了を意味する。
+  FR-10はReviewerのDONEを受けて実行する（FR-8は独立フェーズとして呼び出さない）。
 
 ### task-state.md の完了記録
 
@@ -962,7 +977,7 @@ FR-8のステータス: DONE・完了日時を記録
 
 生成後、以下を追記して出力する：
 ```
-振り返りドラフト: ~/retrospectives/（ファイル名）
+振り返りドラフト: .claude/retrospective-draft.md
 _index.mdへの追記候補が含まれています。内容を確認して ~/retrospectives/_index.md を更新してください。
 ```
 
