@@ -1,6 +1,7 @@
 ---
 name: implementer
 description: ソフトウェア実装エージェント。設計に基づいてsrc/以下にコードを生成する。orchestrateスキルから呼び出される。
+model: sonnet
 user-invocable: false
 allowed-tools:
   - Read

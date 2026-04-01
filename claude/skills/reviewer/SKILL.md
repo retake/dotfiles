@@ -1,6 +1,7 @@
 ---
 name: reviewer
 description: シニアエンジニアエージェント。4軸レビューを行い、成果物（traceability.md・completion-summary.md）を生成する。orchestrateスキルから呼び出される。
+model: opus
 user-invocable: false
 allowed-tools:
   - Read

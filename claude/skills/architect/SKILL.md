@@ -1,6 +1,7 @@
 ---
 name: architect
 description: ソフトウェア設計エージェント。要件を受け取りdocs/design-summary.mdを生成する。orchestrateスキルから呼び出される。
+model: opus
 user-invocable: false
 allowed-tools:
   - Read
