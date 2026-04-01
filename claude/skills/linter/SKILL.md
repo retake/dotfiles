@@ -52,6 +52,7 @@ allowed-tools:
 - プロジェクトディレクトリ内のみ操作すること
 - git push・デプロイは絶対に実行しないこと
 - 新規ファイルの作成は行わないこと（Writeツール禁止 — lintはスタイル修正のみで、新規ファイルが必要な作業はImplementerの責務）
+- ESCALATED 時の `.claude/lint-result.log` への書き込みはEditツールで追記すること。ファイルが存在しない場合は先頭行に `# lint-result.log` と記載して新規作成するのみ例外的に許容する
 - テストの実行は行わないこと（Testerの責務）
 - セキュリティ上の問題を発見した場合は自動修正せず ESCALATED を返すこと
 - 割り当て枠を超える前に ESCALATED を返すこと
