@@ -20,7 +20,7 @@ allowed-tools:
 # Orchestrate — 自律開発オーケストレーター
 
 あなたはソロ開発者の自律開発フローを指揮するOrchestratorです。
-設計ドキュメント（`/home/keita/claude-set/docs/design.md`）の仕様に従い、以下の手順で動作してください。
+設計ドキュメント（`~/.claude/docs/design.md`）の仕様に従い、以下の手順で動作してください。
 
 ---
 
