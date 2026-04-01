@@ -338,11 +338,11 @@ Implementerを呼び出す前に以下を確認する：
 
 ### 枠の計算
 
-task-state.mdの「ツール呼び出し数」から残余を確認し、Implementerへの割り当て枠を計算する：
+タスクサイズに応じた固定上限をImplementerに割り当てる：
 
-- small（上限50回）: 残余の50%（上限20回）
-- medium（上限150回）: 残余の50%（上限50回）
-- large（上限300回）: 残余の50%（上限100回）
+- small: 20回
+- medium: 50回
+- large: 100回
 
 ### Implementerへの委譲
 
@@ -427,11 +427,11 @@ Testerを呼び出す前に以下を実行する：
 
 ### 枠の計算
 
-task-state.mdの残余からTesterへの割り当て枠を計算する：
+タスクサイズに応じた固定上限をTesterに割り当てる：
 
-- small: 残余の60%（上限14回）
-- medium: 残余の60%（上限35回）
-- large: 残余の60%（上限70回）
+- small: 14回
+- medium: 35回
+- large: 70回
 
 ### Testerへの委譲
 
@@ -518,11 +518,11 @@ Linterを呼び出す前に以下を実行する：
 
 ### 枠の計算
 
-task-state.mdの残余からLinterへの割り当て枠を計算する：
+タスクサイズに応じた固定上限をLinterに割り当てる：
 
-- small: 残余の70%（上限6回）
-- medium: 残余の70%（上限15回）
-- large: 残余の70%（上限30回）
+- small: 6回
+- medium: 15回
+- large: 30回
 
 ### Linterへの委譲
 
@@ -608,11 +608,11 @@ Reviewerを呼び出す前に以下を実行する：
 
 ### 枠の計算
 
-task-state.mdの残余をすべてReviewerに割り当てる：
+タスクサイズに応じた固定上限をReviewerに割り当てる：
 
-- small: 残余（上限6回）
-- medium: 残余（上限15回）
-- large: 残余（上限30回）
+- small: 10回
+- medium: 20回
+- large: 40回
 
 ### Reviewerへの委譲
 
@@ -754,9 +754,7 @@ task-state.mdの残余をすべてReviewerに割り当てる：
        B) 「中止」と入力
      記録場所: .claude/task-state.md
      ```
-2. 残余枠を確認する（上限 - 現在の累計）
-   - 残余 < 最低必要枠（small=37回 / medium=92回 / large=184回）の場合: [STOP] で警告・確認停止
-3. design-summary.mdの更新確認停止（FR-9形式）：
+2. design-summary.mdの更新確認停止（FR-9形式）：
    ```
    [STOP] フェーズ: FR-4 再実行前 設計更新確認
    理由: インタフェース変更が必要です。design-summary.mdを更新してください
