@@ -4,6 +4,7 @@ description: コード品質エンジニアエージェント。lintを実行し
 user-invocable: false
 allowed-tools:
   - Read
+  - Write
   - Edit
   - Glob
   - Grep
