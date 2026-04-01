@@ -1,0 +1,52 @@
+{
+  "language": "japanese",
+  "permissions": {
+    "deny": [
+      "Read(__HOME__/.ssh/**)",
+      "Read(__HOME__/.aws/**)",
+      "Read(__HOME__/.gnupg/**)",
+      "Read(__HOME__/.config/gh/**)",
+      "Read(__HOME__/.netrc)",
+      "Read(__HOME__/.git-credentials)",
+      "Read(__HOME__/.claude/.credentials.json)",
+      "Read(__HOME__/.credentials)",
+      "Write(__HOME__/.ssh/**)",
+      "Write(__HOME__/.aws/**)",
+      "Write(__HOME__/.gnupg/**)",
+      "Write(__HOME__/.config/gh/**)",
+      "Write(__HOME__/.netrc)",
+      "Write(__HOME__/.git-credentials)",
+      "Write(__HOME__/.claude/.credentials.json)",
+      "Write(__HOME__/.credentials)",
+      "Bash(rm*)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git push*--force*)",
+      "Bash(git reset --hard*)",
+      "Bash(git push *)",
+      "Bash(ssh *)",
+      "Bash(npm publish*)",
+      "Bash(sudo *)"
+    ],
+    "allow": [
+      "Read(__HOME__/**)",
+      "Bash(git status*)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(ls*)",
+      "Bash(pwd)",
+      "Bash(find*)",
+      "Bash(grep*)",
+      "Bash(date*)",
+      "Bash(bash -n *)",
+      "Bash(shellcheck *)",
+      "Bash(python3*)",
+      "Bash(pytest*)",
+      "Bash(ruff*)",
+      "Bash(pip3*)",
+      "Bash(flake8*)"
+    ]
+  }
+}
