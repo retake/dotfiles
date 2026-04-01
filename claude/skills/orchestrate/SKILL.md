@@ -45,7 +45,7 @@ allowed-tools:
 - `status` フィールドを読む
 - `waiting_approval` → 該当するフェーズの確認内容を表示し、ユーザーの指示（「承認」「修正」「中止」）を待つ
   **特殊ケース** — phase=FR-4-redesign の場合: FR-7 ESCALATED処理（§7b）の手順4〜5に従う（承認後にFR-4再実行回数+1、FR-4〜FR-7 PENDING化、Implementer再実行）
-- `escalated` → エスカレーション内容を表示し、ユーザーの指示（「再開」「中止」）を待つ。ユーザーが「再開」と入力したら FR-9「escalated再開時の処理」の手順1〜5を実行する
+- `escalated` → エスカレーション内容を表示し、ユーザーの指示（「再開」「中止」）を待つ。ユーザーが「再開」と入力したら FR-9「escalated再開時の処理」の手順1〜8を実行する
 - `done` → 「このタスクは完了済みです」と表示して終了
 - `running` → 以下を表示して確認停止する（誤って2回起動した場合のstate破壊を防ぐ）：
   ```
@@ -528,7 +528,8 @@ task-state.mdのFR-4実装レビュー試行回数を更新する。
   [ESCALATION] フェーズ: FR-4 実装スコープ外
   理由: （ImplementerのESCALATED内容）
   選択肢:
-    A) 要件・設計を修正後「再開」と入力（修正内容に応じてFR-3またはFR-1から再確認します）
+    A-1) 設計変更のみで対応可能な場合: docs/design-summary.md を修正後「FR-3再開」と入力
+    A-2) 要件変更が必要な場合: docs/requirements.md を修正後「FR-1再開」と入力
     B) 「中止」と入力
   ```
 ※ ESCALATEDによる再開はFR-4再実行回数にカウントしない（設計変更を伴う場合はFR-3経由で再実行する）。
@@ -612,6 +613,8 @@ Testerを呼び出す前に以下を実行する：
 - task-state.mdのFR-5ステータスをDONEに更新
 - agent-reportに追記
 - 検証方法が「手動確認」の場合は `.claude/manual-check.md` が生成済みであることを確認する
+  - 存在しない場合: Testerを1回再実行する（プロンプトに「manual-check.mdが生成されていません。再生成してください」と追記）
+  - 再実行後も存在しない場合: ESCALATEDとして扱い FR-9形式で確認停止する
 - FR-6へ進む
 
 **ESCALATED の場合：**
@@ -954,7 +957,7 @@ task-state.mdのstatusが `escalated` の場合、ユーザーが「再開」と
 3. **phase=FR-5 / FR-6の場合**: 試行回数を0にリセットしてから再呼び出しする
 4. **phase=FR-7-security-stop の場合**: FR-5試行回数・FR-6試行回数を0にリセットし、FR-5から再実行する
 5. **phase=FR-3の場合**: FR-3（Architect）から再実行する
-6. **phase=FR-4の場合（スコープ外）**: ユーザー指示に応じてFR-3またはFR-1から再実行する
+6. **phase=FR-4の場合（スコープ外）**: ユーザーの入力が「FR-3再開」ならFR-3から、「FR-1再開」ならFR-1から再実行する
 7. **phase=FR-4-redesignの場合（インタフェース変更）**: §FR-7 ESCALATEDの§7b手順に従い、design-summary.md更新後にFR-4から再実行する
 8. **その他のFRの場合**: 対応方針に基づいて該当FRから再実行する
 
