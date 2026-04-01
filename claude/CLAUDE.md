@@ -109,13 +109,11 @@
     └── test-plan.md      # テスト計画
 ```
 
-横断管理リポジトリ（`dev-log`）：
+振り返りディレクトリ（dotfiles管理）：
 ```
-dev-log/
-├── CLAUDE.md
-└── retrospectives/
-    ├── _index.md         # 振り返り一覧・教訓サマリ
-    └── YYYY-MM-<project>.md
+~/retrospectives/
+├── _index.md              # 振り返り一覧・教訓サマリ（dotfilesで管理）
+└── YYYY-MM-<project>.md   # 個別振り返り（ローカルのみ・gitignore）
 ```
 
 ### 参照ルール
@@ -168,7 +166,7 @@ dev-log/
 
 Agentツールを呼ぶ前に、必ず以下を行う：
 
-1. `~/dev-log/retrospectives/_index.md` を読む（Readツールで実在確認してから）
+1. `~/retrospectives/_index.md` を読む（Readツールで実在確認してから）
 2. 読んだ教訓の内容をサブエージェントのプロンプトに明示的に含める
 
 理由：PreToolUseフックのadditionalContextは親Claudeのコンテキストにのみ注入され、サブエージェントには届かない。

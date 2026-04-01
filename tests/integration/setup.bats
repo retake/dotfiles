@@ -49,20 +49,27 @@ teardown() {
 }
 
 @test "claude/CLAUDE.md のシンボリックリンクが作成される" {
-  bash "${DOTFILES_DIR}/setup.sh" < /dev/null
+  bash "${DOTFILES_DIR}/setup-claude.sh" < /dev/null
   assert [ -L "${FAKE_HOME}/.claude/CLAUDE.md" ]
 }
 
 @test "claude/CLAUDE.md のリンク先が dotfiles のファイルを指している" {
-  bash "${DOTFILES_DIR}/setup.sh" < /dev/null
+  bash "${DOTFILES_DIR}/setup-claude.sh" < /dev/null
   local link_target
   link_target=$(readlink "${FAKE_HOME}/.claude/CLAUDE.md")
   assert_equal "${link_target}" "${DOTFILES_DIR}/claude/CLAUDE.md"
 }
 
-@test "claude/settings.json のシンボリックリンクが作成される" {
-  bash "${DOTFILES_DIR}/setup.sh" < /dev/null
-  assert [ -L "${FAKE_HOME}/.claude/settings.json" ]
+@test "claude/settings.json が実ファイルとして生成される" {
+  bash "${DOTFILES_DIR}/setup-claude.sh" < /dev/null
+  assert [ -f "${FAKE_HOME}/.claude/settings.json" ]
+  assert [ ! -L "${FAKE_HOME}/.claude/settings.json" ]
+}
+
+@test "claude/settings.json に __HOME__ が残っていない" {
+  bash "${DOTFILES_DIR}/setup-claude.sh" < /dev/null
+  run grep "__HOME__" "${FAKE_HOME}/.claude/settings.json"
+  assert_failure
 }
 
 @test "bin/absolute_path.sh のシンボリックリンクが作成される" {
