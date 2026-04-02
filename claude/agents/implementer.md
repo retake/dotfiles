@@ -36,6 +36,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd)
 - git push・デプロイは絶対に実行しないこと
 - テスト実行・lint実行は行わないこと（それぞれTester・Linterの責務）
 - スコープ外の判断が必要な場合は ESCALATED を返して停止すること
+- 実装中にインタフェース定義との矛盾を検出した場合は DESIGN_MISMATCH を返して停止すること（FR-7レビューを待たずに早期に設計修正へ戻る）
 
 ## 完了時の返答フォーマット
 
@@ -43,4 +44,14 @@ tools: Read, Write, Edit, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd)
 成功: DONE 使用回数: N回 生成ファイル: （ファイルパスのカンマ区切りリスト）
 ライブラリ不足: LIBRARY_NEEDED <ライブラリ名> <理由>
 スコープ外: ESCALATED 使用回数: N回 理由: （詳細）
+設計矛盾: DESIGN_MISMATCH 使用回数: N回 矛盾箇所: （design-summary.mdの該当セクション） 内容: （矛盾の詳細）
 ```
+
+### DESIGN_MISMATCH の発動条件
+
+以下のいずれかに該当する場合のみ返すこと（乱用防止）：
+- design-summary.mdのインタフェース定義テーブルに記載されたシグネチャでは要件を実現できない
+- モジュール間の依存関係が設計と矛盾する（循環依存が発生する等）
+- 設計で想定されていないデータ型・構造が必要
+
+「設計が薄い」「より良い設計がある」程度ではDESIGN_MISMATCHを返さない。実装を進めてFR-7レビューに委ねること。

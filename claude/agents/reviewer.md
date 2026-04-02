@@ -104,11 +104,31 @@ tools: Read, Write, Edit, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd)
 
 ## 完了時の返答フォーマット
 
+**ステータス行（1行目）：**
 ```
 成功: DONE 使用回数: N回 自動修正: N件 指摘（未修正）: N件
 セキュリティ停止: SECURITY_STOP 使用回数: N回 停止箇所: （ファイル:行番号） 内容: （問題の概要）
 インタフェース変更: ESCALATED 使用回数: N回 変更理由: （理由） 変更箇所: （詳細）
 ```
+
+**指摘詳細（DONE時、自動修正または未修正指摘がある場合のみ）：**
+
+ステータス行の後に、以下の構造化形式で指摘を列挙する。Orchestratorがこの形式をパースしてImplementerに渡すため、フォーマットを厳守すること。
+
+```
+【指摘一覧】
+- category: logic | security | interface | style
+  severity: critical | warning | info
+  file: （ファイルパス）
+  line: （行番号）
+  description: （指摘内容、1行）
+  action: fixed | unfixed
+- category: ...
+  ...
+```
+
+- `category`: logic=ロジック不具合、security=セキュリティ問題、interface=インタフェース逸脱、style=スタイル（記録のみ、修正しない）
+- `action`: fixed=自動修正済み、unfixed=未修正（人間またはImplementerが対応）
 
 ※ ReviewerのDONEは FR-7（レビュー）と FR-8（成果物出力）の両方が完了したことを意味する。
   traceability.md・completion-summary.md の両方が生成済みであること。
