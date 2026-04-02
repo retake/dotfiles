@@ -79,3 +79,19 @@ dotfiles/
 - **カラースキームの設定**：`ui.lua` でTomorrow-Nightがコメントアウト中
 - **Mac対応**：`os/mac/` 配下にHomebrew等のセットアップスクリプトを整備
 - **Vim AI補完の再検討**：coc.nvim/copilot.vim等を削除済み。現行の選択肢を改めて評価する
+
+---
+
+## タスク: orchestrate SKILL.md リファクタリング
+
+### 要件
+
+| 要件ID | 内容 | 検証方法 |
+|---|---|---|
+| REQ-1.1 | SKILL.md内でサブエージェントを「スキル」と呼ぶ箇所を「エージェント」に修正する | 手動確認 |
+| REQ-1.2 | SKILL.md内のSKILL.md参照を `~/.claude/agents/` 参照に更新する | 手動確認 |
+| REQ-1.3 | 修正後に記述の矛盾・表記揺れがないこと | 手動確認 |
+
+### スコープ
+- 対象: `~/.claude/skills/orchestrate/SKILL.md`
+- 対象外: `~/.claude/agents/` 配下のファイル

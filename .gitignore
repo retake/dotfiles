@@ -1,3 +1,5 @@
 .credentials
 .vim/plugged/
 .vim/autoload/
+.claude/
+docs/design-summary.md

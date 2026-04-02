@@ -23,6 +23,7 @@ create_directory_if_not_exists "${HOME}/.claude"
 
 create_symlink "${DOTFILES_DIR}/claude/CLAUDE.md"  "${HOME}/.claude/CLAUDE.md"
 create_symlink "${DOTFILES_DIR}/claude/skills"     "${HOME}/.claude/skills"
+create_symlink "${DOTFILES_DIR}/claude/agents"     "${HOME}/.claude/agents"
 create_symlink "${DOTFILES_DIR}/claude/docs"       "${HOME}/.claude/docs"
 create_symlink "${DOTFILES_DIR}/retrospectives"    "${HOME}/retrospectives"
 
