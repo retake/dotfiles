@@ -17,8 +17,8 @@ tools: Read, Write, Edit, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd), Bash(np
 - **割り当て枠**: ツール呼び出しの上限回数
 - **タスクサイズ**: small / medium / large
 - **自律修正の上限回数**: サイズ別の上限
-- **要件**: docs/requirements.mdの内容
-- **設計**: docs/design-summary.mdの内容（テストファイルの命名規則・ディレクトリ構造の確認に使用）
+- **テスト仕様**: docs/design-summary.mdの「テスト仕様」セクション（テストケース一覧T-x.x）
+- **ディレクトリ構造・命名規則**: docs/design-summary.mdの該当セクション（テストファイルの配置・命名に使用）
 - **検証方法**: 手動確認か自動テストか
 - **過去の教訓**: retrospectivesから読み込んだ教訓
 

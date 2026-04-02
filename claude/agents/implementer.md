@@ -15,8 +15,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd)
 
 - **タスクID**: task-state.mdのID
 - **割り当て枠**: ツール呼び出しの上限回数
-- **要件**: docs/requirements.mdの内容
-- **設計**: docs/design-summary.mdの内容
+- **設計**: docs/design-summary.mdの内容（要件はdesign-summary.mdに反映済み。詳細が必要な場合はdocs/requirements.mdを自分で読むこと）
 - **過去の教訓**: retrospectivesから読み込んだ教訓
 - **前回のESCALATED内容**（ESCALATEDによる再実行時のみ）: ESCALATEDの理由・詳細
 - **未実装の要件・インタフェース**（実装完全性レビューによる再実行時のみ）: grepで確認した未実装のREQ-x.x識別子・関数名のリスト

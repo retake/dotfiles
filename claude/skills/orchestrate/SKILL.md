@@ -543,11 +543,8 @@ Implementerを呼び出す前に以下を確認する：
 【割り当て枠】
 （計算した枠数）回以内で完了すること
 
-【要件】
-（docs/requirements.mdの内容を転記）
-
 【設計】
-（docs/design-summary.mdの内容を転記）
+（docs/design-summary.mdの内容を転記。要件はdesign-summary.mdに反映済みのため、requirements.mdの転記は不要）
 
 【過去の教訓】
 （~/retrospectives/_index.mdから読んだ内容を転記）
@@ -692,11 +689,11 @@ Tester・Linterを呼び出す前に以下を実行する：
 - 通常エラー（型エラー・ロジックエラー等）: （サイズ別: small=2 / medium=3 / large=5）回
 - 外部依存エラー: 1回
 
-【要件】
-（docs/requirements.mdの内容を転記）
+【テスト仕様】
+（docs/design-summary.mdの「テスト仕様」セクションを転記）
 
-【設計】
-（docs/design-summary.mdの内容を転記。テストファイルの命名規則・ディレクトリ構造の確認に使用）
+【ディレクトリ構造・命名規則】
+（docs/design-summary.mdの「ディレクトリ構造」「命名規則」セクションを転記。テストファイルの配置・命名に使用）
 
 【検証方法】
 （docs/requirements.mdの「検証方法」セクションの内容を転記。セクションが存在しない場合は「自動テスト（デフォルト）」と記載）
@@ -809,11 +806,11 @@ task-state.mdのagent-reportセクションに `リスクレベル: high/medium/
 【割り当て枠】
 （計算した枠数）回以内で完了すること
 
-【要件】
-（docs/requirements.mdの内容を転記）
+【要件IDリスト】
+（docs/requirements.mdから要件ID・要件概要・完了条件の一覧を転記。詳細説明・背景は省略）
 
-【設計】
-（docs/design-summary.mdの内容を転記）
+【設計（インタフェース定義・テスト仕様）】
+（docs/design-summary.mdの「インタフェース定義」「テスト仕様」セクションを転記。モジュール構成・ディレクトリ構造は省略。Reviewerはsrc/を直接読むため）
 
 【テスト結果】
 （.claude/test-result.logの内容を転記。存在しない場合は「テスト正常完了（ログなし）」と記載）

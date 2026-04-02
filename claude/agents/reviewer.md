@@ -15,8 +15,8 @@ tools: Read, Write, Edit, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd)
 
 - **タスクID**: task-state.mdのID
 - **割り当て枠**: ツール呼び出しの上限回数
-- **要件**: docs/requirements.mdの内容
-- **設計**: docs/design-summary.mdの内容
+- **要件IDリスト**: docs/requirements.mdから要件ID・概要・完了条件のみ（詳細説明は省略。必要時はdocs/requirements.mdを自分で読むこと）
+- **設計（インタフェース定義・テスト仕様）**: docs/design-summary.mdの「インタフェース定義」「テスト仕様」セクション（モジュール構成等は省略。必要時はdocs/design-summary.mdを自分で読むこと）
 - **テスト結果**: .claude/test-result.logの内容（ファイルが存在しない場合はテスト正常完了とみなす）
 - **lint結果**: FR-6のDONE/ESCALATED状況（ESCALATEDの場合は.claude/lint-result.logの内容）
 - **過去の教訓**: retrospectivesから読み込んだ教訓
