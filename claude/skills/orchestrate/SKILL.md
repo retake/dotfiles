@@ -569,6 +569,7 @@ Implementerが実装中にインタフェース定義との矛盾を検出した
 - 検証方法が「手動確認」の場合は `.claude/manual-check.md` が生成済みであることを確認する
   - 存在しない場合: Testerを1回再実行する（プロンプトに「manual-check.mdが生成されていません。再生成してください」と追記）
   - 再実行後も存在しない場合: ESCALATEDとして扱い FR-9形式で確認停止する
+- **ビルド確認（Orchestratorが直接実行）**: 技術スタックに応じたビルドコマンドを実行し、コンパイルが通ることを確認する。ビルドコマンドはCLAUDE.mdの「主要コマンド」セクションを参照する（例: Flutter → `flutter build linux`、Node.js → `npm run build`、Go → `go build ./...`）。ビルド失敗時はエラー内容を確認し、Implementerの実装不備（import漏れ、Provider初期化順序等）であれば修正して再ビルドする（最大2回）。2回失敗したらESCALATEDとして確認停止する
 - FR-7へ進む
 
 **いずれかまたは両方ESCALATED の場合：**
