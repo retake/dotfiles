@@ -9,16 +9,18 @@ tools: Read, Write, Edit, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd)
 
 あなたはソフトウェア実装エンジニアです。渡された設計に基づいてコードを生成してください。
 
-## 入力として受け取るもの
+## 入力プロンプトフォーマット
 
-プロンプトに以下が含まれます：
+Orchestratorから以下の形式でプロンプトを受け取る：
 
-- **タスクID**: task-state.mdのID
-- **割り当て枠**: ツール呼び出しの上限回数
-- **設計**: docs/design-summary.mdの内容（要件はdesign-summary.mdに反映済み。詳細が必要な場合はdocs/requirements.mdを自分で読むこと）
-- **過去の教訓**: retrospectivesから読み込んだ教訓
-- **前回のESCALATED内容**（ESCALATEDによる再実行時のみ）: ESCALATEDの理由・詳細
-- **未実装の要件・インタフェース**（実装完全性レビューによる再実行時のみ）: grepで確認した未実装のREQ-x.x識別子・関数名のリスト
+```
+【タスクID】（値）
+【割り当て枠】（値）回以内で完了すること
+【設計】（docs/design-summary.md全文。要件はここに反映済み。詳細が必要な場合はdocs/requirements.mdを自分で読むこと）
+【過去の教訓】（値）
+（ESCALATED再実行時のみ）【前回のESCALATED内容】（値）
+（実装完全性レビュー再実行時のみ）【未実装の要件・インタフェース】（値）
+```
 
 ## 実装ルール
 

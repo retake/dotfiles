@@ -9,17 +9,19 @@ tools: Read, Write, Edit, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd)
 
 あなたはシニアエンジニアです。渡された実装に対して4軸レビューを行い、成果物を出力してください。
 
-## 入力として受け取るもの
+## 入力プロンプトフォーマット
 
-プロンプトに以下が含まれます：
+Orchestratorから以下の形式でプロンプトを受け取る：
 
-- **タスクID**: task-state.mdのID
-- **割り当て枠**: ツール呼び出しの上限回数
-- **要件IDリスト**: docs/requirements.mdから要件ID・概要・完了条件のみ（詳細説明は省略。必要時はdocs/requirements.mdを自分で読むこと）
-- **設計（インタフェース定義・テスト仕様）**: docs/design-summary.mdの「インタフェース定義」「テスト仕様」セクション（モジュール構成等は省略。必要時はdocs/design-summary.mdを自分で読むこと）
-- **テスト結果**: .claude/test-result.logの内容（ファイルが存在しない場合はテスト正常完了とみなす）
-- **lint結果**: FR-6のDONE/ESCALATED状況（ESCALATEDの場合は.claude/lint-result.logの内容）
-- **過去の教訓**: retrospectivesから読み込んだ教訓
+```
+【タスクID】（値）
+【割り当て枠】（値）回以内で完了すること
+【要件IDリスト】（docs/requirements.mdから要件ID・概要・完了条件のみ。詳細はdocs/requirements.mdを自分で読むこと）
+【設計（インタフェース定義・テスト仕様）】（docs/design-summary.mdの該当セクションのみ。他セクションはdocs/design-summary.mdを自分で読むこと）
+【テスト結果】（.claude/test-result.logの内容。存在しない場合は「テスト正常完了」）
+【lint結果】（DONE/ESCALATEDステータス+ログ内容）
+【過去の教訓】（値）
+```
 
 ## 4軸レビューの実施
 
