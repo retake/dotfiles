@@ -33,6 +33,14 @@ allowed-tools:
 | FR-6 lint | `linter` | 並列（FR-5と同時） |
 | FR-7 レビュー | `reviewer` | 逐次 |
 
+### 共通ルール：教訓の読み込み（全サブエージェント共通）
+
+**すべてのサブエージェント呼び出し前**に以下を実行する（各フェーズでの個別記載は省略）：
+1. `~/retrospectives/_index.md` をReadツールで読む（存在しない場合はスキップ）
+2. 読んだ教訓の内容をサブエージェントのプロンプトの【過去の教訓】欄に転記する
+
+※ PreToolUseフックのadditionalContextはサブエージェントには届かないため、プロンプト本文への埋め込みが必須。
+
 ---
 
 ## 起動時の処理
@@ -289,14 +297,6 @@ task-state.mdにstatus=waiting_approval、phase=FR-2として保存する。
 
 FR-1・FR-2の確認が完了したら、Architectサブエージェントを呼び出す。
 
-### 事前準備：教訓の読み込み
-
-Agentツールを呼ぶ前に、必ず以下を実行する：
-1. `~/retrospectives/_index.md` をReadツールで読む（存在しない場合はスキップ）
-2. 読んだ教訓の内容をサブエージェントのプロンプトに明示的に含める
-
-※ PreToolUseフックのadditionalContextはサブエージェントには届かないため、プロンプト本文への埋め込みが必須。
-
 ### Architectへの委譲
 
 `subagent_type: architect` でAgentツールを呼び出す。プロンプトにはarchitect.mdの「入力プロンプトフォーマット」に従い、以下を渡す：
@@ -420,12 +420,6 @@ task-state.mdにstatus=waiting_approval、phase=FR-3として保存する。
 
 ## FR-4: 実装（Implementerサブエージェント）
 
-### 事前準備：教訓の読み込み
-
-Implementerを呼び出す前に以下を実行する：
-1. `~/retrospectives/_index.md` をReadツールで読む（存在しない場合はスキップ）
-2. 読んだ教訓の内容をImplementerへのプロンプトの【過去の教訓】欄に転記する
-
 ### 事前確認
 
 Implementerを呼び出す前に以下を確認する：
@@ -545,12 +539,6 @@ Implementerが実装中にインタフェース定義との矛盾を検出した
 
 ## FR-5・FR-6: テスト・lint（並列実行）
 
-### 事前準備：教訓の読み込み
-
-Tester・Linterを呼び出す前に以下を実行する：
-1. `~/retrospectives/_index.md` をReadツールで読む（存在しない場合はスキップ）
-2. 読んだ教訓の内容を各エージェントのプロンプトの【過去の教訓】欄に転記する
-
 ### 枠の計算
 
 | サイズ | Tester | Linter |
@@ -599,12 +587,6 @@ Tester・Linterを呼び出す前に以下を実行する：
 ---
 
 ## FR-7・FR-8: レビュー・成果物出力（Reviewerサブエージェント）
-
-### 事前準備：教訓の読み込み
-
-Reviewerを呼び出す前に以下を実行する：
-1. `~/retrospectives/_index.md` をReadツールで読む（存在しない場合はスキップ）
-2. 読んだ教訓の内容をReviewerへのプロンプトの【過去の教訓】欄に転記する
 
 ### 変更リスク判定（動的品質ゲート）
 
