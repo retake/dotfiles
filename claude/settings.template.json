@@ -1,5 +1,48 @@
 {
   "language": "japanese",
+  "mcpServers": {
+    "todoist": {
+      "command": "npx",
+      "args": ["-y", "todoist-mcp"],
+      "env": {
+        "TODOIST_API_TOKEN": "__TODOIST_API_TOKEN__",
+        "API_KEY": "__TODOIST_API_TOKEN__"
+      }
+    }
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash __HOME__/.claude/scripts/notify.sh"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "idle_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash __HOME__/.claude/scripts/notify.sh 'Claude Code' '入力を待っています'"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash __HOME__/.claude/scripts/notify.sh"
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "deny": [
       "Read(__HOME__/.ssh/**)",
