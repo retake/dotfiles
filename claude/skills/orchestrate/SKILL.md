@@ -920,6 +920,11 @@ allowリスト追加提案:
   （allowリスト未追加の場合、追加が必要なコマンドを提示）
 ※ 問題があればdocs/design-summary.mdやdocs/requirements.mdを確認してください
 
+## Codexセカンドオピニオン推奨（該当時のみ表示）
+（FR-7のリスクレベルがhigh、またはセキュリティ関連・非同期ライフサイクル変更を含む場合）
+推奨理由: （リスクレベル / 変更内容の概要）
+手順: docs/codex-request-template.md をコピーして記入し、Codexに渡してください
+
 次のアクション: git diff / git add / git commit / git push（人間が実行）
 ```
 
