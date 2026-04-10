@@ -50,7 +50,6 @@ if "${HOME}/.rbenv/bin/rbenv" --version > /dev/null 2>&1; then
   eval "$(rbenv init -)"
 fi
 
-cd ~
 
 # --- PATH ---
 export PATH="${HOME}/.local/bin:${HOME}/bin:${PATH}"
@@ -61,5 +60,6 @@ export PATH="${PATH}:${HOME}/go/bin"
 
 export EDITOR=nvim
 export VISUAL=nvim
+export BROWSER=wslview
 alias vim=nvim
 
