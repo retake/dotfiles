@@ -1,5 +1,6 @@
 {
   "language": "japanese",
+  "autoMemoryDirectory": "~/dotfiles/claude/memory/global",
   "mcpServers": {
     "todoist": {
       "command": "npx",
@@ -7,6 +8,21 @@
       "env": {
         "TODOIST_API_TOKEN": "__TODOIST_API_TOKEN__",
         "API_KEY": "__TODOIST_API_TOKEN__"
+      }
+    },
+    "google-workspace": {
+      "command": "uvx",
+      "args": ["workspace-mcp"],
+      "env": {
+        "GOOGLE_OAUTH_CLIENT_ID": "__GOOGLE_OAUTH_CLIENT_ID__",
+        "GOOGLE_OAUTH_CLIENT_SECRET": "__GOOGLE_OAUTH_CLIENT_SECRET__"
+      }
+    },
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp",
+      "headers": {
+        "Authorization": "Bearer __GITHUB_TOKEN__"
       }
     }
   },
@@ -72,7 +88,9 @@
       "Bash(sudo *)"
     ],
     "allow": [
-      "Read(__HOME__/**)",
+      "Read",
+      "Write",
+      "Edit",
       "Bash(git status*)",
       "Bash(git log*)",
       "Bash(git diff*)",
@@ -82,6 +100,7 @@
       "Bash(pwd)",
       "Bash(find*)",
       "Bash(grep*)",
+      "Bash(cp*)",
       "Bash(date*)",
       "Bash(bash -n *)",
       "Bash(shellcheck *)",
@@ -89,7 +108,10 @@
       "Bash(pytest*)",
       "Bash(ruff*)",
       "Bash(pip3*)",
-      "Bash(flake8*)"
+      "Bash(flake8*)",
+      "mcp__todoist__*",
+      "mcp__google-workspace__*",
+      "mcp__claude_ai_Box__*"
     ]
   }
 }
