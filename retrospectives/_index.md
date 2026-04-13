@@ -18,6 +18,19 @@
 - dotfilesからのシンボリンクはディレクトリ丸ごとではなく個別ファイルで張る。ディレクトリリンクだと~/.claude/側への書き込みで実体ファイルが破壊される（2026-04-alarm）
 - ExpansionTile で折りたたんだセクションは既存ウィジェットテストを壊す。Implementer に渡す前に「どの既存テストが影響を受けるか」を設計段階で洗い出す（2026-04-alarm）
 - WCAG コントラスト比は通常テキスト4.5:1・大テキスト(14dp bold+)3:1。ボタンテキストは大テキスト扱いでよい（2026-04-alarm）
+- Timer.periodic 駆動の機能はテスト段階で tick を手動注入できる実装を併設する。Stream をそのまま実時間テストすると発火タイミングが不安定化する（2026-04-alarm）
+- Tester が同一テストで3回連続失敗したら自律修正を続けず、手動検証移管か設計再考を検討する（2026-04-alarm）
+- 改修規模の見積もりは行数ではなく「既存の純関数化・Fake 注入点・抽象インタフェース」の有無で決まる。大きそうな改修でも TDD ハーネスが揃っていれば想定より短時間で収束する（2026-04-alarm）
+- `require_trailing_commas` は `dart format` では解消しない。analyze と format を別系統として両方回す（2026-04-alarm）
+- Widget finder は位置依存（`find.byType(X).first` 等）ではなく `find.widgetWithText(X, 'label')` で一意特定する。UI 拡張で容易に壊れる（2026-04-alarm）
+- 非同期ループを持つ副作用（連続音再生など）を発火する state 遷移テストでは `pumpAndSettle` はタイムアウトする。`pump()` + `pump(Duration)` で必要最小限進める（2026-04-alarm）
+- 一時オーバーライドパターン（state に `overrideX` と `effectiveX` getter）は、永続データを汚さず進行中セッションでのみ変更を効かせたい機能に汎用的に使える（2026-04-alarm）
+- 手動実装でも「実装直後に design-summary.md・traceability.md を更新」するリズムで /audit-handoffs が即時に機能する（2026-04-alarm）
+- ConsumerStatefulWidget の dispose で ref は使えない。外部サービスのクリーンアップは initState で参照をキャッシュして dispose で使う（2026-04-alarm）
+- プラットフォーム依存パッケージ（wakelock_plus 等）は kIsWeb / Platform チェックで未対応環境を明示的に弾く。パッケージ側の例外に依存しない（2026-04-alarm）
+- /audit-handoffs → /archive-handoffs の 2 段運用で残課題の視認性が上がる。採用完了したハンドオフは即 archive で /audit 対象から外す（2026-04-alarm）
+- 用語統一は「名前の根拠がある方を正とする」。実装上の第一定義（enum・class 名）を正規とし、派生やコメントの揺れを寄せる（2026-04-alarm）
+- リネーム系リファクタは TDD 不要で速い。既存テストの緑維持が回帰条件。新規テストは書かない（2026-04-alarm）
 
 ## 振り返り一覧
 
@@ -30,3 +43,6 @@
 | 2026-04-03 | alarmアプリ 出発カウントダウン機能 | （ソースファイルなし） |
 | 2026-04-10 | alarmアプリ 複数スケジュール+祝日スキップ | （ソースファイルなし） |
 | 2026-04-13 | alarmアプリ ペルソナレビュー残課題対応（REQ-15/22/23/24/25） | [2026-04-alarm.md](2026-04-alarm.md) |
+| 2026-04-13 | alarmアプリ 工程分離（REQ-26）+ REQ-24/25 補完 | [2026-04-alarm-2.md](2026-04-alarm-2.md) |
+| 2026-04-13 | alarmアプリ ADHD朝レビュー採用分（REQ-27/28/29） | [2026-04-alarm-3.md](2026-04-alarm-3.md) |
+| 2026-04-13 | alarmアプリ REQ-27 UX改善 / spec-naming / REQ-30 wakelock | [2026-04-alarm-4.md](2026-04-alarm-4.md) |
