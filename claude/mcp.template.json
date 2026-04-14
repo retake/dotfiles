@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "todoist": {
+      "command": "npx",
+      "args": ["-y", "todoist-mcp"],
+      "env": {
+        "TODOIST_API_TOKEN": "__TODOIST_API_TOKEN__",
+        "API_KEY": "__TODOIST_API_TOKEN__"
+      }
+    },
+    "google-workspace": {
+      "command": "uvx",
+      "args": ["workspace-mcp"],
+      "env": {
+        "GOOGLE_OAUTH_CLIENT_ID": "__GOOGLE_OAUTH_CLIENT_ID__",
+        "GOOGLE_OAUTH_CLIENT_SECRET": "__GOOGLE_OAUTH_CLIENT_SECRET__",
+        "WORKSPACE_MCP_OAUTH_PROXY_STORAGE_BACKEND": "disk"
+      }
+    },
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp",
+      "headers": {
+        "Authorization": "Bearer __GITHUB_TOKEN__"
+      }
+    }
+  }
+}
