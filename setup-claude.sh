@@ -24,6 +24,7 @@ create_directory_if_not_exists "${HOME}/.claude"
 create_directory_if_not_exists "${HOME}/.claude/scripts"
 
 create_symlink "${DOTFILES_DIR}/claude/scripts/notify.sh" "${HOME}/.claude/scripts/notify.sh"
+create_symlink "${DOTFILES_DIR}/claude/scripts/worktree-check.sh" "${HOME}/.claude/scripts/worktree-check.sh"
 create_symlink "${DOTFILES_DIR}/claude/CLAUDE.md"       "${HOME}/.claude/CLAUDE.md"
 
 # dev/ 配下の共通CLAUDE.md（全プロジェクト共通の開発スタイル・Codex連携設定）

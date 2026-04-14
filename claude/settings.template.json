@@ -27,6 +27,16 @@
     }
   },
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash __HOME__/.claude/scripts/worktree-check.sh"
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [
