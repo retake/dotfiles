@@ -32,9 +32,12 @@ allowed-tools:
 - **割り当て枠**: ツール呼び出しの上限回数
 - **要件**: docs/requirements.mdの内容
 - **設計**: docs/design-summary.mdの内容
-- **過去の教訓**: retrospectivesから読み込んだ教訓
 - **前回のESCALATED内容**（ESCALATEDによる再実行時のみ）: ESCALATEDの理由・詳細
 - **未実装の要件・インタフェース**（実装完全性レビューによる再実行時のみ）: grepで確認した未実装のREQ-x.x識別子・関数名のリスト
+
+## 作業開始時の必須手順
+
+`~/retrospectives/_index.md` をReadツールで読み込み、教訓を踏まえて実装を行う（存在しない場合はスキップ）。
 
 ## 実装手順（テストファースト）
 

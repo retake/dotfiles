@@ -28,7 +28,10 @@ allowed-tools:
 - **設計**: docs/design-summary.mdの内容
 - **テスト結果**: .claude/test-result.logの内容（ファイルが存在しない場合はテスト正常完了とみなす）
 - **lint結果**: FR-6のDONE/ESCALATED状況（ESCALATEDの場合は.claude/lint-result.logの内容）
-- **過去の教訓**: retrospectivesから読み込んだ教訓
+
+## 作業開始時の必須手順
+
+`~/retrospectives/_index.md` をReadツールで読み込み、教訓を踏まえてレビューを行う（存在しない場合はスキップ）。
 
 ## 4軸レビューの実施
 
@@ -114,10 +117,12 @@ allowed-tools:
 ## 完了時の返答フォーマット
 
 ```
-成功: DONE 使用回数: N回 自動修正: N件 指摘（未修正）: N件
+成功: DONE 使用回数: N回 自動修正: N件 自動修正ファイル: （ファイルパスのカンマ区切り、または「なし」） 指摘（未修正）: N件
 セキュリティ停止: SECURITY_STOP 使用回数: N回 停止箇所: （ファイル:行番号） 内容: （問題の概要）
 インタフェース変更: ESCALATED 使用回数: N回 変更理由: （理由） 変更箇所: （詳細）
 ```
+
+※ 「自動修正ファイル」欄は Orchestrator が FR-7 レビューループで Tester に「変更ファイル範囲」として渡すために必要。自動修正を行ったプロダクトコード（src/ または lib/ 配下）のパスをカンマ区切りで列挙すること。テストファイル・ドキュメントのみ修正した場合は「なし」と記載する（段階的テスト実行の対象外）。
 
 ※ ReviewerのDONEは FR-7（レビュー）と FR-8（成果物出力）の両方が完了したことを意味する。
   traceability.md・completion-summary.md の両方が生成済みであること。

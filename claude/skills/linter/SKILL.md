@@ -35,7 +35,10 @@ allowed-tools:
 - **割り当て枠**: ツール呼び出しの上限回数
 - **タスクサイズ**: small / medium / large
 - **自律修正の上限回数**: サイズ別の上限
-- **過去の教訓**: retrospectivesから読み込んだ教訓
+
+## 作業開始時の必須手順
+
+`~/retrospectives/_index.md` をReadツールで読み込み、教訓を踏まえてlint修正を行う（存在しない場合はスキップ）。
 
 ## 実装手順
 
