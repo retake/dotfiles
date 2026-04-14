@@ -19,42 +19,42 @@ WriteLog(log) {
 
 ;Esc
 vkEB & f::Send, {Blind}{Esc}
+vk1A & f::Send, {Blind}{Esc}
 
 
-;–îˆó
+;çŸ¢å°
 vkEB & h::Send, {Blind}{Left}
 vkEB & j::Send, {Blind}{Down}
 vkEB & k::Send, {Blind}{Up}
 vkEB & l::Send, {Blind}{Right}
+vk1A & h::Send, {Blind}{Left}
+vk1A & j::Send, {Blind}{Down}
+vk1A & k::Send, {Blind}{Up}
+vk1A & l::Send, {Blind}{Right}
 
 
-;ü•ÓƒL[
+;ç·¨é›†ã‚­ãƒ¼
 vkEB & p::Send, {Blind}{BS}
 vkEB & [::Send, {Blind}{Delete}
 vkEB & `;::Send, {Blind}{ENTER}
 vkEB & q::Send, {Blind}{Tab}
-vkEB & c::Send, ^c
-vkEB & v::Send, ^v
-vkEB & x::Send, ^x
-
-vkFF & p::Send, {Blind}{BS}
-vkFF & [::Send, {Blind}{Delete}
-vkFF & `;::Send, {Blind}{ENTER}
-vkFF & q::Send, {Blind}{Tab}
+vk1A & p::Send, {Blind}{BS}
+vk1A & [::Send, {Blind}{Delete}
+vk1A & `;::Send, {Blind}{ENTER}
+vk1A & q::Send, {Blind}{Tab}
 vkFF & c::Send, ^c
 vkFF & v::Send, ^v
 vkFF & x::Send, ^x
 
-vkFF & e::Send {Esc}
-vkEB & e::Send {Esc}
-
-;ƒJƒ^ƒJƒi
+;ã‚«ã‚¿ã‚«ãƒŠ
 vkEB & i::Send, {F7}
+vk1A & i::Send, {F7}
 
-;Ctrl+c
+;Ctrl+s
 vkEB & s::Send, {Blind}^s
+vk1A & s::Send, {Blind}^s
 
-;windowsƒfƒXƒNƒgƒbƒvØ‘Ö
+;windowsãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—åˆ‡æ›¿
 change_desktop(arrow_button) {
   Send {Blind}^#{%arrow_button%}
 }
@@ -63,16 +63,35 @@ vkEB & '::change_desktop("Left")
 vkFF & '::change_desktop("Left")
 vkEB & \::change_desktop("Right")
 vkFF & \::change_desktop("Right")
+vk1A & '::change_desktop("Left")
+vk1A & \::change_desktop("Right")
 
 
-;“ú–{Œê“ü—ÍØ‘Ö
+;æ—¥æœ¬èªå…¥åŠ›åˆ‡æ›¿
 vkEB & vkFF::Send, {vk19}
 vkFF & vkEB::Send, {vk19}
+vk1A & vkFF::Send, {vk19}
+vkFF & vk1A::Send, {vk19}
+
+;ã‚¢ãƒ—ãƒªã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆ
+vkEB & Space::Send, !{Space}
+vkFF & Space::Send, !{Space}
+vk1A & Space::Send, !{Space}
+
+;ã‚¿ãƒ–ç§»å‹•
+vk1A & vkBC::Send, ^+{Tab}
+vk1A & .::Send, ^{Tab}
+vkEB & vkBC::Send, ^+{Tab}
+vkEB & .::Send, ^{Tab}
 
 
+;ã‚¿ãƒ¼ãƒŸãƒŠãƒ«ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ï¼ˆ1è¡Œå˜ä½ï¼‰
+vkEB & Up::Send, ^+{Up}
+vkEB & Down::Send, ^+{Down}
+vk1A & Up::Send, ^+{Up}
+vk1A & Down::Send, ^+{Down}
 
 
-
-;‚â‚è‚½‚¢–AˆÄ
+;ã‚„ã‚ŠãŸã„ã“ã¨ã€ãƒ¡ãƒ¢
 
 
