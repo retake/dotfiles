@@ -42,6 +42,12 @@
 
 例外: typo 修正・ドキュメントのみの微修正・read-only 調査は worktree なしで可。
 
+## サブエージェント運用時の注意
+
+- **途中停止の検出**: Agent が DONE/ESCALATED 等の終了トークンを返さず「続き実装します」等の文末で応答を切って終わることがある。その場合は grep / Read で現状（生成ファイル・実装箇所）を確認し、「既に済んでいる作業」「残り作業」を明記した自己完結プロンプトで新規 Agent を起動して継続する（Agent 新規起動は文脈を失うため必須）
+- **allowlist 不足時の代行ルート**: サブエージェントが tools / Bash 許可の欠落で詰まった場合、Orchestrator 自身が該当コマンドを実行して代行できる。task-state.md に「Orchestrator 代行」と明記して事後検証可能にする。恒久対策として agent 定義側の `tools:` 充足も同時に行う
+- **technology-specific な許可の不足**: `~/.claude/agents/*.md` の tools は言語非依存で書かれているため、Flutter / Dart / Swift 等のプロジェクトでは標準コマンドの許可が欠落しがち。orchestrate 開始前に project_root の技術スタックと agent tools の整合を確認する
+
 ## ユーザーの傾向（過剰になりやすい点）
 
 以下の傾向があるため、必要に応じて指摘・軌道修正を行う：
