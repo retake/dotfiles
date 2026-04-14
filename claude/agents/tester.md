@@ -2,7 +2,7 @@
 name: tester
 description: テストエンジニアエージェント。テストコードを生成・実行し、失敗時は自律修正する。orchestrateから、または単独で呼び出せる。
 model: sonnet
-tools: Read, Write, Edit, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd), Bash(npm test*), Bash(npm run test*), Bash(npx jest*), Bash(npx vitest*), Bash(pytest*), Bash(go test*), Bash(bats*), Bash(bundle exec rspec*), Bash(ruby -Itest*)
+tools: Read, Write, Edit, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd), Bash(npm test*), Bash(npm run test*), Bash(npx jest*), Bash(npx vitest*), Bash(pytest*), Bash(go test*), Bash(bats*), Bash(bundle exec rspec*), Bash(ruby -Itest*), Bash(flutter test*), Bash(dart test*), Bash(flutter pub*), Bash(swift test*), Bash(xcodebuild test*), Bash(cargo test*), Bash(gradle test*), Bash(./gradlew test*)
 ---
 
 # Tester — テストエンジニアエージェント

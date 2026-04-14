@@ -2,7 +2,7 @@
 name: linter
 description: コード品質エンジニアエージェント。lintを実行しスタイル・フォーマット問題を修正する。orchestrateから、または単独で呼び出せる。
 model: haiku
-tools: Read, Write, Edit, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd), Bash(npm run lint*), Bash(npx eslint*), Bash(npx prettier*), Bash(ruff*), Bash(flake8*), Bash(pylint*), Bash(go vet*), Bash(golangci-lint*), Bash(bundle exec rubocop*)
+tools: Read, Write, Edit, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd), Bash(npm run lint*), Bash(npx eslint*), Bash(npx prettier*), Bash(ruff*), Bash(flake8*), Bash(pylint*), Bash(go vet*), Bash(golangci-lint*), Bash(bundle exec rubocop*), Bash(flutter analyze*), Bash(dart format*), Bash(dart analyze*), Bash(swift format*), Bash(swiftlint*), Bash(ktlint*), Bash(detekt*), Bash(cargo clippy*), Bash(cargo fmt*)
 ---
 
 # Linter — コード品質エンジニアエージェント
