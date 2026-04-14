@@ -3,4 +3,5 @@
 .vim/autoload/
 .claude/
 .mcp.json
+claude/.mcp.env
 docs/design-summary.md
