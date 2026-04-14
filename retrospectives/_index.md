@@ -34,6 +34,10 @@
 - Widget/UI 変更で縦スペースが増える場合、設計段階で「viewport 高さ予算（例: 800×600 で残り 544px）」を明示して階層レイアウトを比較する（2026-04-alarm）
 - サブエージェントの「既存バグ / HEAD で再現」判定は、Orchestrator 側で `git stash` + 該当テスト単独実行で独立検証してから信じる（2026-04-alarm）
 - 破壊的 UI 操作には、スタイル不変の `onPressed` async 化＋`AlertDialog` で二重確認を入れると、既存 WCAG テストを維持したまま誤タップ耐性を確保できる（2026-04-alarm）
+- ネイティブ依存ライブラリを追加する前に bundled binary のアーキテクチャ・compile-time マクロ・対象 OS を確認する（事後の linker error / 無音は手戻り大）（2026-04-alarm）
+- pub-cache 直接編集は一時手段に限定し、永続化策（fork / postinstall script / pubspec override）を決めずに依存しない（2026-04-alarm）
+- ユーザー報告の現象は「コードの問題」「環境の問題」「ライブラリの問題」のどれかを最初に切り分ける。即「コード修正」に走らない（2026-04-alarm）
+- 音声・グラフィックスなど環境依存度の高い体験は、選択肢の比較表を出す段階で「実機検証の早期化」をアクションに含める（2026-04-alarm）
 
 ## 振り返り一覧
 
@@ -50,3 +54,4 @@
 | 2026-04-13 | alarmアプリ ADHD朝レビュー採用分（REQ-27/28/29） | [2026-04-alarm-3.md](2026-04-alarm-3.md) |
 | 2026-04-13 | alarmアプリ REQ-27 UX改善 / spec-naming / REQ-30 wakelock | [2026-04-alarm-4.md](2026-04-alarm-4.md) |
 | 2026-04-14 | alarmアプリ REQ-6/15/27 UI 改善（二重確認 / タップ領域 / 階層化） | [2026-04-alarm-5.md](2026-04-alarm-5.md) |
+| 2026-04-14 | alarmアプリ チェック音遅延対策（playOverlapping / warmUp / SoLoud・audioplayers 検討撤回） | [2026-04-alarm-6.md](2026-04-alarm-6.md) |
