@@ -1,0 +1,12 @@
+{
+  "autoMemoryDirectory": "~/dotfiles/claude/memory/work",
+  "permissions": {
+    "allow": [
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(node *)",
+      "Bash(go *)",
+      "Bash(docker *)"
+    ]
+  }
+}
