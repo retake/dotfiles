@@ -39,6 +39,54 @@ if git --version > /dev/null 2>&1; then
   alias grebase='git rebase'
 fi
 
+# --- Claude/Codex 同時セッション用 worktree ヘルパー ---
+# cc-new <branch> [base]
+#   現在のリポジトリを ../<repo>-<branch> に worktree として切り出して cd する。
+#   base を省略すると origin の既定ブランチ、無ければ HEAD から分岐。
+cc-new() {
+  local branch="$1"
+  local base="$2"
+  if [ -z "$branch" ]; then
+    echo "usage: cc-new <branch> [base]" >&2
+    return 1
+  fi
+  local root
+  root=$(git rev-parse --show-toplevel 2>/dev/null) || { echo "not in a git repo" >&2; return 1; }
+  local repo
+  repo=$(basename "$root")
+  local wt="${root%/*}/${repo}-${branch}"
+  if [ -e "$wt" ]; then
+    echo "already exists: $wt" >&2
+    return 1
+  fi
+  if git -C "$root" show-ref --verify --quiet "refs/heads/$branch"; then
+    git -C "$root" worktree add "$wt" "$branch" || return 1
+  else
+    if [ -z "$base" ]; then
+      base=$(git -C "$root" symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's#^origin/##')
+      [ -z "$base" ] && base=HEAD
+    fi
+    git -C "$root" worktree add -b "$branch" "$wt" "$base" || return 1
+  fi
+  cd "$wt" || return 1
+  echo "worktree: $wt (branch: $branch)"
+}
+
+# cc-ls: 現在のリポジトリの worktree 一覧
+cc-ls() { git worktree list; }
+
+# cc-rm <path>: worktree を削除（マージ済み前提）
+cc-rm() {
+  local wt="$1"
+  if [ -z "$wt" ]; then
+    echo "usage: cc-rm <worktree-path>" >&2
+    return 1
+  fi
+  git worktree remove "$wt"
+}
+# --- /Claude worktree ヘルパー ---
+
+
 if gh --version > /dev/null 2>&1; then
   eval "$(gh completion -s bash)"
   alias prs='gh pr status'
@@ -63,3 +111,4 @@ export VISUAL=nvim
 export BROWSER=wslview
 alias vim=nvim
 
+export PATH="$HOME/dev/tools/flutter/bin:$PATH"
