@@ -1,0 +1,6 @@
+{
+  "autoMemoryDirectory": "~/dotfiles/claude/memory/consulting",
+  "permissions": {
+    "additionalDirectories": ["/mnt/c/Users/keita/Box"]
+  }
+}
