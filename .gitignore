@@ -4,4 +4,10 @@
 .claude/
 .mcp.json
 claude/.mcp.env
+claude/commands/cal.md
+claude/memory/**/MEMORY.md
+claude/memory/global/MEMORY_old.md
+claude/memory/global/user_email_accounts.md
+claude/roles/life/
+claude/memory/life/
 docs/design-summary.md
