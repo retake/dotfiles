@@ -25,6 +25,10 @@
 - `google_fonts` で `allowRuntimeFetching = false` の環境では `GoogleFonts.xxx()` 関数呼び出しは実行時例外。textTheme 経由の fontFamily 指定のみ OK で、個別 TextStyle では fontFamily 直書きか DefaultTextStyle merge に寄せる（2026-04-alarm）
 - orchestrate は実装完遂前提だけでなく、要件レベル意思決定（採用/保留/却下判断）にも使える。task-state.md の FR-4 以降を明示 SKIP・normal モードで FR-3 architect 停止すると「判断タスク」として完結する。architect の出力は「実装設計」ではなく「採否判断 + ideas-backlog 転記 draft」になる（2026-04-alarm）
 - golden テスト追加の優先順位付けは (a) コード行数が大きい (b) 状態分岐が多い (c) 最近変更が入った の 3 条件で費用対効果が高い。「情報ノイズ回避」（1 件のみの時は進捗カウンタ非表示など）を golden の設計にも持ち込むと再利用性が上がる（2026-04-alarm）
+- 新規スキル・複合処理フローの試運転は「最後まで走り切らない」ことを前提に、途中停止→ findings handoff 起票→次セッションで引き継ぎ再開、というリレー設計にすると UX 崩壊を防げる（2026-04-alarm）
+- スキル設計の対話 UX は「4 問一括対話」より「Claude 側が先に候補を列挙→ユーザーは採否のみ答える」形式の方が決定コストが低い。候補を思いつけない場面での往復増加を防げる（2026-04-alarm）
+- クロスプロジェクトスキル（複数プロジェクトから呼ばれる想定）は技術スタック非依存で書く。`src/` / `lib/` / `app/` などのパスハードコードは Flutter・Rails 等で破綻するため、自動探索 or CLAUDE.md パス宣言で解消する（2026-04-alarm）
+- スキル間の情報重複は「運用で覚える」ではなく、ファイル経由で参照する構造で解消する。audit 出力を closing が読み取る等、中間生成物を介した連携で重複記述を排除できる（2026-04-alarm）
 
 ## 振り返り一覧
 
@@ -48,3 +52,4 @@
 | 2026-04-15 | alarmアプリ ecrs-layout-review 4 件対応（REQ-34 緊急ステージ削減+補助テキスト強化 / REQ-35 待機画面重心統一 / REQ-36 補助テキストフル白）+ ハンドオフアーカイブ | [2026-04-alarm-10.md](2026-04-alarm-10.md) |
 | 2026-04-15 | alarmアプリ 主CTA「今すぐ開始」文字化け修正（FilledButton styleFrom textStyle 上書きで fontFamily 継承切れ → Text 側 merge に移行） | [2026-04-alarm-11.md](2026-04-alarm-11.md) |
 | 2026-04-15 | alarmアプリ ハンドオフ監査→採否・実装サイクル（golden 拡張 / CR-4 件数進捗 / messaging T-2 工程進捗 / REQ-37 最長工程 / U-1・U-5 却下 orchestrate / ハンドオフ 2 件 tracking / show-goldens スキル） | [2026-04-alarm-12.md](2026-04-alarm-12.md) |
+| 2026-04-15 | alarmアプリ /closing スキル新規作成＋初回試運転（ステップ4まで実行・findings handoff 起票・messaging-completion-ux archive 移動） | [2026-04-alarm-13.md](2026-04-alarm-13.md) |
