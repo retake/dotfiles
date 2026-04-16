@@ -28,11 +28,13 @@ allowed-tools:
 
 ## 作業開始時の必須手順
 
-`~/retrospectives/_index.md` をReadツールで読み込み、教訓を踏まえて設計を行う（存在しない場合はスキップ）。
+1. `~/retrospectives/_index.md` をReadツールで読み込み、教訓を踏まえて設計を行う（存在しない場合はスキップ）。
+2. `docs/current-architecture.md` をReadツールで読み込み、現在のアーキテクチャを把握する（存在しない場合はスキップ）。
+   - **`docs/design-summary.md` は丸読みしない。** current-architecture.md で全体像を把握した上で、必要なセクションのみ Read で参照する（例: 特定の追補のインタフェース定義を確認する場合は行番号指定で読む）。
 
 ## 出力
 
-`docs/design-summary.md` を以下のフォーマットで生成してください：
+`docs/design-summary.md` に追補セクションを追記してください（既存内容は保持）。フォーマット：
 
 ```markdown
 # 設計サマリ

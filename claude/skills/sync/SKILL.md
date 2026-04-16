@@ -34,6 +34,7 @@ orchestrateを通さずに行った修正が、ドキュメントに反映され
 
 以下のファイルが存在するか確認する（存在しないものはスキップ）：
 - `docs/requirements.md`
+- `docs/current-architecture.md`
 - `docs/design-summary.md`
 - `docs/traceability.md`
 
@@ -42,16 +43,16 @@ orchestrateを通さずに行った修正が、ドキュメントに反映され
 ### 3. 乖離の検出
 
 **requirements.md との乖離：**
-- `src/` 内の `@req REQ-x.x` コメントを収集する
+- `src/` または `lib/` 内の `@req REQ-x.x` コメントを収集する
 - requirements.mdの要件IDリストと照合する
 - requirements.mdにないREQ-x.xがコードに存在する → 「要件追加の可能性」
 - requirements.mdにあるREQ-x.xがコードに存在しない → 「要件削除または未実装の可能性」
 
-**design-summary.md との乖離：**
-- design-summary.mdのインタフェース定義テーブルの関数名を抽出する
-- `src/` 内にその関数名が存在するかgrepで確認する
-- 設計にない関数がコードに存在する → 「設計への追記が必要」
-- 設計にある関数がコードに存在しない → 「設計の更新または実装漏れの可能性」
+**current-architecture.md / design-summary.md との乖離：**
+- まず `docs/current-architecture.md` を読み、レイヤー構成・主要モジュール一覧と実際の `lib/` を照合する
+- current-architecture.md に記載がないモジュールが `lib/` に存在する → 「current-architecture.md への追記が必要」
+- current-architecture.md に記載があるモジュールが `lib/` に存在しない → 「current-architecture.md の更新が必要」
+- **`docs/design-summary.md` は丸読みしない。** current-architecture.md との乖離が見つかった場合のみ、design-summary.md の該当セクションを行番号指定で参照する
 
 **traceability.md との乖離：**
 - traceability.mdが存在する場合、最終更新日と最新のsrc/変更日を比較する
