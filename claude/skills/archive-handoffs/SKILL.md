@@ -33,7 +33,7 @@ allowed-tools:
 ### ステップ1: 対象ハンドオフの確定
 
 1. 引数なしの場合:
-   - `git ls-files docs/agent-handoff-*.md` と `ls docs/agent-handoff-*.md` を実行
+   - `ls docs/agent-handoff-*.md 2>/dev/null` を1回実行
    - 候補一覧を表示し「対応完了したファイルを指定してください（/audit-handoffs で事前確認推奨）」と促して終了
 2. 引数ありの場合:
    - 各引数を `docs/agent-handoff-*.md` のいずれかに正規化する（basename 一致でも許容）
@@ -70,7 +70,7 @@ allowed-tools:
 
 ### ステップ4: 関連ドキュメントの参照チェック
 
-ステップ2-2 で列挙した参照元ファイルを開き、移動後に壊れるリンクがあれば提示する。
+ステップ2-2 で列挙した参照元ファイルに対し、`Grep` でバスネームを含む行だけ取得する（ファイル全体を Read しない）。移動後に壊れるリンクがあれば提示する。
 **修正は自動適用しない**（要判断）。以下のパターンを検出：
 
 - `docs/agent-handoff-xxx.md` というパスを含む相対リンク（Markdown）
