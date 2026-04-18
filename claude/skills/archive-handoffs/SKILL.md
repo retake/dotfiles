@@ -43,11 +43,14 @@ allowed-tools:
 
 指定された各ハンドオフについて、以下を必ず確認する：
 
-1. **ファイルの最終更新と直近 commit**: `git log -1 --format='%cd %s' -- <file>` を実行し、
+1. **`handoff_status` が `archive_waiting` であること**: Grep で `handoff_status` 行を取得し、
+   `archive_waiting` でない場合は **アーカイブ対象から除外**して理由を表示する。
+   `done` のみのハンドオフはユーザーがまだ内容を判断していない可能性があるため除外する。
+2. **ファイルの最終更新と直近 commit**: `git log -1 --format='%cd %s' -- <file>` を実行し、
    「いつ・何のコミットで触られたか」を表示する
-2. **traceability.md・docs/ideas-backlog.md・docs/design-summary.md からの参照**:
+3. **traceability.md・docs/ideas-backlog.md・docs/design-summary.md からの参照**:
    `grep -l <basename> docs/` で参照ファイルを列挙する
-3. **ユーザーへの確認メッセージ**を以下のフォーマットで提示：
+4. **ユーザーへの確認メッセージ**を以下のフォーマットで提示：
 
    ```
    以下を docs/archive/ に移動します：
@@ -122,6 +125,9 @@ allowed-tools:
 ## 運用上のヒント
 
 - `/audit-handoffs` → `/archive-handoffs` の順で実行するのが通常フロー
+- アーカイブできるのは `handoff_status: archive_waiting` のものだけ
+  - `done` のみ: ユーザーがまだ内容を判断していない可能性があるためアーカイブ不可
+  - `archive_waiting` への変更はレビュアー（Human または Codex）が「アーカイブ可」と明示したときのみ行う
 - アーカイブ後は元ハンドオフが `/audit-handoffs` の対象外になるため、
   要判断（⚪）や部分対応（⚠️）のハンドオフは**アーカイブしない**
 - アーカイブ済みハンドオフを再度確認したい場合は `/audit-handoffs 'docs/**/agent-handoff-*.md'`
