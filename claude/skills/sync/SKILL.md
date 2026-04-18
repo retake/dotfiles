@@ -33,6 +33,7 @@ orchestrateを通さずに行った修正が、ドキュメントに反映され
 ### 2. ドキュメントの存在確認
 
 以下のファイルが存在するか確認する（存在しないものはスキップ）：
+- `docs/product-request.md`（正本）
 - `docs/requirements.md`
 - `docs/current-architecture.md`
 - `docs/design-summary.md`
@@ -42,11 +43,15 @@ orchestrateを通さずに行った修正が、ドキュメントに反映され
 
 ### 3. 乖離の検出
 
-**requirements.md との乖離：**
-- `src/` または `lib/` 内の `@req REQ-x.x` コメントを収集する
-- requirements.mdの要件IDリストと照合する
-- requirements.mdにないREQ-x.xがコードに存在する → 「要件追加の可能性」
-- requirements.mdにあるREQ-x.xがコードに存在しない → 「要件削除または未実装の可能性」
+**product-request.md → requirements.md → コードの3層整合チェック：**
+
+1. `docs/product-request.md`（正本）を読み、機能・制約・目的の一覧を把握する
+2. `docs/requirements.md` の REQ リストを読み、product-request.md の内容が要件として反映されているか照合する
+   - product-request.md に記載があるがrequirements.mdに対応するREQがない → 「requirements.md への追記が必要」
+   - requirements.md に REQ があるが product-request.md に対応する記述がない → 「要件の出典が不明（product-request.md との乖離）」
+3. `src/` または `lib/` 内の `@req REQ-x.x` コメントを収集し、requirements.md の REQ リストと照合する
+   - requirements.mdにないREQ-x.xがコードに存在する → 「要件追加の可能性」
+   - requirements.mdにあるREQ-x.xがコードに存在しない → 「要件削除または未実装の可能性」
 
 **current-architecture.md / design-summary.md との乖離：**
 - まず `docs/current-architecture.md` を読み、レイヤー構成・主要モジュール一覧と実際の `lib/` を照合する
@@ -63,7 +68,11 @@ orchestrateを通さずに行った修正が、ドキュメントに反映され
 ```
 [SYNC] ドキュメント同期チェック結果
 
-## requirements.md
+## product-request.md → requirements.md（正本 → 要件）
+- 乖離なし / 乖離あり
+  （乖離の詳細）
+
+## requirements.md → コード（要件 → 実装）
 - 乖離なし / 乖離あり
   （乖離の詳細）
 
