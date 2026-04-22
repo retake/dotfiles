@@ -2,6 +2,8 @@
 .vim/plugged/
 .vim/autoload/
 .claude/
+!templates/**/.claude/
+!templates/**/.claude/**
 .mcp.json
 claude/.mcp.env
 claude/commands/cal.md
