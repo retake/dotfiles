@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter test*)",
+      "Bash(flutter run*)",
+      "Bash(flutter build*)",
+      "Bash(flutter pub*)",
+      "Bash(flutter analyze*)",
+      "Bash(dart*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f /tmp/flutter.pid ] && echo \"$INPUT\" | grep -q '\\.dart'; then kill -USR1 $(cat /tmp/flutter.pid) 2>/dev/null && echo 'Hot reload triggered'; fi"
+          }
+        ]
+      }
+    ]
+  }
+}
