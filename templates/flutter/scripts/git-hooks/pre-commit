@@ -1,0 +1,38 @@
+#!/bin/bash
+# pre-commit: dart format と flutter analyze を staged 変更に対して実行する
+# セットアップ: 初回に `git config core.hooksPath scripts/git-hooks` を実行する
+
+set -e
+
+STAGED_DART=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.dart$' || true)
+
+if [ -z "$STAGED_DART" ]; then
+  exit 0
+fi
+
+# dart format はファイルを書き換えずに検査のみ（--output=none）
+if ! echo "$STAGED_DART" | xargs dart format --output=none --set-exit-if-changed > /dev/null; then
+  echo "❌ dart format 違反があります。以下を実行してから commit し直してください:"
+  echo "    dart format lib/ test/"
+  echo "    git add -u"
+  exit 1
+fi
+
+# flutter analyze はプロジェクト全体に対して走らせる
+if ! flutter analyze 2>&1 | tail -5 | grep -q "No issues found"; then
+  echo "❌ flutter analyze で警告/エラーがあります。修正してから commit し直してください:"
+  flutter analyze 2>&1 | grep -E "info|warning|error" | head -20
+  exit 1
+fi
+
+# テストファイルが削除・変更されている場合は REQ カバレッジを確認する
+STAGED_TEST=$(git diff --cached --name-only --diff-filter=ACMRD | grep -E '^test/.*\.dart$' || true)
+if [ -n "$STAGED_TEST" ]; then
+  if ! bash scripts/check-req-coverage.sh; then
+    echo ""
+    echo "❌ pre-commit: REQ カバレッジ違反があります。テストに // @req <REQ-ID> を追加してから commit し直してください"
+    exit 1
+  fi
+fi
+
+echo "✓ pre-commit: dart format OK / flutter analyze 0件 / REQ カバレッジ OK"
