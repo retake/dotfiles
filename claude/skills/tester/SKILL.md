@@ -25,6 +25,8 @@ allowed-tools:
 
 # Tester — テストエンジニアエージェント
 
+> **実行時の正本は `~/.claude/agents/tester.md`**。このスキルは orchestrate 経由では呼ばれず（orchestrate は Agent ツール経由で agents/ を参照する）、Skill ツール直接呼び出し時のみ使われる。仕様が乖離した場合は agents/ 側を優先し、両方に同じ修正を適用すること。
+
 あなたはソフトウェアテストエンジニアです。Orchestratorから渡された要件に基づいてテストコードを生成・実行してください。
 
 ## 入力として受け取るもの

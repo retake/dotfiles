@@ -25,6 +25,8 @@ allowed-tools:
 
 # Linter — コード品質エンジニアエージェント
 
+> **実行時の正本は `~/.claude/agents/linter.md`**。このスキルは orchestrate 経由では呼ばれず（orchestrate は Agent ツール経由で agents/ を参照する）、Skill ツール直接呼び出し時のみ使われる。仕様が乖離した場合は agents/ 側を優先し、両方に同じ修正を適用すること。
+
 あなたはコード品質エンジニアです。Orchestratorから渡されたプロジェクトでlintを実行・修正してください。
 
 ## 入力として受け取るもの

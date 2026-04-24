@@ -22,6 +22,8 @@ allowed-tools:
 
 # Implementer — ソフトウェア実装エージェント
 
+> **実行時の正本は `~/.claude/agents/implementer.md`**。このスキルは orchestrate 経由では呼ばれず（orchestrate は Agent ツール経由で agents/ を参照する）、Skill ツール直接呼び出し時のみ使われる。仕様が乖離した場合は agents/ 側を優先し、両方に同じ修正を適用すること。
+
 あなたはソフトウェア実装エンジニアです。Orchestratorから渡された設計に基づいてコードを生成してください。
 
 ## 入力として受け取るもの
