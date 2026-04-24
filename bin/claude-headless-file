@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat >&2 <<'EOF'
+Usage:
+  claude-headless-file PROMPT_FILE [claude args...]
+  claude-headless-file --timeout DURATION PROMPT_FILE [claude args...]
+
+Examples:
+  claude-headless-file /tmp/prompt.txt
+  claude-headless-file --timeout 120s /tmp/prompt.txt --output-format json --permission-mode acceptEdits
+EOF
+}
+
+timeout_args=()
+
+if [[ $# -ge 2 && "$1" == "--timeout" ]]; then
+  timeout_args=(timeout "$2")
+  shift 2
+fi
+
+if [[ $# -lt 1 ]]; then
+  usage
+  exit 2
+fi
+
+prompt_file="$1"
+shift
+
+if [[ ! -f "$prompt_file" ]]; then
+  echo "Prompt file not found: $prompt_file" >&2
+  exit 1
+fi
+
+exec "${timeout_args[@]}" claude -p "$@" <"$prompt_file"

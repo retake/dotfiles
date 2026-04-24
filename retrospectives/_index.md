@@ -29,6 +29,19 @@
 - スキル設計の対話 UX は「4 問一括対話」より「Claude 側が先に候補を列挙→ユーザーは採否のみ答える」形式の方が決定コストが低い。候補を思いつけない場面での往復増加を防げる（2026-04-alarm）
 - クロスプロジェクトスキル（複数プロジェクトから呼ばれる想定）は技術スタック非依存で書く。`src/` / `lib/` / `app/` などのパスハードコードは Flutter・Rails 等で破綻するため、自動探索 or CLAUDE.md パス宣言で解消する（2026-04-alarm）
 - スキル間の情報重複は「運用で覚える」ではなく、ファイル経由で参照する構造で解消する。audit 出力を closing が読み取る等、中間生成物を介した連携で重複記述を排除できる（2026-04-alarm）
+- orchestrate タスクサイズ確定は「requirements.md 全 REQ 数」ではなく「本タスクで新規追加する REQ 数」を基準にする。既存大規模プロジェクトで large 誤判定を招くため、Orchestrator 裁量で medium 維持とした運用例を task-state.md に記録する（2026-04-alarm）
+- 巨大ファイル分割時は元ファイルに `export ... show` を残して re-export するだけで、呼び出し元（別ファイル + テスト）を無改修で通せる。分割 PR を小さく保つ常套手段（2026-04-alarm）
+- 責務分割リファクタは Step 単位で `dart format` / `flutter analyze` / `flutter test` を必ず回す。全部終わってから一括検証より、どのコミットで壊れたか即特定できる構造を維持する方が圧倒的に安全（2026-04-alarm）
+- コントローラ抽出で責務が 2 つ混ざっていると感じたら 1 クラスに詰めない。「start() の引数が多い / ふるまいが状態で分岐する」が兆候。別クラスに分ける判断を早める（2026-04-alarm）
+- 新規 lint を一括有効化するときは「scope 除外設定」を最初の analyze 結果を見て並行で設計する。全件修正に走ると修正量が爆発するため、まず lib-only に絞って費用対効果を見る（2026-04-alarm）
+- 大きなネスト構造を `unawaited(...)` でラップするときは Edit で閉じ括弧を足すより Read → ブロック書き直しのほうが崩れにくい。インデントずれのリカバリが高コストになるため（2026-04-alarm）
+- Codex ハンドオフは「優先順位 + 保留指示 + 別枠指示」という構造で来ることがあり、段階導入の設計図として読む（一括実装せず段階に従う）。「優先順位」と「保留指示」を機械的に読まず、導入の順番・スコープ・除外方針まで Codex が設計していた前提で扱う（2026-04-alarm）
+- golden 差分の許容可否は tester プロンプトで事前に「どの stage/widget で差分が出るのが意図通りか」をリスト化する。--update-goldens の判断を tester に丸投げすると意図外の差分を許容してしまう（2026-04-alarm）
+- Fake で production 挙動を隠蔽するとテストが緑でも完了判定が甘くなる。production 実装注入テスト（例: production scheduler 下で state が idle 維持されることを検証）を少なくとも 1 件設けて「fake 外しても壊れない」ことを担保する。Codex セカンドオピニオンで発覚（2026-04-alarm）
+- 変更ファイルが3本以下で内容が明確なら、プランエージェント並列起動は過剰。コードを数箇所 Read してそのまま implementer 直起動するほうが速い。「設計確定済み＝プランエージェント不要」という判断軸を持つ（2026-04-alarm）
+- design-consult の成果物は「全件 Findings の羅列」より「Human が採否判断しやすい 2-3 論点への圧縮」が価値。keep / change now / later に仕分けてから絞る（HO-071、2026-04-alarm-19）
+- バグ修正が連鎖するときは、最初の fix 前に全フェーズ状態のシナリオテスト期待値を並べてから修正を重ねると連鎖を断ち切れる（REQ-39 修正 4 件連続、2026-04-alarm-19）
+- scripts 汎用化は env 変数でプロジェクト差分を受け、SKIP_REQS 等のプロジェクト固有設定を外部ファイルに外出しすると複数 PJ で再利用できる（TASK-20260422-001、2026-04-alarm-19）
 
 ## 振り返り一覧
 
@@ -53,3 +66,9 @@
 | 2026-04-15 | alarmアプリ 主CTA「今すぐ開始」文字化け修正（FilledButton styleFrom textStyle 上書きで fontFamily 継承切れ → Text 側 merge に移行） | [2026-04-alarm-11.md](2026-04-alarm-11.md) |
 | 2026-04-15 | alarmアプリ ハンドオフ監査→採否・実装サイクル（golden 拡張 / CR-4 件数進捗 / messaging T-2 工程進捗 / REQ-37 最長工程 / U-1・U-5 却下 orchestrate / ハンドオフ 2 件 tracking / show-goldens スキル） | [2026-04-alarm-12.md](2026-04-alarm-12.md) |
 | 2026-04-15 | alarmアプリ /closing スキル新規作成＋初回試運転（ステップ4まで実行・findings handoff 起票・messaging-completion-ux archive 移動） | [2026-04-alarm-13.md](2026-04-alarm-13.md) |
+| 2026-04-15 | alarmアプリ countdown_view 4チャンク化（REQ-38 新規・chunk A-D 分離・stage5 続ける AnimatedSwitcher 昇格）+ REQ-UI-4 派生マーカー掃除 | [2026-04-alarm-14.md](2026-04-alarm-14.md) |
+| 2026-04-15 | alarmアプリ countdown_view レイアウト再設計（layout-review #1-#4 解消・主操作を工程直下へ昇格・chunk B 拡張リネーム・T-38.18-24 新規）+ ハンドオフ 2 件 archive | [2026-04-alarm-15.md](2026-04-alarm-15.md) |
+| 2026-04-15 | alarmアプリ 責務分割リファクタ（countdown_view 983→92 行 / schedule_notifier 511→429 行・新規 10 ファイル・UI 5 / Application 3 / Domain 2・全 481 テスト緑・振る舞い不変）+ ハンドオフ 1 件 archive | [2026-04-alarm-16.md](2026-04-alarm-16.md) |
+| 2026-04-16 | alarmアプリ lint/analyzer 強化導入（strict-casts / unawaited_futures 等 6 ルール追加・lib 30 件の fire-and-forget を unawaited() 明示・test/integration_test/tool で個別 disable・全 481 テスト緑）+ ハンドオフ 1 件 archive | [2026-04-alarm-17.md](2026-04-alarm-17.md) |
+| 2026-04-16 | alarmアプリ 早期完了導線の追加（REQ-39 新設 / 工程レベル secondary CTA / セッションレベル「準備完了・出発」/ Codex 指摘で _skippedDepartureTime 追加・stage4-5 文言陳腐化修正 / 511 テスト緑） | [2026-04-alarm-18.md](2026-04-alarm-18.md) |
+| 2026-04-23 | alarmアプリ UI改善・domain リファクタ・scripts汎用化（REQ-39 追加修正 / HO-071 Finding 1-6 実装 / domain P1 系 4 件 + 純関数抽出 / TASK-20260422-001 scripts dotfiles 化完了） | [2026-04-alarm-19.md](2026-04-alarm-19.md) |

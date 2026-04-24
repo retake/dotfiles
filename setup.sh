@@ -42,3 +42,7 @@ cd "$(pwd)/bin"
 for shell_script in ?*.sh; do
   create_symlink "$(pwd)/${shell_script}" "${HOME}/bin/${shell_script}"
 done
+
+create_directory_if_not_exists "${HOME}/.codex"
+create_directory_if_not_exists "${HOME}/.codex/skills"
+"$(pwd)/sync-codex-skills.sh"

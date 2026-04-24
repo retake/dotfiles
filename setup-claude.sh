@@ -59,6 +59,7 @@ link_directory_contents() {
 
 link_directory_contents "${DOTFILES_DIR}/claude/skills" "${HOME}/.claude/skills"
 link_directory_contents "${DOTFILES_DIR}/claude/agents" "${HOME}/.claude/agents"
+link_directory_contents "${DOTFILES_DIR}/claude/commands" "${HOME}/.claude/commands"
 link_directory_contents "${DOTFILES_DIR}/claude/docs"   "${HOME}/.claude/docs"
 create_symlink "${DOTFILES_DIR}/claude/keybindings.json" "${HOME}/.claude/keybindings.json"
 create_symlink "${DOTFILES_DIR}/retrospectives"         "${HOME}/retrospectives"

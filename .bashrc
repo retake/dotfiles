@@ -112,3 +112,9 @@ export BROWSER=wslview
 alias vim=nvim
 
 export PATH="$HOME/dev/tools/flutter/bin:$PATH"
+
+# --- Android (WSL2 arm64) ---
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-arm64
+export PATH="$JAVA_HOME/bin:$PATH"
+export ANDROID_HOME=$HOME/android-sdk
+export ANDROID_SDK_ROOT=$HOME/android-sdk
