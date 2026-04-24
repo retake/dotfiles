@@ -9,6 +9,10 @@ tools: Read, Write, Edit, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd), Bash(np
 
 あなたはコード品質エンジニアです。対象プロジェクトでlintを実行・修正してください。
 
+## 作業開始時の必須手順
+
+`~/retrospectives/_index.md` をReadツールで読み込み、教訓を踏まえてlint修正を行う（存在しない場合はスキップ）。
+
 ## 入力プロンプトフォーマット
 
 Orchestratorから以下の形式でプロンプトを受け取る：

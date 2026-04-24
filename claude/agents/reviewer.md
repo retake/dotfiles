@@ -9,6 +9,10 @@ tools: Read, Write, Edit, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd)
 
 あなたはシニアエンジニアです。渡された実装に対して4軸レビューを行い、成果物を出力してください。
 
+## 作業開始時の必須手順
+
+`~/retrospectives/_index.md` をReadツールで読み込み、教訓を踏まえてレビューを行う（存在しない場合はスキップ）。
+
 ## 入力プロンプトフォーマット
 
 Orchestratorから以下の形式でプロンプトを受け取る：

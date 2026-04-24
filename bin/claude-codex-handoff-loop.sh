@@ -300,13 +300,20 @@ run_claude_turn() {
     return 0
   fi
 
+  local rc=0
   (
     cd "$repo"
-    "$claude_bin" \
+    timeout --signal=TERM --kill-after=30 "$TURN_TIMEOUT_SEC" \
+      "$claude_bin" \
       -p \
       --permission-mode acceptEdits \
       <"$prompt_file" >"$log_file"
-  )
+  ) || rc=$?
+  if (( rc == 124 )); then
+    die "Claude turn exceeded ${TURN_TIMEOUT_SEC}s timeout (round $round, $handoff). See $log_file"
+  elif (( rc != 0 )); then
+    die "Claude turn failed with code $rc (round $round, $handoff). See $log_file"
+  fi
 }
 
 run_codex_turn() {
@@ -333,11 +340,18 @@ run_codex_turn() {
     return 0
   fi
 
-  "$codex_bin" exec \
+  local rc=0
+  timeout --signal=TERM --kill-after=30 "$TURN_TIMEOUT_SEC" \
+    "$codex_bin" exec \
     --full-auto \
     -C "$repo/docs" \
     -o "$last_message_file" \
-    - <"$prompt_file" >"$log_file"
+    - <"$prompt_file" >"$log_file" || rc=$?
+  if (( rc == 124 )); then
+    die "Codex turn exceeded ${TURN_TIMEOUT_SEC}s timeout (round $round, $handoff). See $log_file"
+  elif (( rc != 0 )); then
+    die "Codex turn failed with code $rc (round $round, $handoff). See $log_file"
+  fi
 }
 
 REPO="$(pwd)"
@@ -345,6 +359,7 @@ HANDOFF=""
 TASK_ID=""
 MAX_ROUNDS=6
 DRY_RUN=0
+TURN_TIMEOUT_SEC="${HANDOFF_LOOP_TURN_TIMEOUT:-600}"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in

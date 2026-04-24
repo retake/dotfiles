@@ -1,5 +1,8 @@
 # Agent Handoff Template
 
+> **SECURITY: Never embed secrets in a handoff.**
+> API keys, access tokens, passwords, private keys, OAuth credentials, session cookies, and anything else that grants access to a system must NOT appear in handoff bodies, prompts, logs, or file paths. Reference them by environment variable name (e.g. `$TODOIST_API_TOKEN`) and let the runtime resolve them. Handoffs are committed to git and mirrored into prompts, so any leak is persistent and propagated. If a secret was accidentally written, rotate it immediately and rewrite history with `git filter-repo` before pushing.
+
 In the `Claude Code` + `Codex` workflow, handoffs serve as a **shared state document** updated each turn — not a one-off handover note.
 
 A handoff is also the **source of truth for the Change Layer**. Implementation specifics (sp values, alpha thresholds, layout names — anything that belongs to `how`, not `what`) live here, not in `requirements.md` (Product Layer). See `docs/ideas-backlog.md` for the 3-layer overview; see `AGENT_GUIDE.md` "3-Layer Requirements" for daily judgment rules.

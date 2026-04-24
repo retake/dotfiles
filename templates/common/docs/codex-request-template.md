@@ -1,5 +1,7 @@
 # Codex Review Request
 
+> **SECURITY:** Never paste API keys, tokens, passwords, or other secrets into this request. Reference them by environment variable name. Review requests are persisted in git and mirrored into prompts.
+
 ## Context
 - Project: (project name and tech stack)
 - Common rules: See AGENT_GUIDE.md in repository root
