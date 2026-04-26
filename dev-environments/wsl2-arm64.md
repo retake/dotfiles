@@ -32,6 +32,64 @@
 2. ネイティブプラグインなら `linker error` の可能性を見越して `-DSOLOUD_BACKEND_*` のような compile-time マクロが切替られるか CMakeLists を確認
 3. オーディオ系なら autoaudiosink → pulsesink の link が成立するか実機確認
 
+## Android 開発（2026-04-24 検証）
+
+### セットアップ手順
+
+1. **JDK 17**（Android Gradle Plugin 8.x / Flutter 3.41 が要求）
+   ```bash
+   sudo apt install -y openjdk-17-jdk
+   # ~/.bashrc
+   export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-arm64
+   export PATH="$JAVA_HOME/bin:$PATH"
+   export ANDROID_HOME=$HOME/android-sdk
+   export ANDROID_SDK_ROOT=$HOME/android-sdk
+   ```
+2. **arm64 adb**（Google 公式の `/home/keita/android-sdk/platform-tools/adb` は x86_64 ELF で arm64 上で動かない）
+   ```bash
+   sudo apt install -y adb fastboot
+   # /usr/bin/adb → /usr/lib/android-sdk/platform-tools/adb (ELF aarch64)
+   ```
+3. **x86_64 build-tools（aapt2 等）を qemu で透過実行**
+   ```bash
+   sudo apt install -y qemu-user-static binfmt-support
+   sudo dpkg --add-architecture amd64
+   # amd64 用の apt ソース追加（arm64 Ubuntu は ports.ubuntu.com のみ参照）
+   sudo tee /etc/apt/sources.list.d/amd64.list <<'EOF'
+   deb [arch=amd64] http://archive.ubuntu.com/ubuntu noble main restricted universe multiverse
+   deb [arch=amd64] http://archive.ubuntu.com/ubuntu noble-updates main restricted universe multiverse
+   deb [arch=amd64] http://archive.ubuntu.com/ubuntu noble-security main restricted universe multiverse
+   EOF
+   sudo apt update
+   sudo apt install -y libc6:amd64 libstdc++6:amd64 zlib1g:amd64
+   ```
+4. **Flutter 側設定**
+   ```bash
+   flutter config --android-sdk /home/keita/android-sdk
+   yes | flutter doctor --android-licenses
+   flutter doctor -v  # [✓] Android toolchain を確認
+   ```
+
+### 既知の制約
+
+- **Google 配布の Android SDK バイナリは x86_64 のみ**。公式 arm64 Linux バイナリは未提供。build-tools は qemu-user-static 経由で動かす（aapt2 は 1〜数秒のオーバーヘッド、初回 APK ビルドは 5〜10 分）
+- **`flutter build apk` は `build.gradle.kts` を自動書き換えする**ことがある（`Upgrading build.gradle.kts` メッセージ）。minSdk などをカスタム編集したい場合は `./gradlew assembleDebug` を直接叩くほうが安全
+- **Flutter 3.41 系の minSdk は 24（Android 7.0）以上**。`shared_preferences_android`・`path_provider_android`・`wakelock_plus` 等、主要プラグインが全て API 24 を要求するため、override で下げると実行時にクラッシュする。Android 6.x 以下の端末では起動不可
+
+### 実機接続
+
+- USB 接続は **usbipd-win**（Windows）で WSL2 に passthrough
+  ```powershell
+  # Windows PowerShell（管理者）
+  winget install --exact dorssel.usbipd-win
+  usbipd list
+  usbipd bind --busid <BUSID>
+  usbipd attach --wsl --busid <BUSID>
+  ```
+- 端末側は「ファイル転送 / MTP」モード + USB デバッグ有効
+- `usbipd-win` は `edevmon` フィルタ競合で警告を出すことがあるが、多くは無害
+- 代替: Google Drive / Gmail 経由で APK を sideload、または `adb connect <ip>:<port>` のワイヤレスデバッグ
+
 ## 参考 retrospective
 
 - `~/retrospectives/2026-04-alarm-6.md` — チェック音遅延対策の試行錯誤
