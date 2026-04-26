@@ -57,7 +57,8 @@ link_directory_contents() {
   done
 }
 
-link_directory_contents "${DOTFILES_DIR}/claude/skills" "${HOME}/.claude/skills"
+link_directory_contents "${DOTFILES_DIR}/claude/skills"     "${HOME}/.claude/skills"
+link_directory_contents "${DOTFILES_DIR}/claude/dev-skills" "${HOME}/dev/.claude/skills"
 link_directory_contents "${DOTFILES_DIR}/claude/agents" "${HOME}/.claude/agents"
 link_directory_contents "${DOTFILES_DIR}/claude/commands" "${HOME}/.claude/commands"
 link_directory_contents "${DOTFILES_DIR}/claude/docs"   "${HOME}/.claude/docs"

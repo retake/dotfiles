@@ -1,6 +1,7 @@
 ---
 name: retro
 description: タスク完了後の後処理スキル。draft がなければセッション内容から対話的に振り返りを起こし、~/retrospectives/ に移動して _index.md の教訓・一覧を更新する。ドキュメント乖離の適用と、CLAUDE.md / settings.json / memory への追加 persist 確認まで行う。
+model: sonnet
 user-invocable: true
 argument-hint: ファイル名ヒント（省略時はドラフトのタイトルから推定、例: alarm）。`--auto` で対話をスキップ
 allowed-tools:

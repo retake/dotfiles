@@ -1,6 +1,7 @@
 ---
 name: archive-handoffs
 description: 対応完了したハンドオフを docs/archive/ へ移動するスキル。/audit-handoffs で ✅ 判定が揃ったものを git mv でまとめてアーカイブし、関連ドキュメント（traceability.md・completion-summary.md）からの参照を洗い出す。
+model: haiku
 user-invocable: true
 argument-hint: 対象ファイル名（複数可・空白区切り）。省略時は候補を提示
 allowed-tools:

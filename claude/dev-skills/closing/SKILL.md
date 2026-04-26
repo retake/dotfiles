@@ -1,6 +1,7 @@
 ---
 name: closing
 description: セッション終了時の後処理スキル。状態スキャン → /sync → /audit-handoffs → 申し送り事項があれば handoff 起票 → /archive-handoffs → /retro → 未コミット・未push・Codex未レビューの警告、の順に実行し、次セッションが同等の文脈で再開できる状態にする。
+model: sonnet
 user-invocable: true
 argument-hint: 省略可（`--skip-retro` で retro スキップ、`--skip-sync` で sync スキップ）
 allowed-tools:

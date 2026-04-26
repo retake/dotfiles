@@ -1,3 +1,10 @@
+---
+name: audit-handoffs
+description: Audit Handoffs — ハンドオフ指摘の全件確認スキル
+model: sonnet
+user-invocable: true
+---
+
 # Audit Handoffs — ハンドオフ指摘の全件確認スキル
 
 `docs/agent-handoff-*.md`（Codex/別エージェントからのレビュー・調査文書）に記載された指摘を全件抽出し、現状コードと照合して対応状況を判定・対応案を提案する。

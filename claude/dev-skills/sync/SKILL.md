@@ -1,6 +1,7 @@
 ---
 name: sync
 description: コードとドキュメント（requirements.md・design-summary.md・traceability.md）の乖離を検出し、更新を提案する軽量スキル。orchestrateを通さない小規模修正の後に実行する。
+model: sonnet
 user-invocable: true
 argument-hint: 対象ディレクトリ（省略時はカレントディレクトリ）
 allowed-tools:

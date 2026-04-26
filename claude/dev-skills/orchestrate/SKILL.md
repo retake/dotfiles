@@ -1,6 +1,7 @@
 ---
 name: orchestrate
 description: 自律開発エージェントのオーケストレーター。タスク入力から設計承認まで自律実行し、確認が必要な箇所で停止する。
+model: opus
 user-invocable: true
 argument-hint: タスク入力ファイルのパス（例: task.md）または「再開」
 allowed-tools:
