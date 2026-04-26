@@ -43,6 +43,12 @@
 - REQ 厳格化は sentinel template で fallback を塞ぐのが有効。fallback は便利でも REQ の保証を弱めるため、境界を明示する sentinel で締める（HO-099、2026-04-alarm-21）
 - 並行セッション衝突は「説明できない自動修正」の形で現れる。`_method` が消える・テスト diff が想定外に大きい・`@req` コメントが書き換わる等は PostToolUse hook より先に別セッションを疑い、`git status` / `git diff HEAD` で他プロセスの編集を確認する（2026-04-alarm-22）
 - 自動修正と思える変化は書き戻す前に必ず diff を読む。書き戻しは並行セッションの作業を上書きするリスクがある。中核ファイル（多くの REQ が触る画面の view 等）に着手する前に他 Claude Code / Codex プロセスの有無を能動的に確認し、必要なら `cc-new <branch>` で worktree を分離する（2026-04-alarm-22）
+- pause/resume のような直交状態は、phase enum を増やすより `is{State}` フラグ + 関連数値（凍結値・shift 値）の bundle で表現する方がデータモデルとして自然。phase 切替は "状態遷移ロジックが分岐する" ときだけ（2026-04-alarm-23）
+- `_onTick` のように毎 tick で state を再構成する箇所では、追加した直交フィールドを全部明示で渡す。default 値依存は次の tick でリセットされてリグレッションを生む（pause snap-back バグの直接原因。code review チェックリストに「state 再構成箇所での新規フィールド漏れ」を入れる）（2026-04-alarm-23）
+- custom_lint の `number_of_parameters` (max=5) を超えそうな copyWith は、追加 1 個目から `Update` 値オブジェクトに bundle する方が後の追加にも耐える（2026-04-alarm-23）
+- 仕様反復が起きる新機能（pause / skip / rewind 等）は、最初に "何が止まり、何が止まらないか" を軸ごとに 1 つずつ確認する。選択肢に "全部止める" / "全部進む" の極を入れておくと往復が減る（2026-04-alarm-23）
+- persona-driven 4 ブロック (Product Fit / Failure Modes & Recovery Needs / Interaction Guardrails / Translation To Requirements) は UX feedback を REQ 昇格判断に翻訳する判断軸として機能する。Failure Mode を実体化しておくと、後続 slice の product-layer 昇格判断が即座に出せる（2026-04-alarm-23）
+- handoff 連鎖は 2 段 (parent consult → child implementation) までが扱いやすい。3 段目（再調査）が必要になるほど stale 化したら、間に docs cleanup slice を挟む（2026-04-alarm-23）
 
 ## 振り返り一覧
 
@@ -76,3 +82,4 @@
 | 2026-04-24 | alarmアプリ 出発直前チェック工程 UI 統一 + 前倒し atDeparture 遷移（REQ-45 / `_TaskZone._buildSystemStep()` 拡張 + `AtDepartureReason` 追加 / tester 600s stall → Orchestrator 代行 / Reviewer 自動修正で depart 音二重発火潰し / golden 3 件再構成 / 全 659 テスト緑） | [2026-04-alarm-20.md](2026-04-alarm-20.md) |
 | 2026-04-24 | alarmアプリ 2026-04-24 追加作業（HO-095〜101 対応 / 進捗バー配置・BottomSheet 統一 / HO-097 Slice F/I/J テスト基盤強化 / REQ-27・REQ-37 retire + REQ-43 sentinel template / 21 コミット・86 files +4,469/-1,375） | [2026-04-alarm-21.md](2026-04-alarm-21.md) |
 | 2026-04-25 | alarmアプリ 集中モード除去（REQ-31 削除）+ 並行セッション衝突（同一リポジトリで別セッションが REQ-34 改訂を同時進行 / 中核ファイルへの並行編集を「自動修正」と誤認して書き戻し → ユーザー指摘で再整合 / worktree 分離していなかった反省） | [2026-04-alarm-22.md](2026-04-alarm-22.md) |
+| 2026-04-25 | alarmアプリ countdown pause/resume 実装 + Slice 駆動 handoff 連鎖（HO-107〜117 を 17 commit で land / REQ-49 two-clock model / pause snap-back fix で _onTick の state 再構成漏れ判明 / Slice A persona Failure Mode 実体化 / Codex 並行投入で HO-114/115 fix / HO-116 pause後再調査 / HO-117 Slice C 起票） | [2026-04-alarm-23.md](2026-04-alarm-23.md) |

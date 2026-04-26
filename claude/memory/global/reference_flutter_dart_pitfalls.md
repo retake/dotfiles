@@ -7,6 +7,8 @@ originSessionId: 4f24d32d-4154-4f7a-9c77-25fb2d1d9491
 ## 状態管理（Riverpod）
 
 - **`ConsumerStatefulWidget` の dispose で `ref` は使えない**。外部サービスへのクリーンアップ呼び出しは initState で参照をキャッシュ（例: `_service = ref.read(serviceProvider)`）し、dispose ではキャッシュ経由で呼ぶ。これを守らないと `Cannot use "ref" after the widget was disposed` で広範囲のテストが壊れる
+- **tick / 周期コールバックで state を毎回再構成する箇所では、新規追加した直交フィールドを必ず明示で渡す**。`state = AsyncValue.data(MyState(...))` を毎 tick 実行する `_onTick` 等で、コンストラクタの default 値に頼ると次の tick で意図せずリセットされてリグレッションを生む。pause snap-back バグ（HO-113 fix）の直接原因。code review チェックリストに「state 再構成箇所の新規フィールド漏れ」を入れる
+- **direction-orthogonal な状態（pause/resume / focus on/off 等）は phase enum を増やすより `is{State}` フラグ + 関連数値（凍結値・shift 値）の bundle で表現する**。phase 切替は "状態遷移ロジックが分岐する" ときだけに留める方が、データモデルとして自然になる（REQ-49 で実証）
 
 ## プラットフォーム差（Linux / Web / モバイル）
 

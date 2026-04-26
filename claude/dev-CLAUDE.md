@@ -80,6 +80,7 @@
 日常の手動実装では:
 - ドキュメントを触った時 or REQ 追加時のみ `/sync` を実行（毎回必須ではない）
 - `/audit-handoffs` → `/archive-handoffs` で残課題の視認性を維持
+- handoff 連鎖は **parent consult → child implementation の 2 段まで** が扱いやすい。3 段目（再調査 / 前提更新）が必要になるほど親 handoff が stale 化したら、間に **docs cleanup slice** を挟んで現状を反映してから次の implementation に進む。再調査ループが続くのは前提が古い徴候
 
 ---
 
