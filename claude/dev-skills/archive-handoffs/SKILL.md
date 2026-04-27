@@ -51,19 +51,24 @@ allowed-tools:
    「いつ・何のコミットで触られたか」を表示する
 3. **traceability.md・docs/ideas-backlog.md・docs/design-summary.md からの参照**:
    `grep -l <basename> docs/` で参照ファイルを列挙する
-4. **ユーザーへの確認メッセージ**を以下のフォーマットで提示：
+4. **自動進行または確認** — 以下のルールで処理する：
 
+   **自動進行**（確認不要）: 全対象ファイルが `handoff_status: archive_waiting` かつ dangling 参照なしの場合、以下を表示してそのままステップ3へ:
+   ```
+   以下を docs/archive/ に移動します（自動進行）：
+   - docs/agent-handoff-xxx.md（最終更新: YYYY-MM-DD）
+   ```
+
+   **確認が必要な場合**（いずれかに該当するとき確認をはさむ）:
+   - dangling 参照（Markdown リンク切れ予定）がある
+   - `archive_waiting` でないファイルが含まれていた（除外後に残存ファイルを確認）
+   
+   確認フォーマット:
    ```
    以下を docs/archive/ に移動します：
-   
-   - docs/agent-handoff-xxx.md
-     最終更新: YYYY-MM-DD（コミット: <short sha> <subject>）
-     参照元: docs/traceability.md, docs/ideas-backlog.md
-   
-   続行しますか？（はい / いいえ / 特定の番号だけ / スキップする番号）
+   - docs/agent-handoff-xxx.md（要注意: <理由>）
+   続行しますか？（はい / いいえ）
    ```
-
-   ユーザーが「はい」以外を返した場合は、対象を調整するか処理を中断する。
 
 ### ステップ3: アーカイブ実行
 

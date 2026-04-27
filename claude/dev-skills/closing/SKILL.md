@@ -11,6 +11,7 @@ allowed-tools:
   - Glob
   - Grep
   - Skill
+  - Agent
   - Bash(ls*)
   - Bash(find*)
   - Bash(pwd)
@@ -34,7 +35,8 @@ allowed-tools:
 - **破壊的操作はしない**: コミット・push・アーカイブの自動実行は行わず、警告と推奨に留める
 - **並行セッション前提**: resume ポインタは単一ファイルに集約せず、申し送り事項があるときだけ既存 handoff 形式で起票する
 - **申し送りなしはスキップ可**: 残課題・保留判断・次セッションメモが 1 件もなければ handoff 作成をスキップする
-- **各ステップは既存スキルに委譲**: `Skill` ツール経由で `/sync` `/audit-handoffs` `/archive-handoffs` `/retro` を呼び出す
+- **検出フェーズはBG並列**: sync と audit-handoffs は Agent BG で並列起動し、完了通知後に結果を提示する
+- **対話フェーズは逐次**: archive-handoffs・retro は Skill 経由で逐次実行（ユーザー確認が必要なため）
 
 ## 引数
 
@@ -43,6 +45,35 @@ allowed-tools:
 - `--skip-sync` — ステップ2の `/sync` をスキップ（ドキュメント変更のみのセッション向け）
 
 ## 実行手順
+
+### ステップ0: モード判定（自動）
+
+以下の条件を **全て** 満たす場合は**簡略モード**、1つでも外れる場合は**通常モード**で進む。
+
+判定コマンド（追跡ブランチなしは `HEAD~3..HEAD` にフォールバック）:
+```bash
+git log --name-only --format="" @{u}..HEAD 2>/dev/null || git log --name-only --format="" HEAD~3..HEAD
+```
+
+**簡略モード条件（全件 AND）:**
+- `docs/requirements.md` が含まれない（新REQなし）
+- `docs/agent-handoff-*.md` の追加・変更が含まれない（新handoff起票なし）
+- `docs/` 配下のファイルが含まれない（ドキュメント変更なし）
+
+**簡略モード** の場合は以下を出力してステップ1へ:
+```
+[CLOSING] モード: 簡略（UIのみセッション）
+根拠: 新REQなし / 新handoffなし / docs変更なし
+→ ステップ2（sync/audit）・ステップ5（archive）をスキップ
+実行順: ステップ1 → ステップ6 → ステップ7
+```
+
+**通常モード** の場合は以下を出力してステップ1へ:
+```
+[CLOSING] モード: 通常
+根拠: <条件を外れた理由（例: docs/requirements.md に変更あり）>
+→ 全ステップを実行
+```
 
 ### ステップ1: 現状スキャン
 
@@ -66,16 +97,30 @@ allowed-tools:
 - retro draft: あり / なし
 ```
 
-### ステップ2: /sync 実行
+### ステップ2: sync & audit-handoffs をBG並列起動（**簡略モード時はスキップ → ステップ6へ**）
 
-`--skip-sync` が指定されていなければ `Skill: sync` を呼ぶ。
-sync の出力（乖離検出結果）はそのままユーザーに見せ、更新/スキップの判断はユーザーに委ねる。
+`--skip-sync` が指定されていなければ、**単一メッセージで以下を並列バックグラウンド起動する**：
 
-### ステップ3: /audit-handoffs 実行
+1. Agent(`subagent_type: "sync"`, `run_in_background: true`) — 乖離検出
+2. Agent(`subagent_type: "audit-handoffs"`, `run_in_background: true`) — ハンドオフ照合
 
-`Skill: audit-handoffs` を呼ぶ。
-未対応ハンドオフと既に対応済みのハンドオフを分類する出力が得られる前提で、
-結果のみ表示して次ステップへ。
+`--skip-sync` が指定されている場合は audit-handoffs のみBG起動する。
+
+**両方（または audit-handoffs のみ）の完了通知を受け取ってからステップ3へ進む。**
+
+### ステップ3: 結果の提示とユーザー確認
+
+完了通知を受け取ったら、以下を順に処理する：
+
+**sync 結果（`--skip-sync` でない場合）：**
+- `.claude/sync-result.md` を Read して内容をユーザーに提示する
+- 推奨アクションに「なし」以外の項目がある場合: 更新/スキップの判断をユーザーに委ねる
+- 「変更なし」または「なし」の場合: スキップ
+
+**audit-handoffs 結果：**
+- `.claude/audit-result.md` を Read して内容をユーザーに提示する
+- 残課題がある場合: 推奨アクションを提示してユーザーに委ねる
+- 「ハンドオフなし」または残課題0件の場合: スキップ
 
 ### ステップ4: 申し送り handoff の起票
 
@@ -111,6 +156,12 @@ sync の出力（乖離検出結果）はそのままユーザーに見せ、更
 **作成日**: YYYY-MM-DD
 **担当**: Claude（セッションクロージング）→ 次セッション
 **目的**: 本セッションで発生した残課題・判断保留・文脈を次セッションに引き継ぐ
+
+## handoff_status
+active
+
+## Next Owner
+Claude Code
 
 ---
 
@@ -151,7 +202,7 @@ sync の出力（乖離検出結果）はそのままユーザーに見せ、更
 - `<topic>` は 4-b で確定したタイトルを kebab-case に正規化（英数とハイフンのみ）
 - 既存ファイルと衝突した場合は `<topic>-2` のように連番を付ける
 
-### ステップ5: /archive-handoffs 実行
+### ステップ5: /archive-handoffs 実行（**簡略モード時はスキップ → ステップ6へ**）
 
 `Skill: archive-handoffs` を呼ぶ。
 ステップ3の audit 結果で「対応完了」判定されたハンドオフがあれば archive へ移動する。
