@@ -1,6 +1,6 @@
 ---
 name: sync
-description: コードとドキュメントの乖離を検出し、結果を .claude/sync-result.md に書き出す。closing からBG起動される検出専用版。
+description: コードとドキュメントの乖離を検出し、結果を .claude-state/sync-result.md に書き出す。closing からBG起動される検出専用版。
 model: sonnet
 tools: Read, Write, Glob, Grep, Bash(ls*), Bash(find*), Bash(git diff*), Bash(git log*), Bash(pwd)
 ---
@@ -8,7 +8,7 @@ tools: Read, Write, Glob, Grep, Bash(ls*), Bash(find*), Bash(git diff*), Bash(gi
 # Sync Detect — 乖離検出エージェント
 
 closing からバックグラウンド起動される検出専用エージェント。
-乖離検出フェーズのみを実行し、結果を `.claude/sync-result.md` に書き出してDONEを返す。
+乖離検出フェーズのみを実行し、結果を `.claude-state/sync-result.md` に書き出してDONEを返す。
 更新適用はユーザー判断のため実行しない（`/sync` スキルが担当）。
 
 ## 実行手順
@@ -17,7 +17,7 @@ closing からバックグラウンド起動される検出専用エージェン
 
 1. `git diff HEAD~5 --name-only` で直近の変更ファイルを取得する
 2. `src/` または `lib/` 配下の変更があるか確認する
-3. 変更がない場合は `.claude/sync-result.md` に「変更なし（同期不要）」と書き出してDONEを返す
+3. 変更がない場合は `.claude-state/sync-result.md` に「変更なし（同期不要）」と書き出してDONEを返す
 
 ### 2. ドキュメントの存在確認
 
@@ -28,7 +28,7 @@ closing からバックグラウンド起動される検出専用エージェン
 - `docs/design-summary.md`
 - `docs/traceability.md`
 
-いずれも存在しない場合は `.claude/sync-result.md` に「ドキュメントなし」と書き出してDONEを返す。
+いずれも存在しない場合は `.claude-state/sync-result.md` に「ドキュメントなし」と書き出してDONEを返す。
 
 ### 3. 乖離の検出
 
@@ -47,7 +47,7 @@ closing からバックグラウンド起動される検出専用エージェン
 
 ### 4. 結果の書き出し
 
-検出結果を `.claude/sync-result.md` に書き出す（Writeツールで上書き）：
+検出結果を `.claude-state/sync-result.md` に書き出す（Writeツールで上書き）：
 
 ```markdown
 # Sync 検出結果

@@ -21,7 +21,7 @@
 ### エージェント間のデータ受け渡し
 
 - ファイル経由（コンテキスト肥大化防止・再開可能性確保）
-- Orchestratorがサブエージェント呼び出し時に `.claude/task-state.md` の現フェーズと成果物パスをプロンプトに明示する
+- Orchestratorがサブエージェント呼び出し時に `.claude-state/task-state.md` の現フェーズと成果物パスをプロンプトに明示する
 - サブエージェントは完了時に成果物ファイルを所定パスに書き込み、終了ステータスをOrchestratorに返す
 
 ---
@@ -117,7 +117,7 @@
   A) 手動修正後「再開」と入力
   B) スキップして「スキップ」と入力（レビュー指摘として記録）
   C) 「中止」と入力
-記録場所: .claude/task-state.md
+記録場所: .claude-state/task-state.md
 ```
 
 ---
@@ -168,7 +168,7 @@ hooksはコマンドの許可/拒否の静的ルールに限定する。カウ�
 - `~/.ssh`・認証情報ファイルへのアクセスをブロック
 
 **PostToolUse（ツール呼び出し後）：**
-- `{project_root}/.claude/agent-log.md` にツール呼び出し結果を追記（書き込み専用・エージェントは読まない）
+- `{project_root}/.claude-state/agent-log.md` にツール呼び出し結果を追記（書き込み専用・エージェントは読まない）
 - パスはtask-state.mdの `project_root` フィールドから絶対パスで解決する（フックのcwdはプロジェクトルートと一致する保証がないため相対パス不可）
 
 ### サブエージェントのガードレール
@@ -183,7 +183,11 @@ hooksはコマンドの許可/拒否の静的ルールに限定する。カウ�
 
 ```
 <project-root>/
-├── .claude/
+├── .claude/                  # Claude Code 設定（git 管理）
+│   ├── settings.json
+│   ├── settings.local.json
+│   └── skills/               # プロジェクトローカル skills
+├── .claude-state/            # 実行時 artifacts（gitignored）
 │   ├── task-state.md         # タスク状態・エスカレーション記録・再開情報
 │   └── agent-log.md          # ツール呼び出しログ（全タスク追記、単一ファイル）
 ├── docs/
@@ -194,7 +198,9 @@ hooksはコマンドの許可/拒否の静的ルールに限定する。カウ�
 └── src/                      # 実装コード（FR-4出力）
 ```
 
-### `.claude/task-state.md` のフォーマット
+> **Why split**: `.claude/` 配下の Edit は Claude Code の hardcoded safety check により permission prompt が必須化される（自身の設定変更を防ぐため）。runtime artifacts は session 中に頻繁に書き換えるため `.claude-state/` に分離する。
+
+### `.claude-state/task-state.md` のフォーマット
 
 Orchestratorが起動時に必ずこのファイルを読み、`status` に応じて処理を分岐する。
 
@@ -281,7 +287,7 @@ Orchestratorが起動時に必ずこのファイルを読み、`status` に応�
 - 再開方法: 手動修正後「再開」と入力
 ```
 
-### `.claude/agent-log.md` のフォーマット
+### `.claude-state/agent-log.md` のフォーマット
 
 ```markdown
 # Agent Log
@@ -335,12 +341,12 @@ Orchestratorが起動時に必ずこのファイルを読み、`status` に応�
 
 | エージェント | 入力ファイル | 出力ファイル | 主要フィールド |
 |---|---|---|---|
-| Orchestrator | `.claude/task-state.md` | `.claude/task-state.md` | status, phase, tool_count |
+| Orchestrator | `.claude-state/task-state.md` | `.claude-state/task-state.md` | status, phase, tool_count |
 | Architect | `docs/requirements.md` | `docs/design-summary.md` | モジュール構成・インタフェース一覧・ディレクトリ構造・命名規則 |
 | Implementer | `docs/design-summary.md`, `docs/requirements.md` | `src/` | 要件IDコメント付きコード |
-| Tester | `src/`, `docs/requirements.md` | `src/`（テストコード）, `.claude/test-result.log` | テスト結果サマリ（合否・失敗箇所） |
-| Linter | `src/` | `src/`（修正済み）, `.claude/lint-result.log` | lint結果サマリ（合否・指摘件数） |
-| Reviewer | `docs/requirements.md`, `src/`, `.claude/test-result.log` | `docs/traceability.md`, `docs/completion-summary.md` | 4軸レビュー結果・自動修正内容 |
+| Tester | `src/`, `docs/requirements.md` | `src/`（テストコード）, `.claude-state/test-result.log` | テスト結果サマリ（合否・失敗箇所） |
+| Linter | `src/` | `src/`（修正済み）, `.claude-state/lint-result.log` | lint結果サマリ（合否・指摘件数） |
+| Reviewer | `docs/requirements.md`, `src/`, `.claude-state/test-result.log` | `docs/traceability.md`, `docs/completion-summary.md` | 4軸レビュー結果・自動修正内容 |
 
 ### design-summary.mdのフォーマット（Architect出力・Implementer入力）
 
@@ -495,7 +501,7 @@ ReviewerがインタフェースESCALATEDを返した場合のFR-4やり直し�
 選択肢:
   A) 設計を修正してから「再開」と入力（FR-3から再実行します）
   B) 「中止」と入力
-記録場所: .claude/task-state.md
+記録場所: .claude-state/task-state.md
 ```
 
 ---

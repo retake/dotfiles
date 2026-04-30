@@ -87,7 +87,7 @@ git commit -m "..."         # コミット（push は手動）
 
 ### 前回の続きから再開する
 
-`/orchestrate` を起動するだけ。`.claude/task-state.md` の status に応じて自動的に分岐する。
+`/orchestrate` を起動するだけ。`.claude-state/task-state.md` の status に応じて自動的に分岐する。
 
 | status | 動作 |
 |---|---|
@@ -136,7 +136,7 @@ FR-2停止時に確認・インストールしておくと FR-5/FR-6 で詰ま�
 
 ### エスカレーション後の再開
 
-1. `.claude/task-state.md` のエスカレーション記録を確認
+1. `.claude-state/task-state.md` のエスカレーション記録を確認
 2. 対象ファイルを手動修正
 3. `/orchestrate` を起動して「再開」と入力
 4. FR-5/FR-6 のエスカレーションの場合、試行回数は自動リセットされる
@@ -155,9 +155,13 @@ FR-2停止時に確認・インストールしておくと FR-5/FR-6 で詰ま�
 └── requirements.md ← 機能要件・非機能要件
 
 <project-root>/
-├── .claude/
-│   ├── task-state.md   ← タスク状態・エスカレーション記録
-│   └── agent-log.md    ← ツール呼び出しログ
+├── .claude/                ← Claude Code 設定（git 管理）
+│   ├── settings.json
+│   ├── settings.local.json
+│   └── skills/
+├── .claude-state/          ← 実行時 artifacts（gitignored）
+│   ├── task-state.md       ← タスク状態・エスカレーション記録
+│   └── agent-log.md        ← ツール呼び出しログ
 └── docs/
     ├── design-summary.md    ← FR-3出力（設計サマリ）
     ├── traceability.md      ← FR-8出力（トレーサビリティ）

@@ -1,13 +1,13 @@
 ---
 name: review
-description: PRレビューを自律実行し、結果を .claude/review-result.md に書き出す。完全自律版。
+description: PRレビューを自律実行し、結果を .claude-state/review-result.md に書き出す。完全自律版。
 model: opus
 tools: Read, Write, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd), Bash(git diff*), Bash(git log*), Bash(git status*), Bash(gh pr*)
 ---
 
 # Review — PR レビューエージェント
 
-PR（またはブランチ差分）に対してコードレビューを自律実行し、結果を `.claude/review-result.md` に書き出してDONEを返す。
+PR（またはブランチ差分）に対してコードレビューを自律実行し、結果を `.claude-state/review-result.md` に書き出してDONEを返す。
 
 ## 実行手順
 
@@ -17,7 +17,7 @@ PR（またはブランチ差分）に対してコードレビューを自律実
    - PR あり → PR の diff を対象にする
    - PR なし → `git diff main...HEAD` または `git diff HEAD~1` を対象にする
 2. `git diff --name-only` で変更ファイルの一覧を取得する
-3. 変更がない場合は `.claude/review-result.md` に「変更なし」と書き出してDONEを返す
+3. 変更がない場合は `.claude-state/review-result.md` に「変更なし」と書き出してDONEを返す
 
 ### 2. レビューの実施
 
@@ -42,7 +42,7 @@ PR（またはブランチ差分）に対してコードレビューを自律実
 
 ### 3. 結果の書き出し
 
-結果を `.claude/review-result.md` に書き出す（Writeツールで上書き）：
+結果を `.claude-state/review-result.md` に書き出す（Writeツールで上書き）：
 
 ```markdown
 # Review 結果

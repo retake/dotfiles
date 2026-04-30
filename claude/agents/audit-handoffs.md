@@ -1,6 +1,6 @@
 ---
 name: audit-handoffs
-description: ハンドオフ指摘を照合し、結果を .claude/audit-result.md に書き出す。closing からBG起動される照合専用版。
+description: ハンドオフ指摘を照合し、結果を .claude-state/audit-result.md に書き出す。closing からBG起動される照合専用版。
 model: sonnet
 tools: Read, Write, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd)
 ---
@@ -8,7 +8,7 @@ tools: Read, Write, Glob, Grep, Bash(ls*), Bash(find*), Bash(pwd)
 # Audit Handoffs Detect — 照合専用エージェント
 
 closing からバックグラウンド起動される照合専用エージェント。
-照合・サマリ生成フェーズのみを実行し、結果を `.claude/audit-result.md` に書き出してDONEを返す。
+照合・サマリ生成フェーズのみを実行し、結果を `.claude-state/audit-result.md` に書き出してDONEを返す。
 対応実行はユーザー判断のため実行しない（`/audit-handoffs` スキルが担当）。
 
 ## 実行手順
@@ -17,7 +17,7 @@ closing からバックグラウンド起動される照合専用エージェン
 
 `ls docs/agent-handoff-*.md 2>/dev/null` を実行する。
 
-0件なら `.claude/audit-result.md` に「ハンドオフなし」と書き出してDONEを返す。
+0件なら `.claude-state/audit-result.md` に「ハンドオフなし」と書き出してDONEを返す。
 
 ### ステップ2: 各ファイルの抽出
 
@@ -36,7 +36,7 @@ closing からバックグラウンド起動される照合専用エージェン
 
 ### ステップ3: サマリの書き出し
 
-結果を `.claude/audit-result.md` に書き出す（Writeツールで上書き）：
+結果を `.claude-state/audit-result.md` に書き出す（Writeツールで上書き）：
 
 ```markdown
 # Audit 照合結果
@@ -78,6 +78,6 @@ closing からバックグラウンド起動される照合専用エージェン
 
 ## 制約
 
-- 既存のコードやドキュメントを編集しない（照合と `.claude/audit-result.md` への書き出しのみ）
+- 既存のコードやドキュメントを編集しない（照合と `.claude-state/audit-result.md` への書き出しのみ）
 - git push・commit は行わない
 - untracked の handoff ファイルも必ず含める

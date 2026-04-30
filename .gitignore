@@ -2,6 +2,7 @@
 .vim/plugged/
 .vim/autoload/
 .claude/
+.claude-state/
 !templates/**/.claude/
 !templates/**/.claude/**
 .mcp.json

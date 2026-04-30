@@ -49,7 +49,7 @@ allowed-tools:
 ## 実装手順
 
 0. 検証方法を確認する
-   - 「手動確認」と記載されている場合: テストコードの生成は行わず、手動確認手順を `.claude/manual-check.md` に記録してDONEを返す
+   - 「手動確認」と記載されている場合: テストコードの生成は行わず、手動確認手順を `.claude-state/manual-check.md` に記録してDONEを返す
    - 「自動テスト」または「自動テスト（デフォルト）」の場合: 以下の手順でテストコードを生成する
 1. **要件カバレッジチェック**: 要件の各REQ-x.xに対応するテストケースが既存テストに存在するか確認する
    - 既存テストファイルを `grep -r "REQ-x.x"` またはテスト名・テスト内容から照合する
@@ -85,7 +85,7 @@ allowed-tools:
 - 全体テストを1回実行する（例: `flutter test`）
 - ここで失敗した場合は「範囲外の副作用」を示唆する。自律修正を試みるが、枠の残量に応じて判断する：
   - 残量が十分 → 修正し再実行（上限内で）
-  - 残量が乏しい → ESCALATED を返し、詳細を `.claude/test-result.log` に記録する
+  - 残量が乏しい → ESCALATED を返し、詳細を `.claude-state/test-result.log` に記録する
 - 全体が通ったら DONE
 
 **変更ファイル範囲が未指定の場合（フォールバック）：**
@@ -102,11 +102,11 @@ allowed-tools:
 - git push・デプロイは絶対に実行しないこと
 - lintの実行は行わないこと（Linterの責務）
 - 割り当て枠を超える前に ESCALATED を返すこと
-- ESCALATED の場合は `.claude/test-result.log` に試行履歴を書き込んでから返答すること
+- ESCALATED の場合は `.claude-state/test-result.log` に試行履歴を書き込んでから返答すること
 
 ## 完了時の返答フォーマット
 
 ```
 成功: DONE 使用回数: N回 テスト結果: N件合格 / N件失敗（0件）
-失敗上限超過: ESCALATED 使用回数: N回 停止箇所: （ファイル:行番号） 詳細: .claude/test-result.log
+失敗上限超過: ESCALATED 使用回数: N回 停止箇所: （ファイル:行番号） 詳細: .claude-state/test-result.log
 ```

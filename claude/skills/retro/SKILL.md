@@ -34,9 +34,9 @@ draft が存在しない／古い場合はセッション内容から対話的�
 目的: 並行セッションを回す運用でも記憶に頼らず、成果物から自動的に振り返りを再構成する。
 
 1. **draft の状態を分類する**：
-   - **不在**: `.claude/retrospective-draft.md` が存在しない
+   - **不在**: `.claude-state/retrospective-draft.md` が存在しない
    - **古い**: draft が既に `~/retrospectives/` に同一内容でコピー済（`_index.md` の振り返り一覧に登場するタイトル・タスクIDと一致する）、かつ最終更新より後に新規コミットがある
-     - 判定例: `git log --since="$(stat -c %y .claude/retrospective-draft.md)" --oneline` が非空
+     - 判定例: `git log --since="$(stat -c %y .claude-state/retrospective-draft.md)" --oneline` が非空
    - **有効**: 上記いずれにも該当しない（直近タスクの draft）
 
 2. **分類に応じて分岐**：
@@ -46,7 +46,7 @@ draft が存在しない／古い場合はセッション内容から対話的�
 3. **成果物ベース自動起票の手順**：
 
    **3-1. 対象期間の確定**
-   - draft が「古い」場合: `stat -c %y .claude/retrospective-draft.md` で最終更新日時を取得し、それ以降のコミットを対象にする
+   - draft が「古い」場合: `stat -c %y .claude-state/retrospective-draft.md` で最終更新日時を取得し、それ以降のコミットを対象にする
    - draft が「不在」の場合: `~/retrospectives/_index.md` の振り返り一覧から最新エントリの日付を取得し、それ以降を対象にする。`_index.md` も空なら全履歴を対象にする
 
    **3-2. 成果物の収集（並列で読む）**
@@ -56,11 +56,11 @@ draft が存在しない／古い場合はセッション内容から対話的�
    - **completion-summary.md**: `docs/completion-summary.md` が存在すれば読む（実装サマリ・問題・アクションの主要源）
    - **traceability.md**: `docs/traceability.md` が存在すれば読む（REQ カバレッジ・実装状況）
    - **アクティブなハンドオフ**: `docs/agent-handoff-*.md`（`docs/archive/` 配下を除く）を更新日時降順で最大5件読む（未解決課題・議論の結論を拾う）
-   - **task-state.md**: `.claude/task-state.md` が存在すれば読む（タスク完了状態）
-   - **test-result.log**: `.claude/test-result.log` が存在すれば読む（テスト件数・失敗件数）
+   - **task-state.md**: `.claude-state/task-state.md` が存在すれば読む（タスク完了状態）
+   - **test-result.log**: `.claude-state/test-result.log` が存在すれば読む（テスト件数・失敗件数）
 
    **3-3. draft を自動生成する**
-   収集した情報から以下フォーマットで `.claude/retrospective-draft.md` を書き出す:
+   収集した情報から以下フォーマットで `.claude-state/retrospective-draft.md` を書き出す:
    ```markdown
    # 振り返り: {プロジェクト名} {期間サマリ} {YYYY-MM-DD}
 
@@ -101,7 +101,7 @@ draft が存在しない／古い場合はセッション内容から対話的�
 
 ### ステップ1: ドラフトの確認
 
-1. プロジェクトの `.claude/retrospective-draft.md` を読む
+1. プロジェクトの `.claude-state/retrospective-draft.md` を読む
    - 存在しない場合（ステップ0で起票されなかった異常系）: 「振り返りドラフトが見つかりません」と表示して終了する
 2. ドラフトから以下を抽出する：
    - **タイトル行**（`# 振り返り: …`）からプロジェクト名・日付を取得
@@ -121,10 +121,10 @@ draft が存在しない／古い場合はセッション内容から対話的�
 ### ステップ3: ドラフトをコピー
 
 ```bash
-cp .claude/retrospective-draft.md ~/retrospectives/{ファイル名}
+cp .claude-state/retrospective-draft.md ~/retrospectives/{ファイル名}
 ```
 
-コピー後、コピー元（`.claude/retrospective-draft.md`）は削除しない（orchestrate が参照するため）。
+コピー後、コピー元（`.claude-state/retrospective-draft.md`）は削除しない（orchestrate が参照するため）。
 
 ### ステップ4: `~/retrospectives/_index.md` の更新
 
@@ -249,7 +249,7 @@ cp .claude/retrospective-draft.md ~/retrospectives/{ファイル名}
 
 ## 制約
 
-- `.claude/retrospective-draft.md` は削除しない
+- `.claude-state/retrospective-draft.md` は削除しない
 - `~/retrospectives/` 以外の書き込みは以下に限る:
   - ドラフト乖離の適用（ステップ5）: `docs/design-summary.md` のみ
   - 追加 persist（ステップ7）: ユーザー承認後の CLAUDE.md / settings.json / memory のみ

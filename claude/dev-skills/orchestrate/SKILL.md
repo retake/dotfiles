@@ -54,7 +54,7 @@ Orchestratorはサブエージェントのプロンプトの【過去の教訓�
 
 ### ステップ0: 状態の確認
 
-まず `.claude/task-state.md` が存在するか確認する。
+まず `.claude-state/task-state.md` が存在するか確認する。
 
 **存在する場合：**
 - `status` フィールドを読む
@@ -80,7 +80,7 @@ Orchestratorはサブエージェントのプロンプトの【過去の教訓�
 
 **引数に `--full-init` を含む場合のみ実行。** デフォルトではスキップしてFR-1へ進む。
 
-実行時: `.claude/retrospective-draft.md` の未完了 `- [ ]` 項目を表示し、「今回のタスクに組み込むか」を確認する（「はい」→ FR-1入力に追加 / 「いいえ」→ 無視 / 「後で」→ FR-10でリマインド）。
+実行時: `.claude-state/retrospective-draft.md` の未完了 `- [ ]` 項目を表示し、「今回のタスクに組み込むか」を確認する（「はい」→ FR-1入力に追加 / 「いいえ」→ 無視 / 「後で」→ FR-10でリマインド）。
 
 ### ステップ0.7: コード↔ドキュメント同期チェック（opt-in）
 
@@ -111,7 +111,7 @@ Orchestratorはサブエージェントのプロンプトの【過去の教訓�
 - セキュリティ要件が記載されているが具体性がない
 - 影響範囲が未記載かつ既存コードへの変更を含む（新規プロジェクトの場合は不要）
 
-確認停止時は以下を出力し、`.claude/task-state.md` を作成してstatus=waiting_approvalで保存する：
+確認停止時は以下を出力し、`.claude-state/task-state.md` を作成してstatus=waiting_approvalで保存する：
 ```
 [STOP] フェーズ: FR-1 入力確認
 理由: （具体的な不足項目）
@@ -398,7 +398,7 @@ task-state.mdにstatus=waiting_approval、phase=FR-3として保存する。
 
 ### 新規作成時のフォーマット
 
-テンプレートファイル: `claude/skills/orchestrate/task-state-template.md` を読み込んで `.claude/task-state.md` に書き出す。
+テンプレートファイル: `claude/skills/orchestrate/task-state-template.md` を読み込んで `.claude-state/task-state.md` に書き出す。
 テンプレート内のプレースホルダ（括弧書き）を実際の値に置換すること。
 
 ### 更新ルール
@@ -567,7 +567,7 @@ Tester・Linter両方の結果を受け取った後、バックグラウンド�
 **全てDONE（Tester DONE + Linter DONE + ビルド成功）の場合：**
 - task-state.mdのFR-5・FR-6ステータスをDONEに更新
 - agent-reportに追記（ビルド結果も記録：所要時間・成功/失敗）
-- 検証方法が「手動確認」の場合は `.claude/manual-check.md` が生成済みであることを確認する
+- 検証方法が「手動確認」の場合は `.claude-state/manual-check.md` が生成済みであることを確認する
   - 存在しない場合: Testerを1回再実行する（プロンプトに「manual-check.mdが生成されていません。再生成してください」と追記）
   - 再実行後も存在しない場合: ESCALATEDとして扱い FR-9形式で確認停止する
 - FR-7へ進む
@@ -631,7 +631,7 @@ task-state.mdのagent-reportセクションに `リスクレベル: high/medium/
 
 `subagent_type: reviewer` でAgentツールを呼び出す。プロンプトにはreviewer.mdの「入力プロンプトフォーマット」に従い、以下を渡す：
 - タスクID、割り当て枠、要件IDリスト（ID・概要・完了条件のみ）、設計（インタフェース定義・テスト仕様のみ）
-- テスト結果（.claude/test-result.log）、lint結果
+- テスト結果（.claude-state/test-result.log）、lint結果
 - 過去の教訓（定型文のみ：本人がReadする）
 
 ### 完了後の処理
@@ -696,7 +696,7 @@ Reviewerがコード品質のロジック不具合を自動修正した場合、
   対応:
     A) 手動修正後「再開」と入力（FR-5・FR-6を並列再実行します。試行回数をリセットして再開）
     B) 「中止」と入力
-  記録場所: .claude/task-state.md
+  記録場所: .claude-state/task-state.md
   ```
 
 **ESCALATED（インタフェース変更）の場合：**
@@ -712,7 +712,7 @@ Reviewerがコード品質のロジック不具合を自動修正した場合、
      選択肢:
        A) 設計を修正してから「再開」と入力（FR-3から再実行します）
        B) 「中止」と入力
-     記録場所: .claude/task-state.md
+     記録場所: .claude-state/task-state.md
      ```
 2. design-summary.mdの更新確認停止（FR-9形式）：
    ```
@@ -798,7 +798,7 @@ Reviewerがコード品質のロジック不具合を自動修正した場合、
   A) 手動修正後「再開」と入力
   B) スキップして「スキップ」と入力（レビュー指摘として記録）
   C) 「中止」と入力
-記録場所: .claude/task-state.md
+記録場所: .claude-state/task-state.md
 ```
 
 ※ 選択肢は文脈に応じて省略可（例: スキップが不適切な場合はBを省く）。
@@ -851,7 +851,7 @@ FR-8のステータス: DONE・完了日時を記録
 
 ### 振り返りドラフトの生成
 
-`claude/skills/orchestrate/retrospective-template.md` をテンプレートとして `.claude/retrospective-draft.md` を生成する（task-state.mdのエスカレーション記録 + completion-summary.md を反映）。`~/retrospectives/` への直接書き込みは行わない（人間が移動する）。
+`claude/skills/orchestrate/retrospective-template.md` をテンプレートとして `.claude-state/retrospective-draft.md` を生成する（task-state.mdのエスカレーション記録 + completion-summary.md を反映）。`~/retrospectives/` への直接書き込みは行わない（人間が移動する）。
 
 ### 教訓の陳腐化チェック
 

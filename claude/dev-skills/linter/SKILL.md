@@ -58,16 +58,16 @@ allowed-tools:
 
 - プロジェクトディレクトリ内のみ操作すること
 - git push・デプロイは絶対に実行しないこと
-- 新規ファイルの作成は `.claude/lint-result.log` への書き込みを除き行わないこと（lintはスタイル修正のみで、設計ファイルへの新規Writeは禁止）
-- ESCALATED 時の `.claude/lint-result.log` への書き込みはWriteツールで新規作成 または Editツールで追記すること
+- 新規ファイルの作成は `.claude-state/lint-result.log` への書き込みを除き行わないこと（lintはスタイル修正のみで、設計ファイルへの新規Writeは禁止）
+- ESCALATED 時の `.claude-state/lint-result.log` への書き込みはWriteツールで新規作成 または Editツールで追記すること
 - テストの実行は行わないこと（Testerの責務）
 - セキュリティ上の問題を発見した場合は自動修正せず ESCALATED を返すこと
 - 割り当て枠を超える前に ESCALATED を返すこと
-- ESCALATED の場合は `.claude/lint-result.log` に試行履歴を書き込んでから返答すること
+- ESCALATED の場合は `.claude-state/lint-result.log` に試行履歴を書き込んでから返答すること
 
 ## 完了時の返答フォーマット
 
 ```
 成功: DONE 使用回数: N回 指摘件数: 0件
-失敗上限超過: ESCALATED 使用回数: N回 停止箇所: （ファイル:行番号） 詳細: .claude/lint-result.log
+失敗上限超過: ESCALATED 使用回数: N回 停止箇所: （ファイル:行番号） 詳細: .claude-state/lint-result.log
 ```

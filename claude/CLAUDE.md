@@ -49,7 +49,7 @@
 1. **状態確認**: `git worktree list --porcelain` で lock 状態・pid を取得
 2. **lock 残骸の検出**: `ps -p <pid>` で pid 死活確認。死んでいれば `git worktree unlock <path>` で解除
 3. **未コミット変更の救済判断**:
-   - 残す: `git add -N <untracked>` してから `git diff > .claude/patches/<name>_<date>.patch` で patch 退避
+   - 残す: `git add -N <untracked>` してから `git diff > .claude-state/patches/<name>_<date>.patch` で patch 退避
    - 捨てる: そのまま削除
 4. **worktree 削除**: `git worktree remove [--force] <path>`
 5. **ブランチ削除**: マージ済みなら `git branch -d <branch>`（`-D` は deny list にあるため使わない。未マージで削除したい場合は merged 判定を見直す or 手動承認）

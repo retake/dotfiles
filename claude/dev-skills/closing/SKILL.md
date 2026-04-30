@@ -84,7 +84,7 @@ git log --name-only --format="" @{u}..HEAD 2>/dev/null || git log --name-only --
 3. `git log --oneline @{u}..HEAD 2>/dev/null` — 未push commit（追跡ブランチがなければスキップ）
 4. `git log --oneline -5` — 直近コミット履歴
 5. `docs/task-state.md` が存在すれば先頭 20 行を Read
-6. `.claude/retrospective-draft.md` の有無を ls で確認
+6. `.claude-state/retrospective-draft.md` の有無を ls で確認
 
 提示フォーマット:
 ```
@@ -113,12 +113,12 @@ git log --name-only --format="" @{u}..HEAD 2>/dev/null || git log --name-only --
 完了通知を受け取ったら、以下を順に処理する：
 
 **sync 結果（`--skip-sync` でない場合）：**
-- `.claude/sync-result.md` を Read して内容をユーザーに提示する
+- `.claude-state/sync-result.md` を Read して内容をユーザーに提示する
 - 推奨アクションに「なし」以外の項目がある場合: 更新/スキップの判断をユーザーに委ねる
 - 「変更なし」または「なし」の場合: スキップ
 
 **audit-handoffs 結果：**
-- `.claude/audit-result.md` を Read して内容をユーザーに提示する
+- `.claude-state/audit-result.md` を Read して内容をユーザーに提示する
 - 残課題がある場合: 推奨アクションを提示してユーザーに委ねる
 - 「ハンドオフなし」または残課題0件の場合: スキップ
 

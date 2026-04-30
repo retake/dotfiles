@@ -22,7 +22,7 @@ Orchestratorから以下の形式でプロンプトを受け取る：
 【割り当て枠】（値）回以内で完了すること
 【要件IDリスト】（docs/requirements.mdから要件ID・概要・完了条件のみ。詳細はdocs/requirements.mdを自分で読むこと）
 【設計（インタフェース定義・テスト仕様）】（docs/design-summary.mdの該当セクションのみ。他セクションはdocs/design-summary.mdを自分で読むこと）
-【テスト結果】（.claude/test-result.logの内容。存在しない場合は「テスト正常完了」）
+【テスト結果】（.claude-state/test-result.logの内容。存在しない場合は「テスト正常完了」）
 【lint結果】（DONE/ESCALATEDステータス+ログ内容）
 【過去の教訓】（値）
 ```

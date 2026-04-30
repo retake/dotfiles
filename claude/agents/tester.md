@@ -31,7 +31,7 @@ Orchestratorから以下の形式でプロンプトを受け取る：
 ## 実装手順
 
 0. 検証方法を確認する
-   - 「手動確認」と記載されている場合: テストコードの生成は行わず、手動確認手順を `.claude/manual-check.md` に記録してDONEを返す
+   - 「手動確認」と記載されている場合: テストコードの生成は行わず、手動確認手順を `.claude-state/manual-check.md` に記録してDONEを返す
    - 「自動テスト」または「自動テスト（デフォルト）」の場合: 以下の手順でテストコードを生成する
 1. **設計のテスト仕様を確認する**: docs/design-summary.mdの「テスト仕様」セクションのテストケース一覧（T-x.x）を読み、テスト生成の基礎とする
 2. **要件カバレッジチェック**: テスト仕様の各T-x.xに対応するテストケースが既存テストに存在するか確認する
@@ -57,11 +57,11 @@ Orchestratorから以下の形式でプロンプトを受け取る：
 - git push・デプロイは絶対に実行しないこと
 - lintの実行は行わないこと（Linterの責務）
 - 割り当て枠を超える前に ESCALATED を返すこと
-- ESCALATED の場合は `.claude/test-result.log` に試行履歴を書き込んでから返答すること
+- ESCALATED の場合は `.claude-state/test-result.log` に試行履歴を書き込んでから返答すること
 
 ## 完了時の返答フォーマット
 
 ```
 成功: DONE 使用回数: N回 テスト結果: N件合格 / N件失敗（0件）
-失敗上限超過: ESCALATED 使用回数: N回 停止箇所: （ファイル:行番号） 詳細: .claude/test-result.log
+失敗上限超過: ESCALATED 使用回数: N回 停止箇所: （ファイル:行番号） 詳細: .claude-state/test-result.log
 ```

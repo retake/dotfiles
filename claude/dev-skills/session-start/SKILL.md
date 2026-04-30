@@ -26,7 +26,7 @@ PCを離れて Claude に長時間自律実行させる前の「セッション�
 4. `docs/ideas-backlog.md` を Grep で採否未決の IDEA を抽出する。各 IDEA の `採否フィルター`（`auto-adoptable` / `auto-rejectable` / `requires-human`）も同時に取得する
 5. `ls docs/agent-handoff-*.md 2>/dev/null` で active な handoff ファイルを列挙し、`handoff_status` と `Next Owner` を Grep で抽出する（フィルタリングはステップ 1.5 で行うので全件を取得すること）
 6. `git status --short` で変更中ファイルを確認する
-7. `.claude/task-state.md` を Read して既存タスクを確認する
+7. `.claude-state/task-state.md` を Read して既存タスクを確認する
 
 ### ステップ 1.4: archive_waiting handoff の自動アーカイブ（HO-157 / 2026-04-29 導入）
 

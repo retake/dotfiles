@@ -28,8 +28,8 @@ allowed-tools:
 - **割り当て枠**: ツール呼び出しの上限回数
 - **要件**: docs/requirements.mdの内容
 - **設計**: docs/design-summary.mdの内容
-- **テスト結果**: .claude/test-result.logの内容（ファイルが存在しない場合はテスト正常完了とみなす）
-- **lint結果**: FR-6のDONE/ESCALATED状況（ESCALATEDの場合は.claude/lint-result.logの内容）
+- **テスト結果**: .claude-state/test-result.logの内容（ファイルが存在しない場合はテスト正常完了とみなす）
+- **lint結果**: FR-6のDONE/ESCALATED状況（ESCALATEDの場合は.claude-state/lint-result.logの内容）
 
 ## 作業開始時の必須手順
 
