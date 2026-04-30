@@ -67,9 +67,36 @@ link_directory_contents "${DOTFILES_DIR}/claude/docs"   "${HOME}/.claude/docs"
 create_symlink "${DOTFILES_DIR}/claude/keybindings.json" "${HOME}/.claude/keybindings.json"
 create_symlink "${DOTFILES_DIR}/retrospectives"         "${HOME}/retrospectives"
 
+# MCP 用の機密値を .mcp.env から取り込む（あれば）。形式: KEY=value
+MCP_ENV_FILE="${DOTFILES_DIR}/claude/.mcp.env"
+if [ -f "${MCP_ENV_FILE}" ]; then
+  set -a
+  # shellcheck disable=SC1090
+  . "${MCP_ENV_FILE}"
+  set +a
+else
+  echo "WARNING: ${MCP_ENV_FILE} が見つかりません。MCP のトークンが未展開のまま設定が生成されます。" >&2
+fi
+
 # settings.jsonはテンプレートからホームディレクトリを展開して実ファイルとして生成する
 # （シンボリックリンクにするとパスがハードコードされたまま別マシンで機能しないため）
 [ -L "${HOME}/.claude/settings.json" ] && rm -f "${HOME}/.claude/settings.json"
-sed "s|__HOME__|${HOME}|g; s|__TODOIST_API_TOKEN__|${TODOIST_API_TOKEN:-}|g" \
+sed \
+  -e "s|__HOME__|${HOME}|g" \
+  -e "s|__TODOIST_API_TOKEN__|${TODOIST_API_TOKEN:-}|g" \
+  -e "s|__GOOGLE_OAUTH_CLIENT_ID__|${GOOGLE_OAUTH_CLIENT_ID:-}|g" \
+  -e "s|__GOOGLE_OAUTH_CLIENT_SECRET__|${GOOGLE_OAUTH_CLIENT_SECRET:-}|g" \
+  -e "s|__GITHUB_TOKEN__|${GITHUB_TOKEN:-}|g" \
   "${DOTFILES_DIR}/claude/settings.template.json" > "${HOME}/.claude/settings.json"
 echo "Generated: ${HOME}/.claude/settings.json (HOME=${HOME})"
+
+# 未置換プレースホルダーの警告
+if grep -q '__[A-Z_]*__' "${HOME}/.claude/settings.json"; then
+  echo "WARNING: settings.json に未設定のプレースホルダーが残っています:" >&2
+  grep -o '__[A-Z_]*__' "${HOME}/.claude/settings.json" | sort -u >&2
+fi
+
+# プロジェクト横断 MCP 設定 (~/.mcp.json) を生成
+if [ -f "${MCP_ENV_FILE}" ] && [ -x "${DOTFILES_DIR}/claude/scripts/setup-mcp.sh" ]; then
+  "${DOTFILES_DIR}/claude/scripts/setup-mcp.sh"
+fi

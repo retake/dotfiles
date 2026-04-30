@@ -49,6 +49,16 @@
 - 仕様反復が起きる新機能（pause / skip / rewind 等）は、最初に "何が止まり、何が止まらないか" を軸ごとに 1 つずつ確認する。選択肢に "全部止める" / "全部進む" の極を入れておくと往復が減る（2026-04-alarm-23）
 - persona-driven 4 ブロック (Product Fit / Failure Modes & Recovery Needs / Interaction Guardrails / Translation To Requirements) は UX feedback を REQ 昇格判断に翻訳する判断軸として機能する。Failure Mode を実体化しておくと、後続 slice の product-layer 昇格判断が即座に出せる（2026-04-alarm-23）
 - handoff 連鎖は 2 段 (parent consult → child implementation) までが扱いやすい。3 段目（再調査）が必要になるほど stale 化したら、間に docs cleanup slice を挟む（2026-04-alarm-23）
+- IDEA バッチ実装時は handoff を採用 N 件まとめて起票するとノイズが減る。Codex の First Slice 推奨に従い段階実装すると安全（2026-04-alarm-29）
+- Continuation Policy で連続実装するときは IDEA 切り替え単位で責務境界チェックを commit message 末尾に「責務境界: 維持/改善/悪化」の 1 行で明示する。完走後の事後チェックでは漏れる（2026-04-alarm-29）
+- タスクサイズ判定は『予定 IDEA 数』より『Continuation Policy が走るか』で見る。session-start に Continuation 想定/単発想定フィールドがあると見積もり精度が上がる（2026-04-alarm-29）
+- design-consult の Codex 推奨は字面で採用せず、Slice 1 完了時点で行動契約照合 checkpoint を入れる。divergence inventory（軸ごとの比較表）を作ってから採否を決めると pivot リスクが減る（2026-04-alarm-29b）
+- UI で似た機能の surface が複数ある場合、『統合 vs 別概念維持』は (1) 軸ごとの divergence inventory (2) 経路ごとに維持される軸が過半数か (3) design-guidelines.md に行動契約 + Human 承認リストとして固定化、の 3 ステップで判定する（2026-04-alarm-29b）
+- handoff template の field 形式（heading style vs inline）は loop ツール仕様に合わせる必要がある。template ファイルに「heading style 必須」を明記する運用が望ましい（2026-04-alarm-29b）
+- urgency 信号（赤系）は本物の緊急時にだけ使う。達成（preparationComplete）を時刻到達（timeReached）と同じ赤で出すと Attention Trust が崩れるため、reason-aware に色分岐する。デザイン哲学レベルの「信号の真実性」原則（2026-04-alarm-29c）
+- session-start spec の Concrete + safety-valve clean なら auto-adopt が正。Codex Response 内の `Next Owner: Human` フィールドは Claude の bucket 判定とは独立。spec の文言を信号フィールドより優先する（2026-04-alarm-30）
+- bottomCenter Stack overlay (CountdownBackPill 等) との hit-test 干渉対策は、bottom buffer を「同種 CTA の clearance（既存値）」に揃える。マジックナンバーで決めない。AppSpacing 定数 + 既存 buffer の合算で running CTA と統一する（2026-04-alarm-30）
+- untracked file の `git mv` は失敗する。先に `git add` してから `git mv` する（履歴保全のため `mv` + `git add` よりも `git mv` 優先）（2026-04-alarm-30）
 
 ## 振り返り一覧
 
@@ -83,3 +93,7 @@
 | 2026-04-24 | alarmアプリ 2026-04-24 追加作業（HO-095〜101 対応 / 進捗バー配置・BottomSheet 統一 / HO-097 Slice F/I/J テスト基盤強化 / REQ-27・REQ-37 retire + REQ-43 sentinel template / 21 コミット・86 files +4,469/-1,375） | [2026-04-alarm-21.md](2026-04-alarm-21.md) |
 | 2026-04-25 | alarmアプリ 集中モード除去（REQ-31 削除）+ 並行セッション衝突（同一リポジトリで別セッションが REQ-34 改訂を同時進行 / 中核ファイルへの並行編集を「自動修正」と誤認して書き戻し → ユーザー指摘で再整合 / worktree 分離していなかった反省） | [2026-04-alarm-22.md](2026-04-alarm-22.md) |
 | 2026-04-25 | alarmアプリ countdown pause/resume 実装 + Slice 駆動 handoff 連鎖（HO-107〜117 を 17 commit で land / REQ-49 two-clock model / pause snap-back fix で _onTick の state 再構成漏れ判明 / Slice A persona Failure Mode 実体化 / Codex 並行投入で HO-114/115 fix / HO-116 pause後再調査 / HO-117 Slice C 起票） | [2026-04-alarm-23.md](2026-04-alarm-23.md) |
+| 2026-04-29 | alarmアプリ IDEA-80〜91 実装マラソン（12 IDEA / 23 commit）+ IDEA-79 5-step Autonomy Delegation Filter ロードマップ完走（`/groom` AI ランキング 6-tier ルール明文化）+ 申し送り handoff R1-R6/M1-M2 起票 | [2026-04-alarm-29.md](2026-04-alarm-29.md) |
+| 2026-04-29 | alarmアプリ closing carry-over 完遂（R1〜R5/M1/M2）+ IDEA-94/95/96/100/102/103/104 実装（11 commit）+ IDEA-104 で Codex consult → Human pivot で「2 surface 別概念」方針に転換 | [2026-04-alarm-29b.md](2026-04-alarm-29b.md) |
+| 2026-04-29 | alarmアプリ HO-128 family golden review fork 全件 close（HO-129/130/131/133/135/136 実装 6 件 + HO-132/134/137 design-consult 3 件 + HO-128 parent done）+ requirements/current-architecture 整合 + atDeparture urgency reason 別色分岐実装 | [2026-04-alarm-29c.md](2026-04-alarm-29c.md) |
+| 2026-04-30 | alarmアプリ HO-132〜166 backlog バッチ + session-start 拡張（HO-145〜157 で 3 セットモデル + IDEA design-consult 自動起票 + auto-archive）+ IDEA-99/110/111 実装（35 commit、+5713/-894）+ visual-confirmation 申し送り起票 | [2026-04-alarm-30.md](2026-04-alarm-30.md) |
