@@ -500,6 +500,11 @@ Created: <YYYY-MM-DD HH:MM>
 - flutter analyze 警告ゼロ
 - <Target の完了条件を REQ/IDEA から補完>
 
+### Loop State
+ACTIVE — ループ開始。Target 完了後に更新される。
+<!-- 形式: ACTIVE (next: HO-XXX — <title>) | DONE -->
+<!-- **重要**: コンテキスト圧縮後に再開したときは、ここを最初に確認して ACTIVE なら Stop Report を書かずにループ継続 -->
+
 ### Continuation Policy（Target 完了後の振る舞い・batch loop）
 
 Target の Success Criteria を満たしたら停止せず、以下のループを actionable queue が空になるまで回す。queue 空 → Stop Report 出力 → 停止。
@@ -509,9 +514,18 @@ Target の Success Criteria を満たしたら停止せず、以下のループ�
    - 完了した Target の traceability.md / handoff status を更新する
    - **ステップ 1 → 1.4 → 1.5 → 1.6 を再実行**: survey set / actionable queue / human-judgment bucket を再構築する。auto-adoption も再評価（前回 skip だった consult が新たに Concrete 化していれば取り込む）。**ステップ 1.4 で auto-archive sweep も毎ループ実行**: 前ループで `archive_waiting` になった親 consult を即座に archive へ移動できる
 
-2. **次 Target の取得**
+2. **次 Target の取得 + Loop State 更新**
    - actionable queue 先頭から Target を 1 件取り出す
    - queue が空なら **ステップ 5（Stop Report 出力）** へ移行
+   - **取り出した直後に task-state.md の `### Loop State` を Edit で更新する**:
+     - 次 Target あり: `ACTIVE (next: HO-XXX — <title>)`
+     - queue 空: `DONE`
+   - この更新により、コンテキスト圧縮後に再開しても「どこまで進んだか」が task-state.md から復元できる
+
+2.5. **コンテキスト圧縮からの再開検出**
+   - セッション再開時に task-state.md の `### Loop State` が `ACTIVE (next: HO-XXX)` のままなら、**圧縮前のループが中断されている**と判断する
+   - この場合: Stop Report を書かず、HO-XXX を Current Target としてステップ 3（Target 実行）から再開する
+   - `DONE` なら Stop Report を出力して停止する
 
 3. **Target 実行 + skip-on-stuck**
    - Target を Escalation Policy に従って実行する
@@ -573,6 +587,7 @@ Target の Success Criteria を満たしたら停止せず、以下のループ�
    - actionable queue が空（auto-adoption 後 + 全 stuck-handling 後でも 0 件）
    - Stop Condition が連続でヒットし Codex 相談後も解決しない
    - 上記いずれかで Stop Report を出力して停止
+   - **Stop Report は task-state.md の `### Loop State` が `DONE` のときのみ出力する。`ACTIVE` のまま Stop Report を書いてはならない**
 
 ### Intervention Log（停止時に記録する）
 <!-- 停止が発生するたびに以下を追記する -->
@@ -629,6 +644,7 @@ task-state.md にセッション契約を書きました。そのまま実装を
 - 契約作成後、確認なしで即座に実装を開始する
 - 生成した Escalation Policy は「設計の選択肢が出たら Codex に相談」であり「設計の選択肢が出たら停止」ではない。契約にそのように記載すること
 - Continuation Policy に従って Target 完了後も停止しない。Groom + Re-scan → queue 先頭から Target 取得 → 実行 / skip-on-stuck のサイクルを actionable queue が空になるまで繰り返す。queue 空になったら Stop Report を出力して停止
+- **Stop Report は `### Loop State = DONE` のときのみ出力する。コンテキスト圧縮後の再開時は task-state.md の `### Loop State` を最初に確認し、`ACTIVE (next: HO-XXX)` なら HO-XXX を Current Target としてループを再開する（Stop Report を書かない）**
 - **`claude-codex-handoff-loop.sh` の Bash 実行は以下のすべての場面で必須**: skip-on-stuck の Codex 相談 / auto-adoption の `Uncertain` binary 再相談 / auto-adoption の `Ambiguous` round 2 narrow-down 相談 / Q1 disambiguation の Codex 相談。**自己回答禁止**: 自分の判断を Codex の見解として handoff に書くことは禁止。Round 2 narrow-down では Claude Code は sub-question を generate するが、回答は決して書かない。スクリプト不実行の場合は停止 + Human 報告（`feedback_codex_handoff_no_self_answer.md`）
 - **Design-consult あたりの Codex 対話は max 2 rounds**（round 1 + 1 follow-up）。Ambiguous → round 2 narrow-down 経路と Uncertain → binary re-consult 経路は別概念だが、両方を 1 つの consult に重ねがけしない。Round 2 narrow-down が ambiguous で終わったら必ず Human bucket。Binary re-consult が No で終わったら必ず Human bucket。Round 3 は無し
 - **IDEA → design-consult 自動起票は per-session cap 3 件**（HO-154）。`requires-human` IDEA のうち consult-eligible 条件をすべて満たし safety-valve pre-check をパスしたものを priority 順 + IDEA 番号昇順で 3 件まで起票。残りは次セッション
