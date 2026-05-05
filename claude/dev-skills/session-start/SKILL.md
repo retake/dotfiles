@@ -91,7 +91,8 @@ Skipped (dangling references; manual review required):
 
 - IDEA で採否フィルターが `auto-rejectable` → reason source: `filter` / 詳細: `IDEA filter = auto-rejectable`
 - IDEA で採否フィルターが `requires-human` かつ **consult-eligible でない**（後述の sub-bucket 条件を満たさない） → reason source: `filter` / 詳細: `IDEA filter = requires-human`
-- Handoff で `Next Owner: Human` または `Next Owner: Codex` → reason source: `handoff` / 詳細: `Next Owner = <value>`
+- Handoff で `Next Owner: Human` → reason source: `handoff` / 詳細: `Next Owner = Human`
+- Handoff で `Next Owner: Codex` かつ Codex-turn 投入条件を満たさないもの（`handoff_status: blocked/done/archive_waiting/archived` または `## Next Action` が空/TBD）→ reason source: `handoff` / 詳細: `Next Owner = Codex, not executable`
 - Handoff で `handoff_status` が `blocked` / `archive_waiting` / `done` / `archived` → reason source: `handoff` / 詳細: `handoff_status = <value>`（ただし `done` の design-consult は別経路で「auto-adoption candidate」として扱う、後述）
 - Item の親 design-consult handoff が `active` で未解決（依存ガード） → reason source: `dependency` / 詳細: `parent HO-XXX unresolved`
 - Codex 相談を経て stuck と判明した item（実行中に検出） → reason source: `codex-consult-result` / 詳細: `Codex returned <ambiguous | Human-required>`
@@ -103,10 +104,48 @@ Skipped (dangling references; manual review required):
 - IDEA: 採否フィルターが `auto-adoptable` かつ `product-request.md` non-goals に抵触しない
 - REQ: traceability で「未実装」または「実装済みだがテスト未作成」かつ前提（依存 REQ・親 design-consult）が解決済み
 - ステップ 1.6 で `Concrete` 判定された design-consult から自動起票された implementation handoff
+- Handoff: `Next Owner: Codex` かつ `handoff_status: active` または `waiting` かつ `## Next Action` に具体記述あり → **Codex-turn queue**（ステップ 1.5.5 で処理。完了後 survey set を再構築する）
 
 **Graceful degradation**: 採否フィルター未付与の IDEA や非標準 handoff フォーマットは、**そのソースからは auto-adoptable と判定しない**。他のソース（例えば handoff `Next Owner: Claude Code`）が候補化条件を満たす場合のみ queue に入る。
 
 このフィルタは repo によって metadata 充足度が異なる前提で設計されている。alarm 以外の repo で IDEA 採否フィルターが整備されていない場合、stop report に "filter coverage limited in this repo" の 1 行を出すだけで実行は継続する。
+
+### ステップ 1.5.5: Codex-turn queue の実行（HO-213 / 2026-05-05 導入）
+
+`Next Owner: Codex` かつ `handoff_status: active` または `waiting` かつ `## Next Action` に具体記述がある handoff を **Codex-turn queue** として処理する。これにより、「Claude Code が `## Claude Code Response` を追記後、Codex レビュー待ちで停止する」失敗モード（HO-208 が regression example）を防ぐ。
+
+**ステップ 1.6.5 の前に実行**することで、Codex turn 後に更新された handoff を同セッション内の auto-adoption フローに乗せられる。
+
+#### Codex-turn queue 投入条件（すべて満たす）
+
+- `handoff_status: active` または `waiting`
+- `Next Owner: Codex`
+- `## Next Action` セクションが具体的（空・「TBD」は除外）
+
+条件を満たさない `Next Owner: Codex` handoff は human-judgment bucket に入れる（reason source: `handoff` / 詳細: `Next Owner = Codex, not executable`）。
+
+#### 実行手順
+
+queue が非空の場合、以下を各 handoff に対して実行する（per-session 全件処理）:
+
+1. `claude-codex-handoff-loop.sh --repo "$(pwd)" --handoff <path> --max-rounds 1` を実行する
+   **自己回答禁止**: Claude Code は `## Codex Response` を書かない（`feedback_codex_handoff_no_self_answer.md` 準拠）
+2. 実行後、handoff を再読して新しい `handoff_status` と `Next Owner` を確認する:
+   - **Codex が handoff を更新した** → ステップ 1.4 → 1.5 → 1.6 を再実行し、更新後の handoff を新しい survey set / queue に反映する
+   - **no-change（handoff が変更されなかった）** → human-judgment bucket に移動（reason source: `codex-unavailable` / 詳細: `loop returned no-change`）
+   - **実行エラー**（network / CLI error 等）→ human-judgment bucket（reason source: `codex-unavailable` / 詳細: `loop script error`）
+3. 同じ handoff に対して今セッションで 2 回以上 Codex turn を実行しない（idempotency guard）
+
+#### Logging
+
+Stop Report の `## Codex-turn Log` に結果を記録する（0 件なら省略）:
+
+```
+## Codex-turn Log
+- HO-208: Codex turn executed → handoff updated (Next Owner: Human, handoff_status: done) → Step 1.6 re-run triggered
+- HO-XXX: Codex turn no-change → bucket (codex-unavailable / no-change)
+- HO-YYY: Codex turn error → bucket (codex-unavailable / loop script error)
+```
 
 #### consult-eligible IDEAs sub-bucket（HO-154 / 2026-04-29 導入）
 
@@ -280,6 +319,52 @@ Recommendation が以下のいずれかに触れる場合、Concrete 判定で�
   - `HO-XXX: Round 1 Uncertain → binary re-consult Yes → Concrete → auto-adopted as HO-YYY`
   - `HO-XXX: Round 1 Uncertain → binary re-consult No → bucket (reason: consult-ambiguous-after-binary-recheck)`
 - **重要**: binary re-consult は "round 2" と数えない。round 2 narrow-down 経路（Ambiguous trigger）と binary re-consult 経路（Uncertain trigger）は別概念。両方合わせても 1 design-consult あたり Codex 対話は **max 2 回**（round 1 + 1 follow-up）。
+
+### ステップ 1.7: Human-judgment bucket の推奨即実行（Pre-bucket execution）
+
+Human-judgment bucket に入った item であっても、「Claude Code が今すぐ実行できる具体的なアクション」が含まれている場合は **Human の応答を待たずに実行する**。これは `feedback_idea_recommendation_auto_adopt.md`（推奨方向が具体的なら設計判断完了）と `feedback_docs_only_auto_execute.md`（docs-only は承認待ちなし）を bucket 評価に適用したもの。
+
+#### 即実行の判定基準（すべてに当てはまる場合に実行）
+
+以下の **すべて** を満たす item は即実行する:
+
+1. **スコープが一意に確定している** — 変更対象が `## First Slice` / `## Recommendation` / `## Next Action` に明示されており、ファイル・行・変更内容が特定できる
+2. **以下のいずれかに該当する**:
+   - **docs-only**: 変更対象がすべて `*.md` ファイル（requirements.md を除く）
+   - **copy-only**: 既存 `.dart` ファイルの文字列ラベル変更のみ（widget 構造・ロジック変更なし）
+   - **no-change確認**: design-consult の `## Recommendation` が「変更不要 / no-change」→ handoff を `archive_waiting` に更新（実装は不要）
+   - **backlog 更新**: ideas-backlog.md の採否フィルター更新・implemented マーク追加のみ
+   - **`Claude Code が即実行可能`** と handoff または IDEA 本文に明記されている
+3. **safety-valve に触れない** — product-request.md / 新規 REQ / 多層アーキ / 永続化スキーマに影響しない
+4. **実装変更は golden 更新だけを伴うことができる** — 文字列変更の結果 golden が変わる場合は `--update-goldens` で更新してよい（テスト赤の修正 commit を含む）
+
+#### 即実行しない（bucket 留め）の条件
+
+以下のいずれかに該当する場合は実行せず Human-judgment bucket に残す:
+
+- 変更対象ファイルが不明・曖昧
+- 実装ファイルの構造変更（widget 追加・削除・リネーム）を伴う
+- handoff / IDEA が「Human に確認後に実行」と明記している
+- REQ 追加 / 削除 / スコープ変更を伴う
+- 同じファイルに別 Target が並行変更中（git diff で検出）
+
+#### 実行後の処理
+
+- 実行したらコミットし、Stop Report の `## Pre-bucket Execution Log` に 1 行記録する
+- Item は Human-judgment bucket に **残す**（Human による全体方針確認・archive 判断は引き続き必要）
+- 実行済みアクションを bucket テーブルの `suggested Human action` 欄に「〈実行済み〉→ 確認して archive」と注記する
+
+#### Logging
+
+Stop Report の `## Pre-bucket Execution Log` セクション（実行 0 件なら省略）:
+
+```
+## Pre-bucket Execution Log
+
+- HO-173: First Slice (copy-only) → 実行済み commit abc1234. Human 確認 → archive 依頼
+- HO-174: no-change confirmed → handoff_status: archive_waiting に更新
+- HO-XXX: docs-only update → 実行済み commit def5678
+```
 
 ### ステップ 2: Q1（Target）の自動解決 or Codex相談 or 人間質問
 
@@ -513,6 +598,12 @@ Target の Success Criteria を満たしたら停止せず、以下のループ�
    - `flutter test` と `flutter analyze`（or repo 同等のテスト・lint）でクリーン状態を確認する
    - 完了した Target の traceability.md / handoff status を更新する
    - **ステップ 1 → 1.4 → 1.5 → 1.6 を再実行**: survey set / actionable queue / human-judgment bucket を再構築する。auto-adoption も再評価（前回 skip だった consult が新たに Concrete 化していれば取り込む）。**ステップ 1.4 で auto-archive sweep も毎ループ実行**: 前ループで `archive_waiting` になった親 consult を即座に archive へ移動できる
+   - **⚠️ Re-scan の最低チェックリスト（すべて行うこと）**:
+     1. `docs/agent-handoff-*.md` 全件の `handoff_status` × `Next Owner` を確認 — `Next Owner: Claude Code` かつ `active`/`waiting` の件数ゼロを検証。`Next Owner: Codex` かつ Codex-turn 投入条件（`active/waiting` + 具体 `Next Action`）を満たす件数もゼロを検証（ゼロでない場合は Codex-turn queue を再実行する）
+     2. `docs/ideas-backlog.md` の `auto-adoptable` かつ **実装済みマークなし / consult-attempted マークなし** な IDEA がないことを確認
+     3. `docs/traceability.md` で `—`（未実装 / 未テスト）かつ前提解消済みの REQ がないことを確認
+     4. 直前に完了した Target の回答内に「Claude Code が即実行可能」と明記されたタスク（docs-only / copy-only / backlog 更新等）が残っていないことを確認
+   - **DONE 宣言禁止条件**: 上記 4 項目のうち 1 つでも未確認のまま「active な handoff が 0 件だから DONE」と判断してはならない。ショートカットは不完全な queue 評価を招く
 
 2. **次 Target の取得 + Loop State 更新**
    - actionable queue 先頭から Target を 1 件取り出す
@@ -552,6 +643,10 @@ Target の Success Criteria を満たしたら停止せず、以下のループ�
    実行済み:
    - <item-id>: <title> — <result / tests summary>
    - auto-adopted HO-<XXX> (parent: HO-<YYY>): <one-line>
+
+   Codex-turn Log:（0 件なら省略）
+   - HO-<n>: Codex turn executed → <updated result summary> → Step 1.6 re-run triggered
+   - HO-<m>: Codex turn no-change → bucket (codex-unavailable / no-change)
 
    Auto-adoption Log:
    - HO-<n>: <Concrete | Ambiguous | Uncertain → re-consult: <Yes/No> | Idempotent skip | safety-valve> → <action>
@@ -645,12 +740,15 @@ task-state.md にセッション契約を書きました。そのまま実装を
 - 生成した Escalation Policy は「設計の選択肢が出たら Codex に相談」であり「設計の選択肢が出たら停止」ではない。契約にそのように記載すること
 - Continuation Policy に従って Target 完了後も停止しない。Groom + Re-scan → queue 先頭から Target 取得 → 実行 / skip-on-stuck のサイクルを actionable queue が空になるまで繰り返す。queue 空になったら Stop Report を出力して停止
 - **Stop Report は `### Loop State = DONE` のときのみ出力する。コンテキスト圧縮後の再開時は task-state.md の `### Loop State` を最初に確認し、`ACTIVE (next: HO-XXX)` なら HO-XXX を Current Target としてループを再開する（Stop Report を書かない）**
-- **`claude-codex-handoff-loop.sh` の Bash 実行は以下のすべての場面で必須**: skip-on-stuck の Codex 相談 / auto-adoption の `Uncertain` binary 再相談 / auto-adoption の `Ambiguous` round 2 narrow-down 相談 / Q1 disambiguation の Codex 相談。**自己回答禁止**: 自分の判断を Codex の見解として handoff に書くことは禁止。Round 2 narrow-down では Claude Code は sub-question を generate するが、回答は決して書かない。スクリプト不実行の場合は停止 + Human 報告（`feedback_codex_handoff_no_self_answer.md`）
+- **`claude-codex-handoff-loop.sh` の Bash 実行は以下のすべての場面で必須**: ステップ 1.5.5 の Codex-turn queue 実行 / skip-on-stuck の Codex 相談 / auto-adoption の `Uncertain` binary 再相談 / auto-adoption の `Ambiguous` round 2 narrow-down 相談 / Q1 disambiguation の Codex 相談。**自己回答禁止**: 自分の判断を Codex の見解として handoff に書くことは禁止。Round 2 narrow-down では Claude Code は sub-question を generate するが、回答は決して書かない。スクリプト不実行の場合は停止 + Human 報告（`feedback_codex_handoff_no_self_answer.md`）
 - **Design-consult あたりの Codex 対話は max 2 rounds**（round 1 + 1 follow-up）。Ambiguous → round 2 narrow-down 経路と Uncertain → binary re-consult 経路は別概念だが、両方を 1 つの consult に重ねがけしない。Round 2 narrow-down が ambiguous で終わったら必ず Human bucket。Binary re-consult が No で終わったら必ず Human bucket。Round 3 は無し
 - **IDEA → design-consult 自動起票は per-session cap 3 件**（HO-154）。`requires-human` IDEA のうち consult-eligible 条件をすべて満たし safety-valve pre-check をパスしたものを priority 順 + IDEA 番号昇順で 3 件まで起票。残りは次セッション
 - **IDEA への構造変更は idempotency marker 書き込みだけ**: skill が `docs/ideas-backlog.md` に書き込むのは `- consult-attempted: <date> → <result> (HO-XXX)` の 1 行だけ。それ以外の IDEA 本文編集は禁止
 - **Auto-created consult でも `## Codex Response` を Claude Code が書くことは禁止**: handoff ファイルの structure（Goal / Context / Type / Scope / Axes / Open Questions / Ask / Next Owner / Next Action）を生成するが、Codex の応答セクションは必ず `claude-codex-handoff-loop.sh` 経由で取得する（`feedback_codex_handoff_no_self_answer.md` 準拠）
+- **ステップ 1.5.5 の Codex-turn 実行では Codex の編集範囲は handoff ファイル（`docs/agent-handoff-*.md`）のみ**: Codex は `## Codex Response` や `handoff_status` / `Next Owner` を更新できるが、アプリ実装（`lib/`, `test/` 等）を変更する権限を持たない。実装コードを書くのは常に Claude Code だけ
 - **Auto-archive sweep（ステップ 1.4 / HO-157）は `archive_waiting` のみが対象**: `done` のみの handoff は archive しない。dangling Markdown link 検出時は skip して Stop Report `## Auto-archive Log` の Skipped 欄に記録（ループ中の確認プロンプトは出さない）。参照元ドキュメントの link 修正は自動適用しない（archive-handoffs SKILL の慣習に従う）。Sweep は session 開始時 + Continuation Policy の Re-scan ごとに実行
 - **Auto-adoption の safety valve**: `## Codex Response` の recommendation が `product-request.md` / 3 pillars / non-goals / 新規 REQ / REQ 削除 / 多層アーキテクチャ / 永続化スキーマ のいずれかに触れる場合、Concrete 判定でも自動採用しない。常に human-judgment bucket（reason source: `safety-valve`）。convention は `docs/agent-handoff-template.md` および memory `feedback_consult_handoff_separation.md` と同期すること
 - **Idempotency check**: auto-adoption candidate を処理する前に、親 consult の `## Decisions` に `auto-adopted: HO-XXX` の記録があるか、または親 consult を `Context` で参照する `Type: implementation` handoff が active で存在するかを確認する。いずれか該当すれば skip（重複起票しない）
 - **Human-judgment bucket は survey set から削除しない**: フィルタは「実行候補から外す」だけで、ユーザー説明可能性のため survey set には残す。Stop Report はこの bucket を出力する
+- **ステップ 1.7（Pre-bucket execution）は bucket 構築直後に必ず実行する**: bucket に入れたからといって Human 応答を待って停止しない。即実行判定基準（docs-only / copy-only / no-change / backlog 更新 / 明示ラベル）に合致するアクションはその場で実行してコミットし、Stop Report の `## Pre-bucket Execution Log` に記録する。**Item を bucket から外す必要はない**（Human による全体確認・archive 判断は引き続き Human の役割）。「bucket に入れた → Human 待ち → 停止」はこのルールにより禁止されている
+- **`/human-consult` スキルとの連携**: Stop Report の Human-judgment bucket テーブルを `/human-consult` スキルの入力として使う。自律セッションと並行して別セッションで Human が `/human-consult` を実行し、各 bucket item の判断を handoff ファイルに書き込むことで、次の自律セッションが最新状態を取り込める
