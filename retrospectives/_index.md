@@ -59,6 +59,17 @@
 - session-start spec の Concrete + safety-valve clean なら auto-adopt が正。Codex Response 内の `Next Owner: Human` フィールドは Claude の bucket 判定とは独立。spec の文言を信号フィールドより優先する（2026-04-alarm-30）
 - bottomCenter Stack overlay (CountdownBackPill 等) との hit-test 干渉対策は、bottom buffer を「同種 CTA の clearance（既存値）」に揃える。マジックナンバーで決めない。AppSpacing 定数 + 既存 buffer の合算で running CTA と統一する（2026-04-alarm-30）
 - untracked file の `git mv` は失敗する。先に `git add` してから `git mv` する（履歴保全のため `mv` + `git add` よりも `git mv` 優先）（2026-04-alarm-30）
+- `requires-human` フィルター付き IDEA でも「推奨方向（AI 暫定）」が具体的に記述されていれば auto-adoptable 扱いでよい。フィルターの semantic は「方針判断が必要か」であり、推奨方向がある = 方針判断完了。フィルターを auto-adoptable に更新して実装に進む（2026-04-alarm-30b）
+- docs-only + 変更スコープ確定の作業は、handoff の `Next Owner: Human` でも Human 承認を待たず実行してよい。Human の唯一の役割が「進めてください」だけになる場合、停止はコストにしかならない。実行後に「実施しました」と報告する（2026-04-alarm-30b）
+- closing で起動した audit エージェントは当該セッションで完了した作業を知らない。audit 結果は「本セッション完了分」でメンタル補正してから提示しないと、完了済み課題が「未対応」として混入するノイズになる（2026-04-alarm-30b）
+- 複数 artifact（PNG・レポート等）の Human レビューは最初から index.html や summary.md で 1 画面に並べて出す。1 つずつ Read で表示するのはレビュー負担が高く、artifact 生成スクリプトに「index 化ステップ」を必ず含める（2026-05-alarm）
+- Flutter integration_test で日本語文字列を含む UI をキャプチャする場合は `setUpAll` で `golden_harness.loadGoldenFonts()` を呼んで Noto CJK + MaterialIcons を登録する。GoogleFonts.config.allowRuntimeFetching はテスト環境で機能しない（2026-05-alarm）
+- 外部 MCP（Box / Drive 等）依存の機能は handoff 段階で「Phase A: ローカル / Phase B: MCP」の 2 ステップ分割で書く。MCP 不可時に Phase A だけ先行できる構造にしておくと切替コストが低い（2026-05-alarm）
+- handoff の `## Next Owner` セクションは末尾 1 つに統一する。`claude-codex-handoff-loop.sh` は最初の `## Next Owner` を採用するため、複数書くと古い owner で誤検出される。中間経緯は `## Decisions` / `## History` に書く（2026-05-alarm-2）
+- handoff archive の順序は「参照元 → 参照先」。A が B をパス形式で参照する場合、B を先に archive するとリンク切れになる。dangling reference check を必ず archive 前に実行する（2026-05-alarm-2）
+- raw `StateProvider` は derived provider が null を返しても自動 clear されない。active 確認側で `ref.listen` + `setState` で明示的に null にしないと、derived の条件が変わったとき raw が再浮上する（2026-05-alarm-3）
+- `StatelessWidget` → `StatefulWidget` 変換直後は IDE の "Undefined name" で `widget.` プレフィックス漏れが一気に見える。変換直後にコンパイル確認 → 一括 `widget.` 付与のリズムを固定化する（2026-05-alarm-3）
+- ゴーストカードでも CTA テキスト・アクセントアイコンを全 `textHint`（グレー）にすると primary affordance が消える。design-guidelines 第 1 原則「重要でない情報のみグレー」に従い、ラベル本体は `textMid` 以上を維持する（2026-05-alarm-3）
 
 ## 振り返り一覧
 
@@ -97,3 +108,7 @@
 | 2026-04-29 | alarmアプリ closing carry-over 完遂（R1〜R5/M1/M2）+ IDEA-94/95/96/100/102/103/104 実装（11 commit）+ IDEA-104 で Codex consult → Human pivot で「2 surface 別概念」方針に転換 | [2026-04-alarm-29b.md](2026-04-alarm-29b.md) |
 | 2026-04-29 | alarmアプリ HO-128 family golden review fork 全件 close（HO-129/130/131/133/135/136 実装 6 件 + HO-132/134/137 design-consult 3 件 + HO-128 parent done）+ requirements/current-architecture 整合 + atDeparture urgency reason 別色分岐実装 | [2026-04-alarm-29c.md](2026-04-alarm-29c.md) |
 | 2026-04-30 | alarmアプリ HO-132〜166 backlog バッチ + session-start 拡張（HO-145〜157 で 3 セットモデル + IDEA design-consult 自動起票 + auto-archive）+ IDEA-99/110/111 実装（35 commit、+5713/-894）+ visual-confirmation 申し送り起票 | [2026-04-alarm-30.md](2026-04-alarm-30.md) |
+| 2026-04-30 | alarmアプリ mobile/web platform hardening（AndroidSoloudSoundPlayer / Web WakeLock・AudioUnlock / 実機確認）+ 画面統一・背景方針 design consult（HO-170/171/172）+ IDEA-113/114 UI 改善 + IDEA-116 バグ修正 + session-start プロセス改善（自律採用ルール更新） | [2026-04-alarm-30b.md](2026-04-alarm-30b.md) |
+| 2026-05-05 | alarmアプリ HO-212 screenshot harness Phase A（remote review 基盤・integration_test 7 シナリオ + index.html 生成スクリプト・Box→Drive→Phase 分割で go・MCP 不可時のローカル先行運用） | [2026-05-alarm.md](2026-05-alarm.md) |
+| 2026-05-05 | alarmアプリ session-start 継続 — HO-213 Codex-owner loop 実装 + Codex-turn queue 全消化（HO-213/214/208/206/205 archive・HO-203/204/207/209 waiting/Codex・18 commit）+ ループスクリプト誤認 / golden 不足 / archive 順序の 3 課題発覚 | [2026-05-alarm-2.md](2026-05-alarm-2.md) |
+| 2026-05-05 | alarmアプリ セッション継続 — HO-203 raw StateProvider clear 漏れ修正（ref.listen + flicker 修正）+ HO-218 CurrentStepCircle press feedback（AnimatedScale 120ms / Slice 3a）+ IDEA-89 ゴーストカード contrast 改善（11 commit） | [2026-05-alarm-3.md](2026-05-alarm-3.md) |

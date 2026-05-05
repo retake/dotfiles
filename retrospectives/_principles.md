@@ -17,7 +17,7 @@
 
 改修規模の見積もりは行数ではなく「既存の純関数化・Fake 注入点・抽象インタフェースの有無」で決まる。ハーネスが揃っていれば大改修でも TDD で短時間に収束する。
 
-**派生元**: 2026-04-claude-set.md, 2026-04-alarm.md, 2026-04-alarm-7.md, 2026-04-alarm-20.md, 2026-04-alarm-21.md, 2026-04-alarm-23.md, 2026-04-alarm-29c.md
+**派生元**: 2026-04-claude-set.md, 2026-04-alarm.md, 2026-04-alarm-7.md, 2026-04-alarm-20.md, 2026-04-alarm-21.md, 2026-04-alarm-23.md, 2026-04-alarm-29c.md, 2026-05-alarm.md（_FixedClock atDeparture は出発時刻ジャストではなく -10s 設定）, 2026-05-alarm-2.md（widget test の tick emit は pumpWidget 後）
 
 ---
 
@@ -112,4 +112,4 @@ dispose 後の ref アクセス・SnackBar キュー・一時的な状態変更�
 - **許容可否**: 差分の意図通り/意図外判定は tester プロンプトで事前に「どの stage/widget で差分が出るのが意図通りか」をリスト化する。`--update-goldens` の判断を tester に丸投げすると意図外の差分を許容してしまう
 - **追加の選定**: 新規 golden 追加の優先順位は「コード行数が大きい／状態分岐が多い／最近変更が入った」の 3 条件で費用対効果を測る
 
-**派生元**: 2026-04-alarm-12.md, 2026-04-alarm-15.md, 2026-04-alarm-21.md, 2026-04-alarm-29.md, 2026-04-alarm-29c.md
+**派生元**: 2026-04-alarm-12.md, 2026-04-alarm-15.md, 2026-04-alarm-21.md, 2026-04-alarm-29.md, 2026-04-alarm-29c.md, 2026-05-alarm-2.md（CustomPaint 存在確認だけでは描画漏れを検出できないため visual golden 必須）
