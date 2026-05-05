@@ -592,6 +592,8 @@ ACTIVE — ループ開始。Target 完了後に更新される。
 
 ### Continuation Policy（Target 完了後の振る舞い・batch loop）
 
+**停止原則（HO-215 / 2026-05-05）**: Human の判断が真に必要な場合にのみ停止する。`archive_waiting` / docs-only 完了 / reviewer-confirmed は停止理由ではなく、auto-archive sweep + 次スライス昇格を試す trigger として扱う。regression example: HO-208 / HO-214 — docs-only first slice（HO-214）が `archive_waiting` になっても、親 consult（HO-208）の `Planned Follow-ups` に実行可能な次 slice が残っていれば自動起票すべきだった。
+
 Target の Success Criteria を満たしたら停止せず、以下のループを actionable queue が空になるまで回す。queue 空 → Stop Report 出力 → 停止。
 
 1. **Groom + Re-scan**
@@ -603,7 +605,40 @@ Target の Success Criteria を満たしたら停止せず、以下のループ�
      2. `docs/ideas-backlog.md` の `auto-adoptable` かつ **実装済みマークなし / consult-attempted マークなし** な IDEA がないことを確認
      3. `docs/traceability.md` で `—`（未実装 / 未テスト）かつ前提解消済みの REQ がないことを確認
      4. 直前に完了した Target の回答内に「Claude Code が即実行可能」と明記されたタスク（docs-only / copy-only / backlog 更新等）が残っていないことを確認
-   - **DONE 宣言禁止条件**: 上記 4 項目のうち 1 つでも未確認のまま「active な handoff が 0 件だから DONE」と判断してはならない。ショートカットは不完全な queue 評価を招く
+     5. **完了済みハンドオフの `Planned Follow-ups` を確認**（HO-215 / 2026-05-05 導入）: `docs/agent-handoff-*.md` および `docs/archive/agent-handoff-*.md` の `handoff_status: done` / `archive_waiting` / `archived` な handoff に `## Planned Follow-ups` セクションがあり、次に実行可能な slice（`Owner: Claude Code` + scope / exit condition が具体的 + Human escalation checklist 非該当 + 同じ親・同じ slice title を参照する active / waiting / archive_waiting handoff がまだ存在しない）が残っていないことを確認する。残っていれば下記「**次スライス昇格プロセス**」を実行し、新規 implementation handoff を actionable queue に投入する
+   - **DONE 宣言禁止条件**: 上記 5 項目のうち 1 つでも未確認のまま「active な handoff が 0 件だから DONE」と判断してはならない。ショートカットは不完全な queue 評価を招く
+
+   **次スライス昇格プロセス（HO-215 / 2026-05-05 導入）**（チェックリスト 5 に該当した場合のみ実行）
+
+   完了済み consult または `archive_waiting` / done な implementation handoff の `## Planned Follow-ups` から、次に実行可能な 1 slice を自動起票する。1 度に 1 slice のみ起票し、完了後に Re-scan で再評価する。
+
+   **昇格実行条件**（すべて満たす）:
+   1. 親 consult または完了 child の `## Planned Follow-ups` に次 slice が記述されている
+   2. その slice の `Owner` が Claude Code または docs-only / implementation 実行可能
+   3. `Scope` / `Trigger` / `Exit condition` が具体的（TBD ではない）
+   4. 以下の **Human escalation checklist** のいずれにも該当しない:
+      - product-request.md / 3 pillars / non-goals への変更
+      - 新規 REQ 定義または既存 REQ の削除 / scope 縮小
+      - 多層アーキテクチャ変更（domain + application + presentation を同時に触る）
+      - 永続化スキーマ / domain model の breaking change
+      - `Reason for Human escalation` フィールドに明示的な Human 判断要求がある
+   5. safety valve（product-request / 新規 REQ / 多層アーキ / 永続化）に触れない
+   6. 同じ親 consult + 同じ slice title を参照する active / waiting / archive_waiting handoff がまだ存在しない（idempotency）
+
+   **実行手順**:
+   - 条件 1〜6 をすべて満たす場合 → **新規 `Type: implementation` handoff を自動起票**:
+     - `Next Owner: Claude Code`、`handoff_status: active`
+     - 親 `Planned Follow-ups` の acceptance criteria を `## Acceptance Criteria` に転記
+     - 親 consult / 親 handoff を `## Context` で参照（slice title を明記して idempotency 検出を可能にする）
+     - actionable queue に投入
+   - 条件 3 が不明確（acceptance criteria が TBD / scope が曖昧）の場合 → **直接 Human 停止せず Codex consult を先に起票**し、`claude-codex-handoff-loop.sh --repo "$(pwd)" --handoff <path> --max-rounds 1` を実行（**自己回答禁止**）。Codex が具体推奨 → 昇格条件を再評価。Codex が Ambiguous / Human-required → human-judgment bucket（reason source: `codex-consult-result`）
+   - 条件 4 または 5 に該当する場合 → human-judgment bucket（reason source: `safety-valve` または `Human escalation checklist`）
+
+   **Stop Report 前検証**: Stop Report を出力する前に、Human-judgment bucket の全 item が以下のいずれかを持つことを確認する。1 つでも持たない item がある場合は即実行候補が残っている可能性があるため、その item を再評価してから停止する:
+   - Human escalation checklist に正当理由が記録されている
+   - safety-valve 判定が記録されている
+   - Codex consult 後も unresolved な ambiguity が記録されている（consult-ambiguous）
+   - infrastructure failure が記録されている（codex-unavailable）
 
 2. **次 Target の取得 + Loop State 更新**
    - actionable queue 先頭から Target を 1 件取り出す
@@ -635,7 +670,7 @@ Target の Success Criteria を満たしたら停止せず、以下のループ�
 
 5. **Stop Report 出力 + 停止**
 
-   actionable queue が空かつ最新 re-scan でも空のままなら、以下のテンプレートで Stop Report を task-state.md に追記しユーザーに表示して停止する:
+   actionable queue が空かつ最新 re-scan でも空のままなら、**Stop Report 前検証**（Groom + Re-scan ステップ 1 のチェックリスト 5 項目すべて確認済み + Human-judgment bucket 全 item に valid reason あり）を確認した上で、以下のテンプレートで Stop Report を task-state.md に追記しユーザーに表示して停止する:
 
    ```
    [SESSION START] 自律候補を処理しきりました
@@ -657,6 +692,10 @@ Target の Success Criteria を満たしたら停止せず、以下のループ�
      - HO-<m> (<title>) — moved during continuation re-scan
      Skipped (dangling references; manual review required):
      - HO-<k> (<title>) — referenced by docs/<file>:L<line>
+
+   Next-Slice Promotion Log:（HO-215 / 0 件なら省略）
+   - HO-<n>: parent HO-<parent> Slice <N> promoted → HO-<new> auto-created (Next Owner: Claude Code)
+   - HO-<m>: parent HO-<parent> Slice <N> → bucket (Human escalation checklist: <reason>)
 
    Human 判断が必要で残った項目:
    | item | title | reason source | reason | suggested Human action |
@@ -739,6 +778,8 @@ task-state.md にセッション契約を書きました。そのまま実装を
 - 契約作成後、確認なしで即座に実装を開始する
 - 生成した Escalation Policy は「設計の選択肢が出たら Codex に相談」であり「設計の選択肢が出たら停止」ではない。契約にそのように記載すること
 - Continuation Policy に従って Target 完了後も停止しない。Groom + Re-scan → queue 先頭から Target 取得 → 実行 / skip-on-stuck のサイクルを actionable queue が空になるまで繰り返す。queue 空になったら Stop Report を出力して停止
+- **次スライス昇格プロセス（HO-215）は Stop Report 出力前の最終チェック**: Re-scan チェックリスト 5 を実行し、Planned Follow-ups に未起票の実行可能 slice がないことを確認してから Stop Report を出す。確認なしで Stop Report を出してはならない。1 slice 起票した場合は queue に戻って実行してから再度 Re-scan する
+- **次スライス昇格の idempotency**: 同じ親 consult + 同じ slice title を参照する active / waiting / archive_waiting handoff がすでに存在する場合は、昇格をスキップする（二重起票防止）。"同じ slice title" の照合は case-insensitive で `## Context` セクションと `## Goal` セクションを grep する
 - **Stop Report は `### Loop State = DONE` のときのみ出力する。コンテキスト圧縮後の再開時は task-state.md の `### Loop State` を最初に確認し、`ACTIVE (next: HO-XXX)` なら HO-XXX を Current Target としてループを再開する（Stop Report を書かない）**
 - **`claude-codex-handoff-loop.sh` の Bash 実行は以下のすべての場面で必須**: ステップ 1.5.5 の Codex-turn queue 実行 / skip-on-stuck の Codex 相談 / auto-adoption の `Uncertain` binary 再相談 / auto-adoption の `Ambiguous` round 2 narrow-down 相談 / Q1 disambiguation の Codex 相談。**自己回答禁止**: 自分の判断を Codex の見解として handoff に書くことは禁止。Round 2 narrow-down では Claude Code は sub-question を generate するが、回答は決して書かない。スクリプト不実行の場合は停止 + Human 報告（`feedback_codex_handoff_no_self_answer.md`）
 - **Design-consult あたりの Codex 対話は max 2 rounds**（round 1 + 1 follow-up）。Ambiguous → round 2 narrow-down 経路と Uncertain → binary re-consult 経路は別概念だが、両方を 1 つの consult に重ねがけしない。Round 2 narrow-down が ambiguous で終わったら必ず Human bucket。Binary re-consult が No で終わったら必ず Human bucket。Round 3 は無し
