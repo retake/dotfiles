@@ -134,7 +134,7 @@ queue が非空の場合、以下を各 handoff に対して実行する（per-s
    - **Codex が handoff を更新した** → ステップ 1.4 → 1.5 → 1.6 を再実行し、更新後の handoff を新しい survey set / queue に反映する
    - **no-change（handoff が変更されなかった）** → human-judgment bucket に移動（reason source: `codex-unavailable` / 詳細: `loop returned no-change`）
    - **実行エラー**（network / CLI error 等）→ human-judgment bucket（reason source: `codex-unavailable` / 詳細: `loop script error`）
-3. 同じ handoff に対して今セッションで 2 回以上 Codex turn を実行しない（idempotency guard）
+3. 同じ handoff に対する Codex turn は原則 1 回/セッションに制限する（idempotency guard）。例外として、同一セッション内で Claude Code が同じ `task_id` の実装またはドキュメント変更を commit / 記録した後に限り、1 回だけ verification Codex turn を許可する。verification turn は直前の Codex recommendation / review findings と Claude Code の差分の一致確認に限定し、新しい設計相談や追加 narrow-down には使わない。verification で追加修正が必要になった場合は `handoff_status: active` または `waiting`、`Next Owner: Claude Code`（または必要時 `Human`）に戻し、このセッションでは同じ handoff に対する追加 Codex turn を実行しない。したがって同一 handoff の Codex turn は 1 セッション最大 2 回。
 
 #### Logging
 
