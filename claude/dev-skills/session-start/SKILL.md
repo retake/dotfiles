@@ -13,6 +13,7 @@ PCを離れて Claude に長時間自律実行させる前の「セッション�
 ## 使い方
 
 - `/session-start` — ヒアリング開始（自動解決できたQは省略される）
+- セッション契約を破棄してやり直したいときは `作り直す` / `やり直す` / `リセット` / `rebuild` / `restart session` と伝えると Step 1 からやり直す（フェーズ別の安全処理は `## 制約` の「作り直しルール」を参照）
 
 ## 実行手順
 
@@ -389,7 +390,7 @@ actionable queue から Target を自動選定しました:
 **Queue 残り**: <queue 残数> 件
 **Human-judgment bucket**: <bucket 件数> 件（停止時に summary 出力）
 
-異議があれば「変える」と伝えてください。なければ次へ進みます。
+異議があれば「変える」と伝えてください。契約全体を作り直したい場合は「作り直す」と伝えてください。なければ次へ進みます。
 ```
 
 ユーザーの応答を待つ（「変える」と言われた場合は 2-C へ戻る）。
@@ -831,3 +832,8 @@ task-state.md にセッション契約を書きました。そのまま実装を
 - **Human-judgment bucket は survey set から削除しない**: フィルタは「実行候補から外す」だけで、ユーザー説明可能性のため survey set には残す。Stop Report はこの bucket を出力する
 - **ステップ 1.7（Pre-bucket execution）は bucket 構築直後に必ず実行する**: bucket に入れたからといって Human 応答を待って停止しない。即実行判定基準（docs-only / copy-only / no-change / backlog 更新 / 明示ラベル）に合致するアクションはその場で実行してコミットし、Stop Report の `## Pre-bucket Execution Log` に記録する。**Item を bucket から外す必要はない**（Human による全体確認・archive 判断は引き続き Human の役割）。「bucket に入れた → Human 待ち → 停止」はこのルールにより禁止されている
 - **`/human-consult` スキルとの連携**: Stop Report の Human-judgment bucket テーブルを `/human-consult` スキルの入力として使う。自律セッションと並行して別セッションで Human が `/human-consult` を実行し、各 bucket item の判断を handoff ファイルに書き込むことで、次の自律セッションが最新状態を取り込める
+- **作り直しルール（rebuild intent）**: ヒアリング中にユーザーが `作り直す` / `やり直す` / `リセット` / `rebuild` / `restart session` を伝えた場合、以下のフェーズに応じて処理する：
+  1. **Step 5 の `task-state.md` 書き込み前**: in-memory の選択・スコープ・条件を破棄し、Step 1 からやり直す
+  2. **`task-state.md` 書き込み後・実装編集開始前**: Step 1 から再実行し、新しい契約で上書きする。破棄した契約に対する Stop Report は出力しない
+  3. **autonomous Target 開始済みまたはバックグラウンド Codex ジョブ稼働中**: まず安全境界で停止し、`HO-W008` の join rules に従い in-flight Codex ジョブを結合または記録する。`task-state.md` に短い廃棄メモを書いてから Step 1 を再起動する。実装コードの変更や handoff ファイルのアーカイブは行わない
+  - 禁止事項: rebuild を理由にハンドオフをアーカイブ・クローズしない。コード変更を revert しない。`task-state.md` 以外に新たな状態ファイルを作らない
