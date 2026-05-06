@@ -590,6 +590,11 @@ ACTIVE — ループ開始。Target 完了後に更新される。
 <!-- 形式: ACTIVE (next: HO-XXX — <title>) | DONE -->
 <!-- **重要**: コンテキスト圧縮後に再開したときは、ここを最初に確認して ACTIVE なら Stop Report を書かずにループ継続 -->
 
+### In-flight Codex Jobs
+<!-- Background Codex dispatch（HO-W008）で起動した in-flight ジョブを記録する -->
+<!-- 形式: <task_id>: started | completed | failed -->
+<!-- Join point に達したら completed/failed に更新し、このセクションを削除する -->
+
 ### Continuation Policy（Target 完了後の振る舞い・batch loop）
 
 **停止原則（HO-215 / 2026-05-05）**: Human の判断が真に必要な場合にのみ停止する。`archive_waiting` / docs-only 完了 / reviewer-confirmed は停止理由ではなく、auto-archive sweep + 次スライス昇格を試す trigger として扱う。regression example: HO-208 / HO-214 — docs-only first slice（HO-214）が `archive_waiting` になっても、親 consult（HO-208）の `Planned Follow-ups` に実行可能な次 slice が残っていれば自動起票すべきだった。
@@ -664,11 +669,39 @@ Target の Success Criteria を満たしたら停止せず、以下のループ�
      1. consult handoff を作成 / 更新し、`claude-codex-handoff-loop.sh --repo "$(pwd)" --handoff <path> --max-rounds 1` を実行（**自己回答禁止**: `feedback_codex_handoff_no_self_answer.md` 準拠）
      2. Codex が具体推奨を返した → 適用して継続
      3. Codex が ambiguous / Human-required / 実行不能を返した → Target を **human-judgment bucket** に移動（reason source: `codex-consult-result`、詳細: Codex の一行理由）。**長期分類（IDEA filter / handoff Next Owner）は変更しない**。「今セッションでは skip」という意味
-   - Target が完了（または skip）したら **ステップ 1（Groom + Re-scan）** に戻る
+   - Target が完了（または skip）したら **ステップ 3.5** を経由して **ステップ 1（Groom + Re-scan）** に戻る
+
+3.5. **Background Codex dispatch（HO-W008 / 2026-05-06 導入）**
+
+   Target 実行が新たに executable `Next Owner: Codex` handoff を生成または更新した場合、以下を評価する:
+
+   **Background dispatch 条件**（すべて満たす場合のみ実行）:
+   1. 生成/更新された handoff が Codex-turn 投入条件を満たす（`active`/`waiting` + 具体 `Next Action`）
+   2. actionable queue に当該 handoff の `Scope` と非重複な `Next Owner: Claude Code` 候補が 1 件以上ある
+   3. 現在 in-flight な background Codex job が 0 件（cap: **1 job at a time**）
+   4. HO-W006 idempotency guard を満たす（今セッションでその handoff に対する Codex turn が未実行）
+
+   **dispatch 手順**:
+   1. `claude-codex-handoff-loop.sh --repo "$(pwd)" --handoff <path> --max-rounds 1` を `run_in_background: true` で実行する
+   2. `task-state.md` の `### In-flight Codex Jobs` に `<task_id>: started` を記録する
+   3. ステップ 1（Groom+Re-scan）に戻らず、actionable queue の次 `Next Owner: Claude Code` Target を取り出してステップ 3 を継続する
+
+   **条件を満たさない場合**: background dispatch をせず、ステップ 1（Groom+Re-scan）に戻る。次の re-scan で通常の Codex-turn queue として処理する。
+
+   **Join point**（以下のタイミングで in-flight Codex jobs を必ず join する）:
+   - actionable queue が空になり Stop Report に移行する前
+   - Codex-owned handoff の結果に依存する auto-adoption / archive を開始する前
+   - Codex-owned handoff の `Scope` と重複する Target を開始する前
+
+   **Join 手順**: in-flight job の完了通知を確認 → `task-state.md` の `### In-flight Codex Jobs` を `completed` / `failed` に更新 → ステップ 1（Groom+Re-scan）の Re-scan checklist を再実行する。
+
+   **失敗処理**: no-change / error → human-judgment bucket（reason source: `codex-unavailable` / 詳細: `background dispatch failed`）。Stop Report の `## Background Codex-turn Log` に記録する。
 
 4. （旧ステップ 4 「Codex 推奨方針相談」は廃止 — auto-adoption と skip-on-stuck で吸収済み）
 
 5. **Stop Report 出力 + 停止**
+
+   **Stop Report 前に in-flight Codex jobs を join する**: in-flight background Codex job が残っている場合は完了を待ち、結果を re-scan に反映してから Stop Report を出力する。
 
    actionable queue が空かつ最新 re-scan でも空のままなら、**Stop Report 前検証**（Groom + Re-scan ステップ 1 のチェックリスト 5 項目すべて確認済み + Human-judgment bucket 全 item に valid reason あり）を確認した上で、以下のテンプレートで Stop Report を task-state.md に追記しユーザーに表示して停止する:
 
@@ -682,6 +715,11 @@ Target の Success Criteria を満たしたら停止せず、以下のループ�
    Codex-turn Log:（0 件なら省略）
    - HO-<n>: Codex turn executed → <updated result summary> → Step 1.6 re-run triggered
    - HO-<m>: Codex turn no-change → bucket (codex-unavailable / no-change)
+
+   Background Codex-turn Log:（0 件なら省略）
+   - HO-<n>: background dispatch started → completed → re-scan triggered
+   - HO-<m>: background dispatch started → no-change → bucket (codex-unavailable)
+   - HO-<k>: background dispatch started → failed → bucket (codex-unavailable / loop script error)
 
    Auto-adoption Log:
    - HO-<n>: <Concrete | Ambiguous | Uncertain → re-consult: <Yes/No> | Idempotent skip | safety-valve> → <action>
