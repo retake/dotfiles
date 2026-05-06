@@ -97,9 +97,20 @@ infer_loop_mode() {
   esac
 }
 
+detect_layout() {
+  local repo="$1"
+  if [[ -f "$repo/AGENT_GUIDE.md" ]]; then
+    printf 'product\n'
+  elif [[ -d "$repo/handoffs" ]]; then
+    printf 'meta\n'
+  else
+    return 1
+  fi
+}
+
 find_handoff_files() {
   local repo="$1"
-  find "$repo/docs" -type f -name 'agent-handoff-*.md' 2>/dev/null | sort
+  find "$repo/$HANDOFF_DIR" -type f -name 'agent-handoff-*.md' 2>/dev/null | sort
 }
 
 find_matching_files_for_task() {
@@ -138,8 +149,8 @@ find_active_handoff() {
   local file
 
   while IFS= read -r file; do
-    [[ "$file" == "$repo/docs/"* ]] || continue
-    [[ "$file" == "$repo/docs/archive/"* ]] && continue
+    [[ "$file" == "$repo/$HANDOFF_DIR/"* ]] || continue
+    [[ "$file" == "$repo/$ARCHIVE_DIR/"* ]] && continue
     matches+=("$file")
   done < <(find_matching_files_for_task "$repo" "$task_id")
 
@@ -160,7 +171,7 @@ has_archived_handoff() {
   local file
 
   while IFS= read -r file; do
-    [[ "$file" == "$repo/docs/archive/"* ]] || continue
+    [[ "$file" == "$repo/$ARCHIVE_DIR/"* ]] || continue
     return 0
   done < <(find_matching_files_for_task "$repo" "$task_id")
 
@@ -213,8 +224,8 @@ build_claude_prompt() {
 You are operating a bounded handoff loop for repository: $repo
 
 Read:
-- AGENT_GUIDE.md
-- docs/agent-handoff-template.md
+- $GUIDE_FILE
+- $TEMPLATE_FILE
 
 Target task:
 - task_id: $task_id
@@ -227,7 +238,7 @@ Goal:
 - If useful, use the audit-handoffs workflow or equivalent review process.
 
 Rules:
-- Follow review-response rules in AGENT_GUIDE.md.
+- Follow review-response rules in $GUIDE_FILE.
 - Do not self-archive a review response unless the reviewer explicitly allowed it.
 - Keep the task bounded to this task_id only.
 - Update or create only the minimal handoff file(s) needed for the next step.
@@ -251,8 +262,8 @@ Use the claudecode-handoff-loop skill.
 
 Repository: $repo
 Read:
-- AGENT_GUIDE.md
-- docs/agent-handoff-template.md
+- $GUIDE_FILE
+- $TEMPLATE_FILE
 
 Target task:
 - task_id: $task_id
@@ -265,7 +276,7 @@ Review the current active handoff and update handoff files only.
 Rules:
 - Stay within this task_id.
 - Respect review-response rules.
-- You may edit only handoff files under docs/ (including docs/archive/ when archive rules allow it).
+- You may edit only handoff files under $HANDOFF_DIR/ (including $ARCHIVE_DIR/ when archive rules allow it).
 - Do not edit implementation files such as lib/, test/, src/, app/, package manifests, CI config, or non-handoff docs.
 - If you disagree with Claude, write the disagreement and the proposed compromise into the handoff.
 - Leave a clear Next Owner and Next Action unless the task is genuinely archived or done.
@@ -336,7 +347,7 @@ run_codex_turn() {
   log "round $round: Codex turn for $task_id ($handoff)"
 
   if (( DRY_RUN )); then
-    log "dry-run: codex exec --full-auto -C $repo/docs -o $last_message_file - < $prompt_file"
+    log "dry-run: codex exec --full-auto -C $repo/$HANDOFF_DIR -o $last_message_file - < $prompt_file"
     return 0
   fi
 
@@ -344,7 +355,7 @@ run_codex_turn() {
   timeout --signal=TERM --kill-after=30 "$TURN_TIMEOUT_SEC" \
     "$codex_bin" exec \
     --full-auto \
-    -C "$repo/docs" \
+    -C "$repo/$HANDOFF_DIR" \
     -o "$last_message_file" \
     - <"$prompt_file" >"$log_file" || rc=$?
   if (( rc == 124 )); then
@@ -395,8 +406,28 @@ done
 
 REPO="$(realpath "$REPO")"
 [[ -d "$REPO" ]] || die "repo not found: $REPO"
-[[ -f "$REPO/AGENT_GUIDE.md" ]] || die "AGENT_GUIDE.md not found in $REPO"
-[[ -f "$REPO/docs/agent-handoff-template.md" ]] || die "docs/agent-handoff-template.md not found in $REPO"
+
+LAYOUT="$(detect_layout "$REPO")" || die "cannot detect layout for $REPO (need AGENT_GUIDE.md for product layout or handoffs/ dir for meta layout)"
+
+case "$LAYOUT" in
+  product)
+    GUIDE_FILE="AGENT_GUIDE.md"
+    HANDOFF_DIR="docs"
+    TEMPLATE_FILE="docs/agent-handoff-template.md"
+    ;;
+  meta)
+    GUIDE_FILE="README.md"
+    HANDOFF_DIR="handoffs"
+    TEMPLATE_FILE="templates/agent-handoff-template.md"
+    ;;
+  *)
+    die "unsupported layout: $LAYOUT"
+    ;;
+esac
+ARCHIVE_DIR="$HANDOFF_DIR/archive"
+
+[[ -f "$REPO/$GUIDE_FILE" ]] || die "$GUIDE_FILE not found in $REPO (layout=$LAYOUT)"
+[[ -f "$REPO/$TEMPLATE_FILE" ]] || die "$TEMPLATE_FILE not found in $REPO (layout=$LAYOUT)"
 
 if [[ -n "$HANDOFF" ]]; then
   if [[ "$HANDOFF" != /* ]]; then
@@ -411,7 +442,7 @@ if [[ -z "$TASK_ID" && -n "$HANDOFF" ]]; then
 fi
 
 if [[ -z "$TASK_ID" ]]; then
-  latest_active="$(find "$REPO/docs" -maxdepth 1 -type f -name 'agent-handoff-*.md' | sort | tail -n 1 || true)"
+  latest_active="$(find "$REPO/$HANDOFF_DIR" -maxdepth 1 -type f -name 'agent-handoff-*.md' | sort | tail -n 1 || true)"
   [[ -n "$latest_active" ]] || die "could not infer task_id and no active handoff exists"
   TASK_ID="$(extract_task_id "$latest_active")"
   HANDOFF="$latest_active"
