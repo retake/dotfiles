@@ -17,6 +17,15 @@ PCを離れて Claude に長時間自律実行させる前の「セッション�
 
 ## 実行手順
 
+### プロセス原則: parallel read / serial write（Track A+B / HO-W018 / 2026-05-06 導入）
+
+各ステップ内で以下の原則を適用する:
+
+- **読み取り操作**（ファイル読み込み・grep・dangling-reference チェック・候補スコアリング・分類分析）は同一ステップ内で並列実行してよい。
+- **書き込み操作**（git mv・handoff ファイル作成/編集・task-state.md 書き込み・コミット・archive 移動・親ステータス変更）は、そのステップの並列スキャンが完了した後、決定論的な順序で直列化する。
+- 各ステップは「**並列スキャン → 直列ミューテーション**」の 2 フェーズとして実行できる。
+- この原則は **Target 実行（ステップ 3）には適用しない**: 実装はシングルセッション内で常に直列で行う。
+
 ### ステップ 1: コンテキスト収集（自動・ユーザーへの表示なし）
 
 以下を並列で読む:
@@ -53,6 +62,8 @@ PCを離れて Claude に長時間自律実行させる前の「セッション�
 
 #### Action
 
+> **並列化ノート**: 複数候補がある場合、各候補の dangling-reference チェック（grep）は並列実行してよい。`git mv` 操作は全チェック完了後に直列で実行する。
+
 - **safe** な候補: `git mv docs/agent-handoff-<file>.md docs/archive/` を実行。untracked なら先に `git add`、その後 `git mv`（履歴保全のため `archive-handoffs` SKILL の慣習に従う）
 - **dangling-references** で skip した候補: そのまま放置し、Stop Report の `## Auto-archive Log` で `Skipped (dangling references; manual review required)` セクションに記録（参照元のファイルパス + line 番号を含める）
 
@@ -81,6 +92,8 @@ Skipped (dangling references; manual review required):
 ### ステップ 1.5: 3 セットモデルの構築（HO-146 / 2026-04-29 導入）
 
 ステップ 1 で集めた情報をもとに、以下の 3 セットを内部状態として構築する。これは AI の作業メモリに保持し、ユーザーへの表示はステップ 2 以降の判断ロジックの結果のみに留める。
+
+> **並列化ノート**: handoff・IDEA・REQ・git status など各ソースからの情報抽出は並列実行してよい。survey set への統合（単一マージ）は直列で行う。
 
 - **Survey set**: ステップ 1 で読み取った全 IDEA・全 handoff・traceability の REQ・git status の変更ファイル等を保持する。**フィルタで除外しても survey set からは消さない**。説明可能性のため。
 - **Actionable queue**: 後述の「フィルタルール」を通過した item のみ。優先順位順に並べる（priority key: handoff `Next Owner: Claude Code` 既在 > REQ 未テスト > REQ 未実装 > IDEA `auto-adoptable`）。Target はここから選ぶ。
@@ -253,6 +266,8 @@ IDEA を actionable queue に投入する前に、以下を確認:
 これにより、別セッションが手動で IDEA を implementation handoff に昇格させた場合でも重複起票しない。
 
 #### First-pass classification（Claude Code が一次判定）
+
+> **並列化ノート**: 複数の auto-adoption candidate がある場合、各候補の first-pass classification（読み取り・スコアリング）は並列実行してよい。implementation handoff の作成・親 consult のステータス変更は直列で行う。
 
 以下のチェックリストを順に評価する:
 
@@ -607,6 +622,7 @@ Target の Success Criteria を満たしたら停止せず、以下のループ�
    - 完了した Target の traceability.md / handoff status を更新する
    - **ステップ 1 → 1.4 → 1.5 → 1.6 を再実行**: survey set / actionable queue / human-judgment bucket を再構築する。auto-adoption も再評価（前回 skip だった consult が新たに Concrete 化していれば取り込む）。**ステップ 1.4 で auto-archive sweep も毎ループ実行**: 前ループで `archive_waiting` になった親 consult を即座に archive へ移動できる
    - **⚠️ Re-scan の最低チェックリスト（すべて行うこと）**:
+     > **並列化ノート**: 以下 5 項目のスキャン（読み取り・確認）は並列実行してよい。queue / bucket への反映（書き込み）は全スキャン完了後に直列で行う。
      1. `docs/agent-handoff-*.md` 全件の `handoff_status` × `Next Owner` を確認 — `Next Owner: Claude Code` かつ `active`/`waiting` の件数ゼロを検証。`Next Owner: Codex` かつ Codex-turn 投入条件（`active/waiting` + 具体 `Next Action`）を満たす件数もゼロを検証（ゼロでない場合は Codex-turn queue を再実行する）
      2. `docs/ideas-backlog.md` の `auto-adoptable` かつ **実装済みマークなし / consult-attempted マークなし** な IDEA がないことを確認
      3. `docs/traceability.md` で `—`（未実装 / 未テスト）かつ前提解消済みの REQ がないことを確認
