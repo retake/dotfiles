@@ -14,3 +14,8 @@ claude/memory/global/user_email_accounts.md
 claude/roles/life/
 claude/memory/life/
 docs/design-summary.md
+
+# ai-agent-workflow is a nested independent git repo (HO-W025).
+# It lives here physically but is managed by its own .git/, not dotfiles'.
+# Surfaced at ~/dev/ai-agent-workflow via symlink for adopter compatibility.
+/claude/ai-agent-workflow/
