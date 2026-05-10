@@ -70,6 +70,8 @@
 - raw `StateProvider` は derived provider が null を返しても自動 clear されない。active 確認側で `ref.listen` + `setState` で明示的に null にしないと、derived の条件が変わったとき raw が再浮上する（2026-05-alarm-3）
 - `StatelessWidget` → `StatefulWidget` 変換直後は IDE の "Undefined name" で `widget.` プレフィックス漏れが一気に見える。変換直後にコンパイル確認 → 一括 `widget.` 付与のリズムを固定化する（2026-05-alarm-3）
 - ゴーストカードでも CTA テキスト・アクセントアイコンを全 `textHint`（グレー）にすると primary affordance が消える。design-guidelines 第 1 原則「重要でない情報のみグレー」に従い、ラベル本体は `textMid` 以上を維持する（2026-05-alarm-3）
+- `Next Owner: Codex` + concrete Next Action の handoff は session-start Step 1.5.5 でセッション内に即 `claude-codex-handoff-loop.sh` を回す。Stop Report に「Codex review 待ち」として残すのは skill 違反（cap / コスト制約で持ち越す場合は明示的に bucket へ）（2026-05-workflow）
+- archive-time topic-ledger は「1 行 / archive 時のみ更新 / navigational only + Source-of-truth precedence 明記」の 4 条件で設計する。`docs/decision-spine-uses.md` がこのパターンの proof-of-concept（2026-05-workflow）
 
 ## 振り返り一覧
 
@@ -112,3 +114,4 @@
 | 2026-05-05 | alarmアプリ HO-212 screenshot harness Phase A（remote review 基盤・integration_test 7 シナリオ + index.html 生成スクリプト・Box→Drive→Phase 分割で go・MCP 不可時のローカル先行運用） | [2026-05-alarm.md](2026-05-alarm.md) |
 | 2026-05-05 | alarmアプリ session-start 継続 — HO-213 Codex-owner loop 実装 + Codex-turn queue 全消化（HO-213/214/208/206/205 archive・HO-203/204/207/209 waiting/Codex・18 commit）+ ループスクリプト誤認 / golden 不足 / archive 順序の 3 課題発覚 | [2026-05-alarm-2.md](2026-05-alarm-2.md) |
 | 2026-05-05 | alarmアプリ セッション継続 — HO-203 raw StateProvider clear 漏れ修正（ref.listen + flicker 修正）+ HO-218 CurrentStepCircle press feedback（AnimatedScale 120ms / Slice 3a）+ IDEA-89 ゴーストカード contrast 改善（11 commit） | [2026-05-alarm-3.md](2026-05-alarm-3.md) |
+| 2026-05-06 | ai-agent-workflow HO-W019〜W023 完走（decision-spine Slice 3 / P2-P5 amendment / docs-only carve-out 昇格 + Codex review / alarm AGENT_GUIDE 読み順 First Slice / topic-ledger 新設・21 行 backfill + Archive checklist） — Step 1.5.5 違反 1 件をユーザー指摘で同セッション内解消 | [2026-05-workflow.md](2026-05-workflow.md) |
