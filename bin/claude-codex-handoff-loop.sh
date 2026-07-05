@@ -110,7 +110,9 @@ detect_layout() {
 
 find_handoff_files() {
   local repo="$1"
-  find "$repo/$HANDOFF_DIR" -type f -name 'agent-handoff-*.md' 2>/dev/null | sort
+  { find "$repo/$HANDOFF_DIR" -type f -name 'agent-handoff-*.md' 2>/dev/null
+    find "$repo/$HANDOFF_DIR" -type f -name 'HO-*.md' 2>/dev/null
+  } | sort -u
 }
 
 find_matching_files_for_task() {
@@ -317,6 +319,7 @@ run_claude_turn() {
     timeout --signal=TERM --kill-after=30 "$TURN_TIMEOUT_SEC" \
       "$claude_bin" \
       -p \
+      --model "$HANDOFF_CLAUDE_MODEL" \
       --permission-mode acceptEdits \
       <"$prompt_file" >"$log_file"
   ) || rc=$?
@@ -371,6 +374,9 @@ TASK_ID=""
 MAX_ROUNDS=6
 DRY_RUN=0
 TURN_TIMEOUT_SEC="${HANDOFF_LOOP_TURN_TIMEOUT:-600}"
+# HO-218 (logsite): モデルを明示する。未指定だと settings.json の既定（claude-fable-5[1m]、1Mコンテキストbeta）を
+# 暗黙継承する。実装/相談ターンなのでフラグシップ既定は維持しつつ、[1m] beta は外す
+HANDOFF_CLAUDE_MODEL="${HANDOFF_CLAUDE_MODEL:-claude-fable-5}"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -442,7 +448,11 @@ if [[ -z "$TASK_ID" && -n "$HANDOFF" ]]; then
 fi
 
 if [[ -z "$TASK_ID" ]]; then
-  latest_active="$(find "$REPO/$HANDOFF_DIR" -maxdepth 1 -type f -name 'agent-handoff-*.md' | sort | tail -n 1 || true)"
+  latest_active="$(
+    { find "$REPO/$HANDOFF_DIR" -maxdepth 1 -type f -name 'agent-handoff-*.md' 2>/dev/null
+      find "$REPO/$HANDOFF_DIR" -maxdepth 2 -type f -name 'HO-*.md' 2>/dev/null
+    } | sort | tail -n 1 || true
+  )"
   [[ -n "$latest_active" ]] || die "could not infer task_id and no active handoff exists"
   TASK_ID="$(extract_task_id "$latest_active")"
   HANDOFF="$latest_active"
