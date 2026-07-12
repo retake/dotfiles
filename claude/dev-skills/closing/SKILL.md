@@ -231,7 +231,9 @@ retro 側で draft の新鮮度判定と対話的起票が行われるため、c
    - `+300` 行以上の大きなリファクタ commit
    - 表示: `⚠️ Codex レビュー推奨の変更が含まれます: <該当理由>。~/.claude/docs/codex-request-template.md を参照してください`
 
-4. **新規 handoff 作成**: ステップ4で作成した場合
+4. **リポジトリ固有の状態警告**（通常モードのみ・簡略モードはスキップ）: カレントディレクトリに `.claude/commands/check-status.md` または `.claude/skills/check-status/SKILL.md` が存在する場合のみ判定対象とする。`Skill: check-status` を実行し、応答に含まれる `⚠` 始まりの警告行をそのまま転記する。存在しないリポジトリでは項目自体を出さない
+
+5. **新規 handoff 作成**: ステップ4で作成した場合
    - 表示: `✅ 申し送り handoff を作成しました: docs/agent-handoff-claudecode-<topic>-YYYYMMDD.md`
 
 警告がゼロ件の場合:
