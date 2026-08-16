@@ -1,6 +1,6 @@
 ---
 name: sync
-description: コードとドキュメント（requirements.md・design-summary.md・traceability.md）の乖離を検出し、更新を提案する軽量スキル。orchestrateを通さない小規模修正の後に実行する。
+description: コードとドキュメント（requirements.md・design-summary.md・traceability.md・code-map.md）の乖離を検出し、更新を提案する軽量スキル。orchestrateを通さない小規模修正の後に実行する。
 model: sonnet
 user-invocable: true
 argument-hint: 対象ディレクトリ（省略時はカレントディレクトリ）
@@ -15,6 +15,7 @@ allowed-tools:
   - Bash(git diff*)
   - Bash(git log*)
   - Bash(pwd)
+  - Bash(node scripts/refresh-code-map-anchors.mjs*)
 ---
 
 # Sync — コード↔ドキュメント同期チェック
@@ -39,6 +40,7 @@ orchestrateを通さずに行った修正が、ドキュメントに反映され
 - `docs/current-architecture.md`
 - `docs/design-summary.md`
 - `docs/traceability.md`
+- `docs/code-map.md`（機能→ファイル・行アンカー索引。current-architecture.md/design-summary.mdの代わりにこれを使うリポジトリがある）
 
 いずれも存在しない場合は「ドキュメントが見つかりません。orchestrateで初回実行してください」と表示して終了する。
 
@@ -64,6 +66,12 @@ orchestrateを通さずに行った修正が、ドキュメントに反映され
 - traceability.mdが存在する場合、最終更新日と最新のsrc/変更日を比較する
 - src/の方が新しければ → 「traceability.mdの更新が必要」
 
+**code-map.md の行アンカー鮮度（存在する場合）：**
+- `docs/code-map.md` があり、かつ `scripts/refresh-code-map-anchors.mjs` がリポジトリに存在する場合、`node scripts/refresh-code-map-anchors.mjs` を実行する
+  - このスクリプトは `` `symbol:line` `` 形式の行アンカーをシンボル宣言（function/class/const）でgrepし直し、実際の行番号にファイル内で機械的に書き戻す。曖昧・未検出のシンボルは警告として出力され、書き換えない
+  - 更新件数・警告を結果セクションにそのまま含める。警告があれば「手動確認が必要」として推奨アクションに挙げる
+  - このスクリプトが存在しないリポジトリでは、このステップを丸ごとスキップする（エラーにしない）
+
 ### 4. 結果の出力
 
 ```
@@ -80,6 +88,10 @@ orchestrateを通さずに行った修正が、ドキュメントに反映され
 ## design-summary.md
 - 乖離なし / 乖離あり
   （乖離の詳細）
+
+## code-map.md 行アンカー（存在する場合のみ）
+- 自動再同期: N件更新 / 対象外（スクリプトなし）
+- 警告: N件（要手動確認）
 
 ## traceability.md
 - 最新 / 要更新（最終更新: YYYY-MM-DD、最新コード変更: YYYY-MM-DD）
