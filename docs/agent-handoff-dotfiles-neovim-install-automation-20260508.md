@@ -37,7 +37,7 @@ Automate Neovim acquisition (correct architecture, recent version) and the lazy.
 | C. Document only, do not automate | Cheapest. | Defeats one-batch goal. |
 
 ## recommendation
-Adopt option A. Keep the script tiny: detect OS, on Linux pick `nvim-linux-{arm64,x86_64}.tar.gz` from the latest release (or a pinned version), extract under `~/.local/`; on macOS prefer `brew install neovim`. After install, run `nvim --headless "+Lazy! restore" +qa` to materialize plugins from the lockfile. Rerun is idempotent.
+Adopt option A. Keep the script tiny: detect OS via the shared `lib/bootstrap/os-detect.sh` helper (bootstrap-orchestrator track, no script-local `uname`), on Linux pick `nvim-linux-{arm64,x86_64}.tar.gz` from the latest release (or a pinned version), extract under `~/.local/`; on macOS prefer `brew install neovim`. After install, run `nvim --headless "+Lazy! restore" +qa` to materialize plugins from the lockfile. Rerun is idempotent.
 
 ## acceptance criteria
 - [ ] `bash bootstrap.sh --phase neovim` installs Neovim on Linux (aarch64+x86_64) and macOS without prompts.

@@ -39,13 +39,13 @@ Bring macOS to feature parity with the Linux/WSL2 bootstrap: package installatio
 | C. Adopt a unified shell (e.g. `fish` or `nu`) on both OSes | Cleanest portable layer. | Migration cost on the user, breaks the existing aliases/functions. |
 
 ## recommendation
-Adopt option A: keep bash on Linux/WSL2, target zsh on macOS. Refactor shared content (aliases, `cc-new` family, PATH composition) into `shell/common.sh`, then have `.bashrc` and a new `.zshrc` source it. OS-specific blocks (`JAVA_HOME`, `BROWSER`, Android paths) move under guards using OS detection. This is the smallest disruption, leaves both shells idiomatic on their host OS, and keeps muscle memory intact.
+Adopt option A: keep bash on Linux/WSL2, target zsh on macOS. Refactor shared content (aliases, `cc-new` family, PATH composition) into `shell/common.sh`, then have `.bashrc` and a new `.zshrc` source it. OS-specific blocks (`JAVA_HOME`, `BROWSER`, Android paths) move under guards using OS detection — bootstrap scripts source the shared `lib/bootstrap/os-detect.sh` helper (owned by bootstrap-orchestrator); rc files use one guard function defined inside `shell/common.sh` itself, since they run before any bootstrap. Ownership split: **this track owns creating `shell/common.sh` and the env-export lines inside it**; machine-profile supplies the role-gate helper layered inside it; dev-tools-bootstrap installs binaries only and writes no exports. OS guard and role gate are orthogonal layers — the OS guard decides whether a block is considered at all, the role gate decides whether it activates. This is the smallest disruption, leaves both shells idiomatic on their host OS, and keeps muscle memory intact.
 
 ## acceptance criteria
 - [ ] `os/mac/` directory exists with macOS-specific scripts (Homebrew bootstrap delegation, Mac-only PATH/env, Mac-only AHK-equivalent if any).
 - [ ] `shell/common.sh` exists; both `.bashrc` and `.zshrc` source it.
 - [ ] OS-specific environment variables (`JAVA_HOME`, `BROWSER`, Android SDK path) are wrapped in detection guards.
-- [ ] `bootstrap.sh` runs end-to-end on a clean macOS host (manual or VM-tested at least once).
+- [ ] `bootstrap.sh` runs end-to-end on a clean macOS host at least once — the GitHub Actions `macos` runner is the default verification path (no physical Mac is available today); a manual run replaces this once a Mac exists.
 - [ ] `dev-environments/_index.md` gains at least one Mac entry.
 
 ## dependencies

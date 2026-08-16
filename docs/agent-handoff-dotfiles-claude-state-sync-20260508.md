@@ -48,14 +48,14 @@ Adopt option A with a small carve-out: `MEMORY.md` becomes tracked (it is just a
 ## acceptance criteria
 - [ ] `.gitignore` no longer excludes `claude/memory/**/MEMORY.md`; existing `MEMORY.md` is committed.
 - [ ] A documented mapping (in `docs/layout.md`) declares for each state directory: tracked / private / ephemeral.
-- [ ] `bash bootstrap.sh --phase claude-state` symlinks all dotfiles-tracked memory and retrospective state into `~/.claude/...` and `~/retrospectives/...` on a fresh host.
+- [ ] `bash bootstrap.sh --phase claude` (the canonical phase name per bootstrap-orchestrator; the memory/state sync runs as a step inside that phase) symlinks all dotfiles-tracked memory and retrospective state into `~/.claude/...` and `~/retrospectives/...` on a fresh host.
 - [ ] Private buckets (life, consulting) are restored only via the secret-management flow, not by default.
 - [ ] Retrospective `_principles.md` (if present) is treated like `_index.md` — committed.
 
 ## dependencies
 - depends on: directory-inventory, secret-management.
-- pairs with: bootstrap-orchestrator (claude-state phase).
+- pairs with: bootstrap-orchestrator (the memory/state sync is a step inside its `claude` phase — there is no separate `claude-state` phase).
 
 ## next action
 - Human: confirm option A, especially the decision to commit `MEMORY.md`.
-- After approval: open child implementation handoff to amend `.gitignore`, commit the index, and add the claude-state phase to bootstrap.
+- After approval: open child implementation handoff to amend `.gitignore`, commit the index, and add the state-sync step to the orchestrator's `claude` phase.

@@ -37,7 +37,7 @@ Promote the WSL2-arm64 manual procedure for installing Flutter, JDK 17, Android 
 | C. Document only, no automation. | Cheapest. | Defeats one-batch goal; wsl2 doc is the single most fragile setup. |
 
 ## recommendation
-Adopt option A. The wsl2-arm64 procedure is too OS- and arch-specific for a generic version manager to replace cleanly, and option B would still leave the qemu/multilib half manual. The installer is split per concern — `jdk.sh`, `flutter.sh`, `android-sdk.sh`, `wsl2-cross-arch.sh` — each idempotent. The `dev-environments/wsl2-arm64.md` doc is rewritten to reference the scripts as the source of truth and only narrates the *why* and the known pitfalls.
+Adopt option A. The wsl2-arm64 procedure is too OS- and arch-specific for a generic version manager to replace cleanly, and option B would still leave the qemu/multilib half manual. The installer is split per concern — `jdk.sh`, `flutter.sh`, `android-sdk.sh`, `wsl2-cross-arch.sh` — each idempotent. OS/arch detection defers to the shared `lib/bootstrap/os-detect.sh` helper (bootstrap-orchestrator track) rather than per-script `uname` calls. Scope boundary: these installers place binaries only — the `JAVA_HOME`/`ANDROID_HOME`/Flutter PATH export lines live in `shell/common.sh`, owned by the macos-support rc refactor (OS guard) with role gating from machine-profile, not by these scripts. The `dev-environments/wsl2-arm64.md` doc is rewritten to reference the scripts as the source of truth and only narrates the *why* and the known pitfalls.
 
 ## acceptance criteria
 - [ ] `bash bootstrap.sh --phase devtools --role mobile-dev` installs Flutter, JDK 17, Android SDK, and (on WSL2 arm64) the qemu-user-static + amd64 multilib shim.

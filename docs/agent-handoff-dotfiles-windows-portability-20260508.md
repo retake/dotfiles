@@ -41,7 +41,7 @@ Adopt option A. PowerShell installer is small (copy `.wslconfig`, register AHK w
 
 ## acceptance criteria
 - [ ] `os/windows/install.ps1` deploys `.wslconfig`, AHK, and task scheduler entries.
-- [ ] `bootstrap.sh` detects WSL2 vs native Linux vs macOS and skips Windows-host paths automatically.
+- [ ] `bootstrap.sh` detects WSL2 vs native Linux vs macOS via the shared `lib/bootstrap/os-detect.sh` helper (owned by bootstrap-orchestrator) and skips Windows-host paths automatically.
 - [ ] [README.md](../README.md) gains a "Windows host setup" section with the one PowerShell command.
 - [ ] Mac runs do not reference `os/windows/` at all.
 

@@ -35,18 +35,18 @@ Define a small, stable set of "machine profiles" or "roles" that the bootstrap o
 | C. OS+arch-only inference (no explicit roles, infer everything) | Minimal user-facing state. | Cannot distinguish mobile-dev WSL2 from a writing-only WSL2. |
 
 ## recommendation
-Adopt option A as the primary mechanism, with option B as an opt-in convenience layer on top: `~/.dotfiles.env` (or `~/.config/dotfiles/profile`) holds `DOTFILES_PROFILE=core,mobile-dev,claude` (gitignored), and a `hosts.yaml` checked into the repo can seed it on first run for known hostnames. Roles to start with: `core` (always), `mobile-dev`, `claude`, `codex`, `desktop-only`. The bootstrap orchestrator reads the active set and skips phases whose role is not active.
+Adopt option A as the primary mechanism, with option B as an opt-in convenience layer on top: `~/.config/dotfiles/profile` holds a single line `DOTFILES_PROFILE=core,mobile-dev,claude` (comma-separated, no spaces, gitignored), and a `hosts.yaml` checked into the repo can seed it on first run for known hostnames. Roles to start with: `core` (always), `mobile-dev`, `claude`, `codex`, `desktop-only`. The bootstrap orchestrator reads the active set and skips phases whose role is not active. A helper `dotfiles_has_role <role>` (defined in `lib/bootstrap/profile.sh`, owned by this track) is the only sanctioned query path — consumers (verify-script checks, secret filtering, `shell/common.sh` gating) source it instead of parsing the file themselves, so the format can evolve in one place.
 
 ## acceptance criteria
 - [ ] Role taxonomy is documented in [`docs/`](.).
 - [ ] `bootstrap.sh` reads the active profile from `~/.config/dotfiles/profile` (override with `--profile=...`).
 - [ ] Every phase declares the role it belongs to and is skipped when the role is inactive.
-- [ ] `.bashrc`/`shell/common.sh` gates mobile-dev env exports on the role being active.
+- [ ] `shell/common.sh` (created by the macos-support rc refactor, which owns that file) gates mobile-dev env exports on the role being active via `dotfiles_has_role`.
 - [ ] Adding a new role does not require touching every phase.
 
 ## dependencies
 - referenced by: package-manifest, dev-tools-bootstrap, windows-portability, codex-cli-bootstrap, macos-support.
-- pairs with: bootstrap-orchestrator (it consumes the profile).
+- pairs with: bootstrap-orchestrator (it consumes the profile); macos-support (owns creating `shell/common.sh` — this track only adds the role gate inside it).
 
 ## next action
 - Human: confirm option A, agree the initial role list.

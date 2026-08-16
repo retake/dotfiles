@@ -50,7 +50,7 @@ Adopt option B (`age`) as the primary mechanism, with the encrypted blob stored 
 - [ ] Token rotation playbook is captured (one paragraph per provider).
 
 ## dependencies
-- blocks: bootstrap-orchestrator (the secrets phase is part of the orchestrator).
+- design-blocks: bootstrap-orchestrator — the tooling choice here (age) must be settled before the orchestrator's secrets-phase contract can be designed. At runtime the relationship inverts: secrets is one phase the orchestrator invokes, not a prerequisite the user runs separately.
 - depends on: package-manifest (age must be in the install list).
 - related: existing live tokens in `.credentials` / `.mcp.env` should be rotated as part of the migration to the new mechanism (separate operational task, not a handoff).
 

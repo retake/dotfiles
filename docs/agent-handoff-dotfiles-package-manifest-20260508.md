@@ -32,11 +32,11 @@ Capture every system-level package the daily environment depends on in a single 
 | option | summary | tradeoff |
 |---|---|---|
 | A. Plain text lists (`packages/apt.txt`, `packages/brew.txt`) consumed by `xargs apt install` / `brew bundle`. | Trivial to author and review. | No metadata, no per-package rationale. |
-| B. YAML / TOML manifest with role tags (e.g. `core`, `mobile`, `claude`) so subsets can be installed. | Lets `bootstrap.sh --phase packages --role core` skip mobile-only deps on a server. | Requires a small parser. |
+| B. YAML / TOML manifest with role tags (e.g. `core`, `mobile-dev`, `claude`) so subsets can be installed. | Lets `bootstrap.sh --phase packages --role core` skip mobile-only deps on a server. | Requires a small parser. |
 | C. `Brewfile` + `apt.list` plus a hand-written installer script that knows about the role split. | Familiar tooling per OS. | Duplicates the role logic. |
 
 ## recommendation
-Adopt option B with the simplest possible YAML/TOML schema (or even a flat shell file using `# role: core` comments). Roles map onto the machine-profile handoff (e.g. `core`, `mobile-dev`, `web-dev`, `claude`, `desktop-only`). The installer is a thin script that parses the manifest, filters by active roles, and dispatches to `apt`/`brew`. Each entry carries a one-line "why" comment to prevent drift.
+Adopt option B with the simplest possible YAML/TOML schema (or even a flat shell file using `# role: core` comments). Roles map onto the machine-profile handoff, which owns the taxonomy (`core`, `mobile-dev`, `claude`, `codex`, `desktop-only`) — do not introduce role names outside that list here. The installer is a thin script that parses the manifest, filters by active roles, and dispatches to `apt`/`brew`. Each entry carries a one-line "why" comment to prevent drift.
 
 ## acceptance criteria
 - [ ] A single manifest enumerates every package the daily flow depends on.
@@ -50,5 +50,5 @@ Adopt option B with the simplest possible YAML/TOML schema (or even a flat shell
 - pairs with: machine-profile (role tags), legacy-cleanup (drop `.rbenv`/Ruby packages if no longer wanted).
 
 ## next action
-- Human: confirm option B and the role taxonomy.
+- Human: confirm option B and the role taxonomy (an earlier draft referenced a `web-dev` role that machine-profile does not define; if it is ever needed, add it there first).
 - After approval: open child implementation handoff to draft the initial manifest by walking the existing scripts and docs.

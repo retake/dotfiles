@@ -118,3 +118,12 @@ export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-arm64
 export PATH="$JAVA_HOME/bin:$PATH"
 export ANDROID_HOME=$HOME/android-sdk
 export ANDROID_SDK_ROOT=$HOME/android-sdk
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# logsite secrets
+if [ -f "$HOME/dev/logsite/.dev.vars" ]; then
+  set -a; source "$HOME/dev/logsite/.dev.vars"; set +a
+fi
