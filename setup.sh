@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+# xtrace（-x）は使わない。今は秘密を展開しないが、置換ステップを 1 つ足した瞬間に
+# setup-claude.sh と同じ漏れ方をする。進捗は ln -v で見える。
+set -euo pipefail
 
 create_symlink() {
   local source_path=$1

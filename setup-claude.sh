@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+# xtrace（-x）は使わない。下の sed は secret を展開した状態でコマンドラインに載るため、
+# トレースを有効にすると Todoist トークン・Google OAuth シークレットが端末・ログ・
+# エージェントのトランスクリプトへ平文で出る（2026-08-16 に実際に発生）。
+# 進捗は ln -v と echo で十分に見える。claude/scripts/setup-mcp.sh も同じ方針。
+set -euo pipefail
 
 # Claude Code 開発環境のセットアップ
 # 基本dotfiles（setup.sh）とは独立して実行できる

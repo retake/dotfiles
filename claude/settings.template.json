@@ -45,7 +45,6 @@
       "Bash(git push -f*)",
       "Bash(git push*--force*)",
       "Bash(git reset --hard*)",
-      "Bash(git push *)",
       "Bash(ssh *)",
       "Bash(npm publish*)",
       "Bash(sudo *)"
