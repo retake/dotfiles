@@ -9,6 +9,8 @@
 
 まだクラスタ化できていない具体教訓（抽象化済みのものは _principles.md に移行済み）:
 
+- テストが通っても実データで壊れる。DB 由来の行を扱うロジックは、判定に使う列が実際の SELECT に含まれるかを実データで検証する（2026-08-logsite）
+- LLM に JSON を返させる箇所は、コードフェンスで包まれる前提でパースする（2026-08-logsite）
 - 日付をまたぐ時刻計算では `DateTime.now()` ではなく関連するスケジュール時刻を基準にする（深夜セット時の出発時刻構築不具合）（2026-04-alarm）
 - WCAG コントラスト比は通常テキスト4.5:1・大テキスト(14dp bold+)3:1。ボタンテキストは大テキスト扱いでよい（2026-04-alarm）
 - `require_trailing_commas` は `dart format` では解消しない。analyze と format を別系統として両方回す（2026-04-alarm）
@@ -171,3 +173,4 @@
 | 2026-07-06 | logsite ポータル リリースカード レイアウト改善 — Dogfooding 形式に統一（HO番号+バッジ1行目・タイトル2行目全幅・meta-row に staging日時/却下回数）+ deploy 済み URL 確認運用の学習 | [2026-07-logsite-11.md](2026-07-logsite-11.md) |
 | 2026-07-13 | logsite /groom 横断棚卸 + 実態調査による HO 大量クローズ — 実装済みだが waiting 放置の 8 HO を発見しクローズ（cron ログ/git log --grep/git cherry で裏取り）・check-archived-unmerged.py 新設（merge-base→cherry へ設計変更）・HO-235/236 supersede 確認と orphan 削除・app-state.md 新設・ポータル handoff_status 直接同期 | [2026-07-logsite-12.md](2026-07-logsite-12.md) |
 | 2026-08-07 | trpg-mcp テストプレイ（潮界都市アルヴィス 第一章シーン1完走・7ターン）— 実プレイで露見した2欠陥を憲章条項化（GM層情報の提示文漏れ防止・テンポ規範）+ record_turn の acquisition_type 許可語彙をスキーマ明記・応答遅延をログで原因分解・instructions 4000字上限に抵触し文面圧縮で対処（1 commit） | [2026-08-trpg.md](2026-08-trpg.md) |
+| 2026-08-16 | logsite 自動化パイプラインの耐性強化 — 「全ジョブ成功なのに 24 日間 生産ゼロ」を発見し静かな失敗 5 件を修復（健康診断新設 / heartbeat が 6 ジョブで書けていなかった真因 / HO-250 完遂 / logwell 3 週間ぶり復旧 / label-ideas の stale lock / 運用スクリプト repo 移設。診断 critical 3→0） | [2026-08-logsite.md](2026-08-logsite.md) |
