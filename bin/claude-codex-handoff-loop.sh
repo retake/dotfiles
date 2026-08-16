@@ -350,14 +350,14 @@ run_codex_turn() {
   log "round $round: Codex turn for $task_id ($handoff)"
 
   if (( DRY_RUN )); then
-    log "dry-run: codex exec --full-auto -C $repo/$HANDOFF_DIR -o $last_message_file - < $prompt_file"
+    log "dry-run: codex exec --approve-for-me -C $repo/$HANDOFF_DIR -o $last_message_file - < $prompt_file"
     return 0
   fi
 
   local rc=0
   timeout --signal=TERM --kill-after=30 "$TURN_TIMEOUT_SEC" \
     "$codex_bin" exec \
-    --full-auto \
+    --approve-for-me \
     -C "$repo/$HANDOFF_DIR" \
     -o "$last_message_file" \
     - <"$prompt_file" >"$log_file" || rc=$?
