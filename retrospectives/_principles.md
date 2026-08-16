@@ -32,10 +32,12 @@
 - **管理外ツリーの扱い**: pub-cache / node_modules の直接編集は一時手段に限定し、永続化策（fork / postinstall / override）を決めてから依存する
 - **dotfiles リンク**: シンボリンクはディレクトリ丸ごとではなく個別ファイルで張る
 - **cron の実行環境は対話シェルと違う**: PATH にシステム版の古いツールしか無いことがある。node/npx のような多重インストールされるツールは絶対パスで解決する（npx のパスだけ差し替えても shebang の `env node` が PATH 先頭を掴む）
+- **worktree は生成物を引き継がない**: node_modules・型定義（`wrangler types` 等）は git 管理外なので、worktree を切ったら root とサブプロジェクトの**両方**で install と生成物コマンドを回す。片方漏れは後続エージェントが環境要因で ESCALATED し、原因切り分けに時間を使う
+- **セットアップ系 CLI は設定ファイルを書き換える**: `wrangler d1 create` のように、リソース作成コマンドが設定ファイルへ binding を追記することがある。複数環境の設定が 1 ファイルに同居する構造では、追記が環境の分離を壊す（prod の設定に staging の binding が入る等）。実行後は必ず diff を読む
 
 環境カタログ（`~/dev/environments/_index.md`）を着手前に参照する。
 
-**派生元**: 2026-04-claude-set.md, 2026-04-alarm-4.md, 2026-04-alarm-6.md, 2026-08-logsite.md
+**派生元**: 2026-04-claude-set.md, 2026-04-alarm-4.md, 2026-04-alarm-6.md, 2026-08-logsite.md, 2026-08-logsite-2.md
 
 ---
 
@@ -49,8 +51,10 @@
 - **レビューループのカウント基準**: 「ロジック不具合の修正のみ」を1周とカウントする。コメント削除・import 整序等は自動修正としてカウントしない。構造的欠損（分岐がない）があると5回でも足りない → 初稿で潰す
 - **停止条件**: Tester が同一テストで3回連続失敗したら自律修正を続けず、手動検証移管か設計再考に切り替える
 - **独立検証**: サブエージェントの「既存バグ / HEAD で再現」判定は、Orchestrator 側で `git stash` + 該当テスト単独実行で独立検証してから信じる
+- **実行コマンドは正規経路と一致させる**: allow リストに合わないからと代替コマンドを指示すると、正規経路では起きない障害を作り込む（例: `cd sub && npm test` の代わりに root から `--config` 指定させ、多重バージョン解決でテストランナーが壊れた）。合わないなら agent 定義の tools を直すか、Orchestrator が代行実行する
+- **タイムアウトは「何も起きなかった」ではない**: 実装ターンが時間切れで打ち切られても、作業ツリーには完了間際の成果が残っていることがある。ログが空でも作業ツリーを確認してから次の手を決める。気づかず再実行すると二重作業になり、自動ロールバックさせると完成物を捨てる
 
-**派生元**: 2026-04-claude-set.md, 2026-04-alarm.md, 2026-04-alarm-2.md, 2026-04-alarm-14.md, 2026-04-alarm-20.md, 2026-04-alarm-23.md, 2026-04-alarm-29c.md
+**派生元**: 2026-04-claude-set.md, 2026-04-alarm.md, 2026-04-alarm-2.md, 2026-04-alarm-14.md, 2026-04-alarm-20.md, 2026-04-alarm-23.md, 2026-04-alarm-29c.md, 2026-08-logsite-2.md
 
 ---
 
@@ -124,9 +128,10 @@ dispose 後の ref アクセス・SnackBar キュー・一時的な状態変更�
 - **コンフリクット判定**: `git merge-tree` はコンフリクット有無の近似報告にすぎない。実際の判定は `git merge --no-commit --no-ff` のみ信用する。integration build スクリプトで merge-tree を採用すると誤検知が起きる
 - **cherry-pick 後のブランチ管理**: cherry-pick でマージしたブランチはコミット ID が変わるため `git branch --no-merged` から消えない。`git rebase origin/main` で先端を main HEAD と一致させて force-push するまで残り続ける
 - **並行ブランチのコンフリクット解消**: 同テーマの並行ブランチ（リトライ系・prefix 系等）は main ベースでのコンフリクット解消後も、先行マージ済みブランチがある統合先（staging-integration 等）で再コンフリクットが発生する。解消は必ず「最終マージ先の現在状態」をベースに行う
+- **レビュー承認と main 到達は別事象**: レビューが承認された時点で archive すると、未マージのブランチが archive に埋もれて監査から外れる。archive は `git cherry` で main 到達を実測してから行う。レビュアー（人でも AI でも）が承認と同時に archive しようとしたら差し戻す
 - **マージ済み判定は cherry で行う**: ブランチが main に取り込まれたかは `git merge-base --is-ancestor` ではなく `git cherry main <branch>` で判定する。clean rebase 後に別 SHA でマージされたブランチは ancestor 判定では「未マージ」に見えるが、cherry なら等価パッチを `-` として検出できる。rebase を多用する自動実装パイプライン（worktree → push → 統合ビルドでのマージ）では旧 tip が dangling で残るのが常態
 
-**派生元**: 2026-07-logsite-3.md, 2026-07-logsite-8.md（コンフリクット連鎖は解消→リビルド→次ブランチ確認のラウンド単位で回す）, 2026-07-logsite-12.md（cherry ベースのマージ判定・rebase 後の旧 tip 誤検知回避）
+**派生元**: 2026-07-logsite-3.md, 2026-07-logsite-8.md（コンフリクット連鎖は解消→リビルド→次ブランチ確認のラウンド単位で回す）, 2026-07-logsite-12.md（cherry ベースのマージ判定・rebase 後の旧 tip 誤検知回避）, 2026-08-logsite-2.md（承認と到達の分離）
 
 ---
 
